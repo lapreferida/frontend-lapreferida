@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Crear una instancia de Axios configurada para nuestro backend
 const api = axios.create({
-  baseURL: 'http://localhost:4486/api/ingresos', // Ajusta el puerto y ruta según tu configuración
+  baseURL: 'https://api.lapreferida.site/api/ingresos', // Ajusta el puerto y ruta según tu configuración
   withCredentials: true, // Permite el envío de cookies (incluido el token JWT)
 });
 

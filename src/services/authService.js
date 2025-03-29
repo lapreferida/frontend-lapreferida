@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Crear una instancia de Axios configurada para nuestro backend
 const api = axios.create({
-  baseURL: 'http://localhost:4486/api/auth', // Asegúrate de que la URL coincida con tu servidor backend
+  baseURL: 'https://api.lapreferida.site/api/auth', // Asegúrate de que la URL coincida con tu servidor backend
   withCredentials: true, // Esto permite el envío de cookies (incluido el token JWT)
 });
 

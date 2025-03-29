@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:4486/api/pagos-facturas', // Ajusta el puerto y ruta según tu configuración
+  baseURL: 'https://api.lapreferida.site/api/pagos-facturas', // Ajusta el puerto y ruta según tu configuración
   withCredentials: true,
 });
 
