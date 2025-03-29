@@ -19,7 +19,7 @@ import { getHistorialInformesZ, deleteInformeZ, updateInformeZ } from "../../ser
 import { getNotasCredito, deleteNotaCredito } from "../../services/ventas/notasCreditoService";
 
 // Servicio para remitos
-import { getRemitos } from "../../services/ventas/remitosService";
+import { getRemitos, deleteRemito } from "../../services/ventas/remitosService";
 
 // Componentes
 import Pagination from "../../components/Pagination";
