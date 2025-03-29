@@ -121,6 +121,13 @@
 }
 
 /* RemitoModal.css */
+/* Ajusta el ancho del modal */
+.remito-modal-content {
+    width: 80%;
+    /* Ancho relativo, puede ser ajustado a lo que necesites */
+    max-width: 800px;
+}
+
 /* Botón de cerrar */
 .remito-modal-close {
     position: absolute;
