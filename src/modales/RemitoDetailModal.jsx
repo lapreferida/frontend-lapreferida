@@ -1,17 +1,21 @@
+// RemitoDetailModal.jsx
 import { motion } from "framer-motion";
 import { FaTimesCircle, FaCalendarAlt, FaUserAlt, FaMoneyBillAlt } from "react-icons/fa";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
 
 const RemitoDetailModal = ({ remito, closeModal, formatFecha, formatCurrency }) => {
+  // Si no se pasó un remito, no renderiza nada.
   if (!remito) return null;
+
+  // Agrega este log para ver en la consola los datos que llegan al modal.
+  console.log("Datos del remito en modal:", remito);
 
   // Función para calcular precio unitario (evitando división por cero)
   const getPrecioUnitario = (detalle) => {
-    if (detalle.cantidad && detalle.cantidad > 0) {
-      return detalle.subtotal / detalle.cantidad;
-    }
-    return 0;
+    return detalle.cantidad && detalle.cantidad > 0
+      ? detalle.subtotal / detalle.cantidad
+      : 0;
   };
 
   // Unificar detalle (puede venir en "detalle" o "detalles")
@@ -33,7 +37,7 @@ const RemitoDetailModal = ({ remito, closeModal, formatFecha, formatCurrency }) 
 
     let y = 40; // Posición inicial para la información
 
-    // Información general con etiquetas en negrita y valores juntos
+    // Información general: Fecha, Cliente y Total
     doc.setFontSize(12);
     
     doc.setFont("helvetica", "bold");
@@ -73,11 +77,11 @@ const RemitoDetailModal = ({ remito, closeModal, formatFecha, formatCurrency }) 
 
       autoTable(doc, {
         startY: y,
-        head: [columns.map(col => col.header)],
-        body: rows.map(row => Object.values(row)),
+        head: [columns.map((col) => col.header)],
+        body: rows.map((row) => Object.values(row)),
         styles: { cellPadding: 3, fontSize: 10 },
         headStyles: { fillColor: [41, 128, 185], textColor: 255 },
-        theme: 'grid',
+        theme: "grid",
       });
     }
 
@@ -116,7 +120,10 @@ const RemitoDetailModal = ({ remito, closeModal, formatFecha, formatCurrency }) 
           <p>
             <FaUserAlt className="remito-info-icon" />
             <strong>Cliente:</strong>{" "}
-            <span className="cliente-info" title={`${remito.razon_social} - ${remito.direccion}`}>
+            <span
+              className="cliente-info"
+              title={`${remito.razon_social} - ${remito.direccion}`}
+            >
               {remito.razon_social} - {remito.direccion}
             </span>
           </p>
