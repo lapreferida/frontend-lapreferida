@@ -142,12 +142,6 @@ const InformesRemitosPage = () => {
     setSelectedRemito(null);
   };
 
-  // Determinar el total a mostrar según el detalle seleccionado
-  let totalResumen = null;
-  if (selectedDetail === "facturado") totalResumen = summary.totalFacturado;
-  else if (selectedDetail === "emitido") totalResumen = summary.remitosEmitidos;
-  else if (selectedDetail === "pendiente") totalResumen = summary.remitosPendientes;
-
   return (
     <div className="container informes-remitos-page">
       <h1 className="title">Informe de Remitos</h1>
@@ -187,10 +181,7 @@ const InformesRemitosPage = () => {
         {isLoading && <div className="loader"></div>}
         {error && <div className="error-message">{error}</div>}
 
-        <div
-          className="summary-card"
-          onClick={() => handleDetailClick("facturado")}
-        >
+        <div className="summary-card" onClick={() => handleDetailClick("facturado")}>
           <div className="summary-card-icon">
             <FaDollarSign size={24} />
           </div>
@@ -200,10 +191,7 @@ const InformesRemitosPage = () => {
           </div>
         </div>
 
-        <div
-          className="summary-card"
-          onClick={() => handleDetailClick("emitido")}
-        >
+        <div className="summary-card" onClick={() => handleDetailClick("emitido")}>
           <div className="summary-card-icon">
             <FaFileInvoice size={24} />
           </div>
@@ -213,10 +201,7 @@ const InformesRemitosPage = () => {
           </div>
         </div>
 
-        <div
-          className="summary-card"
-          onClick={() => handleDetailClick("productos")}
-        >
+        <div className="summary-card" onClick={() => handleDetailClick("productos")}>
           <div className="summary-card-icon">
             <FaBoxOpen size={24} />
           </div>
@@ -226,10 +211,7 @@ const InformesRemitosPage = () => {
           </div>
         </div>
 
-        <div
-          className="summary-card"
-          onClick={() => handleDetailClick("pendiente")}
-        >
+        <div className="summary-card" onClick={() => handleDetailClick("pendiente")}>
           <div className="summary-card-icon">
             <FaHourglassHalf size={24} />
           </div>
@@ -254,8 +236,6 @@ const InformesRemitosPage = () => {
           }
           data={detailData}
           detailType={selectedDetail}
-          totalResumen={totalResumen}
-          // Sólo se habilita el click en filas si NO es la vista de productos
           onRowClick={selectedDetail === "productos" ? null : handleRowClick}
           startDate={startDate}  // Se pasan las fechas de búsqueda
           endDate={endDate}

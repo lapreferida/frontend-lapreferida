@@ -18,7 +18,14 @@ const formatCurrency = (value) => {
   }).format(value);
 };
 
-const InformeTableRemitos = ({ title, data, detailType, onRowClick, startDate, endDate, totalResumen }) => {
+const InformeTableRemitos = ({
+  title,
+  data,
+  detailType,
+  onRowClick,
+  startDate,
+  endDate
+}) => {
   // Cantidad de ítems por página a 6
   const itemsPerPage = 6;
   const [currentPage, setCurrentPage] = useState(1);
@@ -35,6 +42,12 @@ const InformeTableRemitos = ({ title, data, detailType, onRowClick, startDate, e
     currentPage * itemsPerPage
   );
 
+  // Calcular el total sumando el campo "subtotal" de cada registro
+  const computedTotal = data.reduce(
+    (acc, item) => acc + Number(item.subtotal),
+    0
+  );
+
   // Función para generar el PDF con todos los registros y el rango de fechas
   const generatePDF = () => {
     const doc = new jsPDF();
@@ -46,13 +59,13 @@ const InformeTableRemitos = ({ title, data, detailType, onRowClick, startDate, e
 
     // Mostrar el texto "Informe de remitos desde ... hasta ..." debajo del título
     doc.setFontSize(12);
-    const informeTexto = `Informe de remitos desde ${formatDate(startDate)} hasta ${formatDate(endDate)}`;
+    const informeTexto = `Informe de remitos desde ${formatDate(
+      startDate
+    )} hasta ${formatDate(endDate)}`;
     doc.text(informeTexto, pageWidth / 2, 25, { align: "center" });
 
-    // Si corresponde, agregar el total (por ejemplo para facturado, emitidos o pendientes)
-    if (totalResumen !== null) {
-      doc.text(`Total: ${formatCurrency(totalResumen)}`, pageWidth / 2, 32, { align: "center" });
-    }
+    // Agregar el total calculado, con un poco más de separación
+    doc.text(`Total: ${formatCurrency(computedTotal)}`, pageWidth / 2, 33, { align: "center" });
 
     let columns = [];
     let rows = [];
@@ -60,7 +73,7 @@ const InformeTableRemitos = ({ title, data, detailType, onRowClick, startDate, e
       // Columnas para remitos (facturado, pendiente, emitido)
       columns = ["N° Remito", "Cliente", "Fecha", "Subtotal"];
       // Usar TODOS los registros, no solo la página actual.
-      rows = data.map(item => [
+      rows = data.map((item) => [
         item.numero_remito,
         `${item.razon_social} - ${item.direccion}`,
         formatDate(item.fecha),
@@ -89,13 +102,11 @@ const InformeTableRemitos = ({ title, data, detailType, onRowClick, startDate, e
     <div className="table-container">
       <h2 className="titleDetalleRemito">{title}</h2>
 
-      {/* Mostrar label con total si corresponde */}
-      {totalResumen !== null && (
-        <div className="total-container">
-          <span className="total-label">Total en el rango seleccionado:</span>
-          <span>{formatCurrency(totalResumen)}</span>
-        </div>
-      )}
+      {/* Mostrar label con total, con algo de margen para separarlo de la tabla */}
+      <div className="total-container" style={{ marginBottom: "15px" }}>
+        <span className="total-label">Total en el rango seleccionado:</span>
+        <span>{formatCurrency(computedTotal)}</span>
+      </div>
 
       {/* Botón de descarga del PDF (solo para tipos distintos a "productos") */}
       {detailType !== "productos" && (
