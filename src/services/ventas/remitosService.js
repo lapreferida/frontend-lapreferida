@@ -60,3 +60,15 @@ export const getRemitosSummary = async (cliente_id, start_date, end_date) => {
     throw error.response.data;
   }
 };
+
+// NUEVO: Servicio para eliminar un remito
+export const deleteRemito = async (id, usuario_id) => {
+  try {
+    const response = await api.delete(`/${id}`, {
+      data: { usuario_id }  // En axios se envía el body en la propiedad "data" en DELETE
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};

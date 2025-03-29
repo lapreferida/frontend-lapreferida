@@ -325,6 +325,31 @@ const HistorialVentasPage = () => {
     });
   };
 
+  // Nuevo handler para eliminar remitos
+  const handleDeleteRemito = (id) => {
+    Swal.fire({
+      title: "¿Eliminar remito?",
+      text: "Esta acción eliminará el remito de la base de datos.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await deleteRemito(id, user.id);
+          Swal.fire("Eliminado", "El remito ha sido eliminado.", "success");
+          fetchData();
+        } catch (error) {
+          console.error(error);
+          const errorMsg =
+            error.response?.data?.message || error.message || "Error al eliminar el remito";
+          Swal.fire("Error", errorMsg, "error");
+        }
+      }
+    });
+  };
+
   // Handlers para modal y acciones (facturas e informes) se mantienen igual...
   const handleSelectItem = (item) => {
     setSelectedItem(item);
@@ -789,6 +814,7 @@ const HistorialVentasPage = () => {
                     <th>Subtotal</th>
                     <th>Usuario</th>
                     <th>Seleccionar</th>
+                    <th>Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -823,6 +849,16 @@ const HistorialVentasPage = () => {
                               onChange={(e) => handleRemitoSelection(item.id, e.target.checked)}
                             />
                           )}
+                        </td>
+                        {/* Columna de Acciones con botón de eliminar */}
+                        <td>
+                          <button
+                            className="action-button eliminar"
+                            onClick={() => handleDeleteRemito(item.id)}
+                            title="Eliminar Remito"
+                          >
+                            <FaTrash />
+                          </button>
                         </td>
                       </tr>
                     ))
