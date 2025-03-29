@@ -1,0 +1,214 @@
+/* Contenedor de secciones paralelas */
+.factura-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+    align-items: flex-start;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: calc(100vh - 100px);
+}
+
+/* Scrollbar para WebKit */
+.factura-container ::-webkit-scrollbar {
+    width: 6px;
+}
+
+.factura-container ::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.factura-container ::-webkit-scrollbar-thumb {
+    background-color: #333;
+    border-radius: 3px;
+}
+
+.factura-container::-webkit-scrollbar-thumb:hover {
+    background-color: #777;
+}
+
+/* Scrollbar para Firefox */
+.factura-container {
+    scrollbar-width: thin;
+    scrollbar-color: #555 transparent;
+}
+
+.textNoCont {
+    color: #fff;
+    text-align: center;
+}
+
+/* Columnas */
+.column-left,
+.column-right {
+    flex: 1;
+    min-width: 300px;
+}
+
+/* ----- Información General ----- */
+.informacion-general {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 8px;
+    flex: 1;
+    min-width: 300px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height: auto;
+}
+
+.informacion-general h2 {
+    margin-bottom: 10px;
+    color: #f77d0b;
+    font-size: 18px;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 4px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+}
+
+.info-item .small-icon {
+    font-size: 0.9rem;
+    margin-right: 5px;
+    color: #f77d0b;
+}
+
+.info-item .label {
+    line-height: 1.6;
+    font-size: 13px;
+    margin-bottom: 4px;
+    color: #e4e4e4;
+}
+
+.info-item .value {
+    margin-left: 5px;
+    line-height: 1.6;
+    font-size: 13px;
+    margin-bottom: 4px;
+    color: #e4e4e4;
+}
+
+.info-item.full-width {
+    grid-column: 1 / -1;
+}
+
+/* ----- Detalles Financieros ----- */
+.detalles-financieros {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 8px;
+    flex: 1;
+    min-width: 300px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height: auto;
+}
+
+.detalles-financieros h2 {
+    margin-bottom: 10px;
+    color: #f77d0b;
+    font-size: 18px;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 4px;
+}
+
+.input-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+/* ----- Nota de Crédito (Columna Derecha) ----- */
+.nota-credito {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 8px;
+    flex: 1;
+    min-width: 300px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height: auto;
+}
+
+.nota-credito h2 {
+    margin-bottom: 10px;
+    color: #f77d0b;
+    font-size: 18px;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 4px;
+}
+
+/* Fila de la Nota de Crédito */
+.nota-row {
+    display: flex;
+    gap: 10px;
+}
+
+.nota-row.total-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 0;
+    /* Espaciado arriba y abajo */
+    font-size: 1.2rem;
+    color: #fff;
+    font-weight: bold;
+
+}
+
+.form-group textarea {
+    min-height: 100px;
+    resize: none;
+}
+
+/* Estilos para los form-group dentro de la Nota de Crédito */
+.nota-credito .form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Responsive para grid en Detalles Financieros */
+@media (max-width: 768px) {
+    .input-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .input-grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+/* Sección de Detalles Financieros en 3 columnas */
+.detalles-financieros {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+/* Responsive: En pantallas más pequeñas, cambiar a 2 o 1 columna */
+@media (max-width: 768px) {
+    .input-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .input-grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}

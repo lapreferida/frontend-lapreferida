@@ -1,0 +1,145 @@
+.informez-container {
+    width: 100%;
+    /* Ocupa el 90% del ancho de la pantalla */
+    max-width: 600px;
+    /* Nunca excede 600px en pantallas grandes */
+    background-color: transparent;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 8px;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Formulario de Informe Z */
+.informez-form {
+    background-color: #333;
+    border-radius: 6px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+}
+
+/* Scrollbar para WebKit */
+.informez-form ::-webkit-scrollbar {
+    width: 6px;
+}
+
+.informez-form ::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.informez-form ::-webkit-scrollbar-thumb {
+    background-color: #333;
+    border-radius: 3px;
+}
+
+.informez-form ::-webkit-scrollbar-thumb:hover {
+    background-color: #777;
+}
+
+/* Scrollbar para Firefox */
+.informez-form {
+    scrollbar-width: thin;
+    scrollbar-color: #555 transparent;
+}
+
+/* Sección principal del formulario */
+.informez-section {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* Título de sección */
+.informez-section h2 {
+    color: #f77d0b;
+    font-size: 18px;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 4px;
+}
+
+/* Fila para Fecha y Total */
+.informez-datos-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.informez-datos-row .form-group {
+    flex: 1;
+}
+
+.totalZ input {
+    font-size: 14px;
+}
+
+/* Estilo para el textarea */
+.informez-form textarea {
+    min-height: 100px;
+    resize: none;
+}
+
+/* Botón de envío */
+.informez-btn-container {
+    display: flex;
+    justify-content: center;
+}
+
+.informez-btn-submit {
+    background-color: #f77d0b;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.informez-btn-submit:hover {
+    background-color: #c16108;
+}
+
+/* Animación de Fade In */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Nueva fila para agrupar Cliente, Pto. Venta, Número de Informe y Fecha */
+.informez-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: flex-end;
+  }
+  
+  .informez-row .form-group {
+    flex: 1; /* Cada campo ocupará el mismo espacio */
+  }
+  
+  /* Si deseas ajustar tamaños particulares, puedes usar clases adicionales */
+  .informez-row .punto-venta {
+    /* Ejemplo: ocupar un 25% del ancho */
+    /* flex: 0 0 25%; */
+  }
+  
+  .informez-row .numero-informe {
+    /* Ejemplo: ocupar 1.5 veces el espacio de los demás */
+    /* flex: 1.5; */
+  }
+  
+  /* Opcional: para el campo Fecha, si se requiere un ancho específico */
+  .informez-row .fecha {
+    /* flex: 1; */
+  }
+  

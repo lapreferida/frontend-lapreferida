@@ -1,0 +1,256 @@
+/* Contenedor principal del sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: #333;
+  color: #fff;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+}
+
+/* Encabezado */
+.sidebar-header {
+  padding: 10px;
+  background-color: #333;
+  border-bottom: 1px solid #444;
+}
+
+/* Top-bar y posición del botón de toggle */
+.top-bar {
+  display: flex;
+  justify-content: flex-end;
+  /* Por defecto, cuando está abierto */
+}
+
+/* Cuando el sidebar está cerrado, centrar el toggle button */
+.sidebar.closed .top-bar {
+  justify-content: center;
+}
+
+.toggle-button {
+  background: none;
+  border: none;
+  color: #f77d0b;
+  font-size: 1.2rem;
+  cursor: pointer;
+  outline: none;
+}
+
+.toggle-button:hover {
+  transform: scale(1.2);
+}
+
+/* Título */
+.title-container {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.title .highlight {
+  color: #f77d0b;
+}
+
+/* Opciones del menú */
+.options-container {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-top: 10px;
+}
+
+/* Estilos personalizados para la barra de desplazamiento (scrollbar) */
+/* Para navegadores basados en Webkit (Chrome, Safari, etc.) */
+.options-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.options-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.options-container::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 3px;
+}
+
+.options-container::-webkit-scrollbar-thumb:hover {
+  background-color: #777;
+}
+
+/* Para Firefox */
+.options-container {
+  scrollbar-width: thin;
+  scrollbar-color: #555 transparent;
+}
+
+/* Enlaces */
+.sidebar a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.sidebar a:hover {
+  text-decoration: none;
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 15px;
+  cursor: pointer;
+  position: relative;
+}
+
+.menu-item:hover {
+  background-color: #444;
+}
+
+/* Contenedor para ícono y texto */
+.menu-link {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.menu-icon {
+  font-size: 1.0rem;
+  margin-right: 10px;
+}
+
+.menu-text {
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+/* Submenú */
+.submenu {
+  list-style: none;
+  font-size: 0.8rem;
+  padding: 0;
+  margin: 0;
+  background-color: #3a3a3a;
+  overflow: hidden;
+}
+
+.submenu-item {
+  padding: 10px 30px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.submenu-item:hover {
+  background-color: #555;
+}
+
+.submenu-link {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.submenu-icon {
+  font-size: 0.8rem;
+  margin-right: 8px;
+}
+
+/* Footer: Botón de Salir */
+.logout-container {
+  padding: 15px;
+  border-top: 1px solid #444;
+}
+
+.logout-button {
+  width: 100%;
+  background-color: #444;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logout-button:hover {
+  background-color: #555;
+  color: #f77d0b;
+  transform: scale(1.05);
+}
+
+.logout-icon {
+  font-size: 1.0rem;
+  margin-right: 8px;
+}
+
+/* Si el sidebar está cerrado, quitar margen derecho al ícono de logout */
+.sidebar.closed .logout-icon {
+  margin-right: 0;
+}
+
+/* ============================= */
+/* ESTILOS PARA SIDEBAR CERRADO */
+/* ============================= */
+
+/* Para todos los ítems del menú, quitar padding horizontal y centrar */
+.sidebar.closed .menu-item {
+  padding: 12px 0;
+  justify-content: center;
+}
+
+/* Para todos los contenedores de ícono y texto, centrar contenido */
+.sidebar.closed .menu-link {
+  justify-content: center;
+}
+
+/* Eliminar el margen derecho en el ícono principal */
+.sidebar.closed .menu-icon {
+  margin-right: 0;
+}
+
+/* También, para los elementos que tienen submenú, centrar el contenedor del submenú */
+.sidebar.closed .submenu-link {
+  justify-content: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sidebar.open {
+    width: 200px;
+  }
+
+  .sidebar.closed {
+    width: 60px;
+  }
+}
+
+/* ============================================================= */
+/* NUEVAS REGLAS: Cambiar color del ícono al pasar el cursor sobre el enlace */
+/* ============================================================= */
+
+/* Para los ítems principales */
+.menu-item:hover .menu-icon {
+  color: #f77d0b;
+}
+
+/* Para los submenús */
+.submenu-item:hover .submenu-icon {
+  color: #f77d0b;
+}

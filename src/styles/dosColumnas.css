@@ -1,0 +1,221 @@
+/* Contenedor principal que divide la pantalla en dos columnas */
+.content-wrapper-dc {
+    display: flex;
+    /* Ocupa todo el ancho */
+    width: 100%;
+    /* Ajusta la altura deseada; por ejemplo, ocupa toda la ventana menos 150px (header, etc.) */
+    height: 100%;
+    /* Permite scroll si el contenido supera la altura */
+    overflow: auto;
+    gap: 20px;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+/* Scrollbar para WebKit */
+.content-wrapper-dc::-webkit-scrollbar {
+    width: 6px;
+}
+
+.content-wrapper-dc::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.content-wrapper-dc::-webkit-scrollbar-thumb {
+    background-color: #333;
+    border-radius: 3px;
+}
+
+.content-wrapper-dc::-webkit-scrollbar-thumb:hover {
+    background-color: #777;
+}
+
+/* Scrollbar para Firefox */
+.content-wrapper-dc {
+    scrollbar-width: thin;
+    scrollbar-color: #555 transparent;
+}
+
+/* Contenedor del formulario */
+.form-container-dc {
+    flex: 1;
+    /* O también flex: 1 1 400px; si quieres un ancho mínimo */
+    background-color: #333;
+    border-radius: 6px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    /* Si quieres scroll independiente dentro del formulario, puedes usar:
+       overflow: auto; height: 100%; */
+}
+
+
+/* Título del formulario centrado */
+.form-container-dc h2 {
+    text-align: center;
+    font-size: 1.2rem;
+    margin-top: 2px;
+    color: #f77d0b;
+}
+
+/* Grid para distribuir los campos en dos columnas */
+.form-grid-dc {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+/* Cada grupo de campos */
+.form-group-dc {
+    display: flex;
+    flex-direction: column;
+    padding: 2px;
+}
+
+.form-group-dc label {
+    font-size: 12px;
+    margin-bottom: 4px;
+    color: #e4e4e4;
+}
+
+.form-group-dc input,
+.form-group-dc textarea,
+.form-group-dc select {
+    width: 100%;
+    height: 38px;
+    padding: 5px 7px;
+    font-size: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: border-color 0.3s ease;
+}
+
+.form-group-dc input:focus,
+.form-group-dc textarea:focus {
+    outline: none;
+    border-color: #f77d0b;
+}
+
+.form-group-dc textarea {
+    min-height: 50px;
+    resize: none;
+    overflow: auto;
+}
+
+/* Select de factura (react-select) */
+.form-group-dc-select {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    padding: 2px;
+}
+
+.form-group-dc-select label {
+    font-size: 12px;
+    margin-bottom: 4px;
+    color: #e4e4e4;
+}
+
+.motivo-dc {
+    margin-top: 10px;
+}
+
+/* React-select custom */
+.custom-select__control {
+    min-height: 24px;
+    height: 24px;
+    font-size: 10px;
+}
+
+.custom-select__value-container {
+    height: 24px;
+    padding: 0 5px;
+}
+
+.custom-select__single-value,
+.custom-select__placeholder {
+    font-size: 12px;
+    line-height: 20px;
+}
+
+.custom-select__menu {
+    font-size: 12px;
+    line-height: 1.2;
+}
+
+/* Botón de envío */
+.btn-container-dc {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    gap: 10px;
+}
+
+.btn-submit-dc {
+    background-color: #f77d0b;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 9px 15px;
+    font-size: 13px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-submit-dc:hover {
+    background-color: #b45b08;
+}
+
+.btn-cancel-dc {
+    background-color: #4b4b4b;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 9px 15px;
+    font-size: 13px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-cancel-dc:hover {
+    background-color: #7a1d1d;
+}
+
+/* Responsividad para pantallas pequeñas */
+@media (max-width: 768px) {
+    .content-wrapper-dc {
+        flex-direction: column;
+        gap: 15px;
+        align-items: stretch;
+        /* Para que ocupe todo el ancho en vertical */
+        height: auto;
+    }
+
+    .form-container-dc {
+        flex: 1 1 auto;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .form-grid-dc {
+        grid-template-columns: 1fr;
+        /* Campos en una sola columna en móvil */
+    }
+}
+
+.invoice-link {
+    color: inherit;
+    /* Hereda el color del elemento padre */
+    text-decoration: none;
+    /* Quita el subrayado */
+    cursor: pointer;
+}
+
+.invoice-link:hover {
+    text-decoration: underline;
+    /* Opcional: subrayado al pasar el mouse */
+}

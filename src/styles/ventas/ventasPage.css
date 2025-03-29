@@ -1,0 +1,446 @@
+/* --------------------------------------------------------------------
+   Formulario de Ventas y Scrollbar
+-------------------------------------------------------------------- */
+.ventas-form {
+  margin-top: 10px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: calc(100vh - 100px);
+}
+
+/* Scrollbar para WebKit */
+.ventas-form ::-webkit-scrollbar {
+  width: 6px;
+}
+
+.ventas-form ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.ventas-form ::-webkit-scrollbar-thumb {
+  background-color: #333;
+  border-radius: 3px;
+}
+
+.ventas-form ::-webkit-scrollbar-thumb:hover {
+  background-color: #777;
+}
+
+/* Scrollbar para Firefox */
+.ventas-form {
+  scrollbar-width: thin;
+  scrollbar-color: #555 transparent;
+}
+
+/* --------------------------------------------------------------------
+   Distribución en Dos Columnas
+-------------------------------------------------------------------- */
+.row-two-sections {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.column-left,
+.column-right {
+  flex: 1 1 calc(50% - 15px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* --------------------------------------------------------------------
+   Secciones Comunes
+-------------------------------------------------------------------- */
+.row-two-sections .section {
+  background-color: #333;
+  border-radius: 6px;
+  padding: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.section h2 {
+  margin-bottom: 10px;
+  color: #f77d0b;
+  font-size: 18px;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 4px;
+}
+
+/* --------------------------------------------------------------------
+   Grupos de Campos (Inputs, Select, Textarea)
+-------------------------------------------------------------------- */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  padding: 2px;
+}
+
+.form-group label {
+  font-size: 12px;
+  margin-bottom: 4px;
+  color: #e4e4e4;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 5px 7px;
+  font-size: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #f77d0b;
+}
+
+.custom-select {
+  width: 100%;
+  font-size: 12px;
+  border-radius: 4px;
+  transition: border-color 0.3s ease;
+}
+
+.datos-adicionales-container {
+  margin-top: 15px;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.datos-adicionales-container .punto-venta select {
+  width: 85px;
+  text-align: center;
+  height: 29px;
+  font-size: 12px;
+}
+
+/* Número de Factura: ancho intermedio */
+.datos-adicionales-container .numero-factura {
+  flex: 0 0 15%;
+}
+
+.numero-factura input {
+  font-size: 13px;
+}
+
+/* Las dos fechas ocuparán el espacio restante de forma igual */
+.datos-adicionales-container .fecha,
+.datos-adicionales-container .fecha-imputacion {
+  flex: 1;
+}
+
+.datos-adicionales-container .fecha input,
+.datos-adicionales-container .fecha-imputacion input {
+  font-size: 12px;
+  width: 100%;
+}
+
+/* --------------------------------------------------------------------
+   Grid para Detalles Financieros
+-------------------------------------------------------------------- */
+.finance-grid {
+  display: flex;
+  flex-direction: column;
+}
+
+.grid-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+}
+
+/* --------------------------------------------------------------------
+   Sección de Forma de Pago
+-------------------------------------------------------------------- */
+.payment-section {
+  background-color: #333;
+  border-radius: 6px;
+  padding: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.payment-section h2 {
+  margin-bottom: 6px;
+  font-size: 18px;
+  color: #f77d0b;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 4px;
+}
+
+.payment-options {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.payment-option {
+  flex: 1 1 80px;
+  display: flex;
+  color: #fff;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 7px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+  justify-content: center;
+  font-size: 12px;
+}
+
+.payment-option input {
+  display: none;
+}
+
+.payment-option.active,
+.payment-option:hover {
+  background-color: #f77d0b;
+  border-color: #f77d0b;
+  color: #fff;
+}
+
+.payment-icon {
+  font-size: 15px;
+}
+
+/* --------------------------------------------------------------------
+   Sección de Observaciones
+-------------------------------------------------------------------- */
+.observation-section {
+  background-color: #333;
+  border-radius: 6px;
+  padding: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.observation-section h2 {
+  margin-bottom: 6px;
+  font-size: 15px;
+  color: #f77d0b;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 4px;
+}
+
+.observation-section .form-group textarea {
+  min-height: 100px;
+  resize: none;
+}
+
+/* --------------------------------------------------------------------
+   Botón de Envío
+-------------------------------------------------------------------- */
+.btn-container {
+  display: flex;
+  justify-content: center;
+}
+
+.btn-submit {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 12px 22px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-submit:hover {
+  background-color: #f77d0b;
+}
+
+/* --------------------------------------------------------------------
+   Animaciones
+-------------------------------------------------------------------- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-10px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* --------------------------------------------------------------------
+   Responsividad
+-------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  .row-two-sections {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .column-left,
+  .column-right {
+    width: 100%;
+    max-width: 500px;
+  }
+}
+
+/* --------------------------------------------------------------------
+   Estilo para el carrusel de remitos
+-------------------------------------------------------------------- */
+.remitos-carousel {
+  /* Ocupar todo el ancho del contenedor */
+  width: 100%;
+  /* Centrar los elementos en la sección */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Separación vertical opcional */
+  margin: 10px 0;
+  position: relative;
+}
+
+.carousel-card-container {
+  /* Ocupar todo el ancho disponible del carrusel */
+  width: 100%;
+  /* Opcional: si querés limitar un máximo ancho, lo podés setear acá */
+  /* max-width: 1000px; */
+  display: flex;
+  justify-content: center;
+}
+
+/* Botones del carrusel: estilos minimalistas con íconos */
+.carousel-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  color: #f77d0b;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2; /* Asegura que los botones queden sobre la tarjeta */
+}
+
+.carousel-btn:focus {
+  outline: none;
+}
+
+/* Posicionamiento de los botones a los lados, con offsets pequeños */
+.carousel-btn.prev {
+  position: absolute;
+  left: 10px;
+}
+
+.carousel-btn.next {
+  position: absolute;
+  right: 10px;
+}
+
+/* Indicador de posición en el carrusel */
+.carousel-indicator {
+  position: absolute;
+  bottom: 5px;
+  font-size: 10px;
+  color: #555;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 2px 4px;
+  border-radius: 2px;
+}
+
+/* --------------------------------------------------------------------
+   Estilo para la tarjeta de remito
+-------------------------------------------------------------------- */
+.remito-card {
+  /* Para que la tarjeta se adapte al ancho disponible */
+  width: 85%;
+  /* Remover cualquier límite fijo, o podés poner un valor más grande */
+  max-width: none;
+  /* Espaciado y estilos generales */
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  color: #333;
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+/* Ajustar márgenes según necesites (ej. 0 auto si querés centrar, etc.) */
+.remito-card-left,
+.remito-card-right {
+  flex: 1 1 50%;
+  box-sizing: border-box;
+  padding: 5px;
+}
+
+/* Borde divisorio entre columnas (si lo querés) */
+.remito-card-left {
+  border-right: 1px solid #eee;
+}
+
+/* Título principal de la tarjeta */
+.remito-card h3 {
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+/* Párrafos dentro de la tarjeta */
+.remito-card p {
+  margin: 4px 0;
+  line-height: 1.3;
+}
+
+/* Enfatizar etiquetas (por ejemplo, "Fecha:" o "Subtotal:") */
+.remito-card strong {
+  font-weight: 600;
+  color: #555;
+}
+
+/* Título del detalle */
+.remito-card-right h4 {
+  font-size: 13px;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+/* Lista del detalle */
+.remito-card-right ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Estilo para cada ítem del detalle */
+.remito-card-right ul li {
+  margin-bottom: 4px;
+  border-bottom: 1px dotted #eee;
+  padding-bottom: 2px;
+}

@@ -1,0 +1,385 @@
+/* =====================================================
+   RESET BÁSICO Y TIPOGRAFÍA
+===================================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* =====================================================
+   CONTENEDORES PRINCIPALES
+===================================================== */
+.container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  background-color: #414141;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.container h1 {
+  text-align: center;
+  margin-bottom: 15px;
+  color: #fff;
+  font-size: 24px;
+}
+
+/* =====================================================
+   ENCABEZADOS
+===================================================== */
+/* Header: Filtros y búsqueda */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  background-color: #333;
+  border-radius: 4px;
+}
+
+/* Buscador: input */
+.search-input {
+  width: 100%;
+  padding: 6px 10px;
+  font-size: 13px;
+  border: 1px solid #f77d0b8d;
+  border-radius: 4px;
+  background-color: #484545;
+  color: #fff;
+}
+
+.search-input::placeholder {
+  color: #fff;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #f77d0b;
+}
+
+.filter-wrapper {
+  width: 100%;
+  text-align: end;
+}
+
+@media (max-width: 767px) {
+  .filter-wrapper {
+    width: 100%;
+    margin-bottom: 10px;
+    text-align: left;
+  }
+
+}
+
+.filter-select-ventas {
+  padding: 6px;
+  font-size: 13px;
+  border: 1px solid #f77d0b8d;
+  border-radius: 4px;
+  background-color: #484545;
+  color: #fff;
+}
+
+/* =====================================================
+   TABLAS
+===================================================== */
+/* Contenedor de la tabla */
+.table-container {
+  overflow-x: auto;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #555 transparent;
+}
+
+/* Table container */
+.table-container {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Tabla principal */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #414141;
+  min-width: 300px;
+}
+
+.table th,
+.table td {
+  box-shadow: inset 0 0 0 1px #444;
+}
+
+
+/* Cabecera de la tabla (sticky) */
+.table thead th {
+  padding: 12px 15px;
+  background-color: #333;
+  color: #f77d0b;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  text-align: center;
+}
+
+/* Celdas del cuerpo de la tabla */
+.table tbody td {
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+}
+
+/* Filas y efecto hover */
+.table tbody tr {
+  background-color: rgba(247, 125, 11, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.table tbody tr:hover,
+.table tbody tr:hover td {
+  background-color: rgba(247, 125, 11, 0.2);
+}
+
+/* Scrollbar personalizado para WebKit */
+.table-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.table-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background-color: #333;
+  border-radius: 3px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+  background-color: #777;
+}
+
+
+/* =====================================================
+   PAGINACIÓN
+===================================================== */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 5px;
+}
+
+.pagination-button {
+  padding: 0.5rem 0.75rem;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.pagination-button:hover {
+  background-color: #f77d0b;
+}
+
+.pagination-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-current {
+  color: #fff;
+  font-size: 1rem;
+}
+
+/* =====================================================
+   SIN RESULTADOS
+===================================================== */
+.no-results {
+  text-align: left;
+  padding: 20px;
+  color: #888;
+}
+
+/* =====================================================
+   BOTONES DE ACCIÓN EN LA TABLA
+===================================================== */
+.action-button {
+  padding: 6px 10px;
+  margin: 2px;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.action-button.seleccionar {
+  background-color: #f77d0b;
+  color: #fff;
+}
+
+.action-button.seleccionar:hover {
+  background-color: #be722c;
+}
+
+.action-button.editar {
+  background-color: #f77d0b;
+  color: #fff;
+}
+
+.action-button.editar:hover {
+  background-color: #be722c;
+}
+
+.action-button.eliminar {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+.action-button.eliminar:hover {
+  background-color: #8a0303;
+}
+
+.detalle-icon {
+  cursor: pointer;
+  font-size: 10px;
+  margin-left: 8px;
+  color: #f77d0b;
+}
+
+
+
+/* =====================================================
+   ANIMACIONES
+===================================================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* =====================================================
+   MODALES
+===================================================== */
+
+/* Overlay genérico para modales */
+.modal__overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+}
+
+/* Contenedor genérico del contenido del modal */
+.modal__content {
+  background: #393939;
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  color: #fff;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+/* Botón de cierre genérico para modales */
+.modal__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  color: #aaa;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.modal__close:hover {
+  color: #f77d0b;
+}
+
+/* =====================================================
+   BOTONES
+===================================================== */
+
+/* Botón de Agregar  */
+.add-button {
+  display: flex;
+  align-items: center;
+  background-color: #f77d0b;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.add-button svg {
+  margin-right: 8px;
+}
+
+.add-button:hover {
+  background-color: #cd6504;
+  transform: translateY(-2px);
+}
+
+/* botones de modal editar */
+.edit-modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.btn-modal-edit {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.btn-modal-edit.cancel {
+  background: #ccc;
+  color: #333;
+}
+
+.btn-modal-edit.cancel:hover {
+  background: #bbb;
+}
+
+.btn-modal-edit.continue {
+  background: #f77d0b;
+  color: #fff;
+}
+
+.btn-modal-edit.continue:hover {
+  background: #c16107;
+}

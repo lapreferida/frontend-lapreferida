@@ -1,0 +1,14 @@
+/* Tabs styles */
+.tabs-container-movimientos{
+    position: sticky;
+    top: 0;
+    z-index: 0;
+    background-color: #333;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    /* Ancho fijo para desktop, se ajusta en móviles */
+    width: 300px;
+    margin-bottom: -4px;
+    border-radius: 6px 6px 0 0;
+  }

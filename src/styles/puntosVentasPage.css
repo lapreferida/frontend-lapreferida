@@ -1,0 +1,120 @@
+/* Modal puntos ventas */
+.puntoVenta-modal-content {
+    padding: 20px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    position: relative;
+}
+
+.puntoVenta-modal-content h3 {
+    margin: 0;
+    text-align: center;
+    color: #f77d0b;
+    font-size: 1.5rem;
+    padding-bottom: 5px;
+}
+
+.puntoVenta-modal-separator {
+    border: none;
+    border-bottom: 2px solid #f77d0b;
+    margin: 10px 0 20px;
+}
+
+/* Centramos la cuadrícula del formulario */
+.puntoVenta-modal-form-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+/* Centramos las columnas */
+.puntoVenta-form-column {
+    flex: 1;
+    min-width: 250px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 0 auto;
+}
+
+.puntoVenta-input-group {
+    display: flex;
+    align-items: center;
+    background-color: #f8f8f8;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 5px 10px;
+}
+
+.puntoVenta-input-icon {
+    color: #f77d0b;
+    margin-right: 8px;
+    margin-top: 5px;
+    font-size: 0.9rem;
+}
+
+.puntoVenta-input-group input,
+.puntoVenta-input-group select {
+    border: none;
+    background: transparent;
+    outline: none;
+    flex: 1;
+    font-size: 0.9rem;
+    padding: 8px 0;
+}
+
+.puntoVenta-input-group input:focus,
+.puntoVenta-input-group select:focus {
+    background-color: #fff;
+}
+
+.puntoVenta-error-label {
+    color: #d9534f;
+    font-size: 0.85rem;
+    margin-top: -10px;
+    margin-bottom: 10px;
+    text-align: center;
+    width: 100%;
+}
+
+.puntoVenta-modal-buttons {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.puntoVenta-modal-buttons button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    min-width: 100px;
+}
+
+.puntoVenta-modal-buttons button:first-child {
+    background-color: #f77d0b;
+    color: #fff;
+}
+
+.puntoVenta-modal-buttons button:first-child:hover {
+    background-color: #e06600;
+    transform: translateY(-2px);
+}
+
+.puntoVenta-modal-buttons button:last-child {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+.puntoVenta-modal-buttons button:last-child:hover {
+    background-color: #5a6268;
+    transform: translateY(-2px);
+}
