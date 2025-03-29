@@ -33,7 +33,7 @@ export const logout = async () => {
   } catch (error) {
     throw error.response.data;
   }
-};
+};  
 
 // Función para verificar si la sesión está activa
 export const checkSession = async () => {
