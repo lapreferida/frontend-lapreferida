@@ -178,7 +178,7 @@ const InformesRemitosPage = () => {
 
       {/* TARJETAS DE RESUMEN */}
       <div className="summary-cards">
-        {isLoading && <div className="loader"></div>}
+        {isLoading && <div className="loader2"></div>}
         {error && <div className="error-message">{error}</div>}
 
         <div className="summary-card" onClick={() => handleDetailClick("facturado")}>
