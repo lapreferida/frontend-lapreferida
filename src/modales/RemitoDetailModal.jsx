@@ -1,21 +1,14 @@
-// RemitoDetailModal.jsx
 import { motion } from "framer-motion";
 import { FaTimesCircle, FaCalendarAlt, FaUserAlt, FaMoneyBillAlt } from "react-icons/fa";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
 
 const RemitoDetailModal = ({ remito, closeModal, formatFecha, formatCurrency }) => {
-  // Si no se pasó un remito, no renderiza nada.
   if (!remito) return null;
-
-  // Agrega este log para ver en la consola los datos que llegan al modal.
-  console.log("Datos del remito en modal:", remito);
 
   // Función para calcular precio unitario (evitando división por cero)
   const getPrecioUnitario = (detalle) => {
-    return detalle.cantidad && detalle.cantidad > 0
-      ? detalle.subtotal / detalle.cantidad
-      : 0;
+    return detalle.cantidad && detalle.cantidad > 0 ? detalle.subtotal / detalle.cantidad : 0;
   };
 
   // Unificar detalle (puede venir en "detalle" o "detalles")
@@ -39,7 +32,6 @@ const RemitoDetailModal = ({ remito, closeModal, formatFecha, formatCurrency }) 
 
     // Información general: Fecha, Cliente y Total
     doc.setFontSize(12);
-    
     doc.setFont("helvetica", "bold");
     doc.text("Fecha:", 10, y);
     doc.setFont("helvetica", "normal");
@@ -120,10 +112,7 @@ const RemitoDetailModal = ({ remito, closeModal, formatFecha, formatCurrency }) 
           <p>
             <FaUserAlt className="remito-info-icon" />
             <strong>Cliente:</strong>{" "}
-            <span
-              className="cliente-info"
-              title={`${remito.razon_social} - ${remito.direccion}`}
-            >
+            <span className="cliente-info" title={`${remito.razon_social} - ${remito.direccion}`}>
               {remito.razon_social} - {remito.direccion}
             </span>
           </p>
