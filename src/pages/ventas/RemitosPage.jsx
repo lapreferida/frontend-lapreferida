@@ -250,6 +250,7 @@ const RemitosPage = () => {
                     value={numeroRemito}
                     onChange={(e) => setNumeroRemito(e.target.value)}
                     placeholder="Número de remito"
+                    maxLength="8"
                     required
                   />
                 </div>
