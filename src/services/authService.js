@@ -27,7 +27,7 @@ export const login = async (loginData) => {
 };
 
 // Función para cerrar sesión
-export const logout = async () => {
+export const logout = async () => { 
   try {
     await api.post('/logout');
   } catch (error) {
