@@ -63,7 +63,7 @@ const InformesRemitosPage = () => {
     }, []);
 
     const optionsClientes = [
-        { value: 0, label: "Todos los clientes" },
+        { value: "0", label: "Todos los clientes" },
         ...clientes.map((cliente) => ({
             value: cliente.id,
             label: `${cliente.razon_social} - ${cliente.direccion}`,
@@ -88,7 +88,7 @@ const InformesRemitosPage = () => {
         setError("");
 
         try {
-            const clienteId = selectedCliente.value === 0 ? null : selectedCliente.value;
+            const clienteId = selectedCliente.value; // Si es "0", el backend lo tratará como sin filtro.
             const resumen = await getRemitosSummary(
                 clienteId,
                 startDate.toISOString().split("T")[0],
@@ -109,8 +109,7 @@ const InformesRemitosPage = () => {
     const handleDetailClick = async (type) => {
         setSelectedDetail(type);
         try {
-            const clienteId =
-                selectedCliente.value === 0 ? selectedCliente.value : selectedCliente.value;
+            const clienteId = selectedCliente.value; // Se usa el valor directamente
             // Armar el objeto de query para el backend
             const query = {
                 cliente_id: clienteId,
@@ -135,6 +134,7 @@ const InformesRemitosPage = () => {
 
     // Función para manejar el click en una fila y mostrar el modal
     const handleRowClick = (remito) => {
+        console.log("Remito seleccionado:", remito); // Agregamos log para depuración
         setSelectedRemito(remito);
         setIsModalOpen(true);
     };
@@ -245,16 +245,14 @@ const InformesRemitosPage = () => {
                 />
             )}
 
-
             {/* Modal con detalle del remito */}
             <RemitoDetailModal
                 isOpen={isModalOpen}
-                closeModal={closeModal}  // Cambiado de onClose a closeModal
+                closeModal={closeModal}  // Se pasa la función para cerrar el modal
                 remito={selectedRemito}
                 formatFecha={formatFecha}
                 formatCurrency={formatCurrency}
             />
-
         </div>
     );
 };
