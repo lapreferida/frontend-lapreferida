@@ -1,7 +1,7 @@
 // src/pages/ProductosPage.jsx
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import { FaTrash, FaEdit } from "react-icons/fa";
+import { FaTrash, FaEdit, FaUserPlus } from "react-icons/fa";
 import { NumericFormat } from "react-number-format";
 import {
   getProductos,
@@ -240,16 +240,17 @@ const ProductosPage = () => {
         {/* === Tabla y controles === */}
         <div className="table-container">
           {/* Buscador único */}
-          <div className="search-header">
-            <input
-              type="text"
-              className="search-input"
-              placeholder="Buscar por código, nombre o descripción..."
-              value={searchTerm}
-              onChange={handleSearchChange}
-            />
+          <div className="header-container">
+            <div className="search-wrapper">
+              <input
+                type="text"
+                placeholder="Buscar"
+                value={searchTerm}
+                onChange={handleSearchChange}
+                className="search-input"
+              />
+            </div>
           </div>
-
           {/* Tabla */}
           <table className="table">
             <thead>

@@ -1,11 +1,8 @@
 /* Contenedor principal que divide la pantalla en dos columnas */
 .content-wrapper-dc {
     display: flex;
-    /* Ocupa todo el ancho */
     width: 100%;
-    /* Ajusta la altura deseada; por ejemplo, ocupa toda la ventana menos 150px (header, etc.) */
     height: 100%;
-    /* Permite scroll si el contenido supera la altura */
     overflow: auto;
     gap: 20px;
     justify-content: center;
@@ -39,7 +36,6 @@
 /* Contenedor del formulario */
 .form-container-dc {
     flex: 1;
-    /* O también flex: 1 1 400px; si quieres un ancho mínimo */
     background-color: #333;
     border-radius: 6px;
     padding: 20px;
