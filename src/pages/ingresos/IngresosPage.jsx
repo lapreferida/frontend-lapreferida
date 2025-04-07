@@ -262,7 +262,7 @@ const IngresosPage = () => {
         </button>
       </div>
 
-      {isLoading && <p className="loader">Cargando...</p>}
+      {isLoading && <p className="loader"></p>}
 
       <div className="table-container">
         <table className="table">
