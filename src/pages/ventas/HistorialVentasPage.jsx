@@ -398,11 +398,11 @@ const HistorialVentasPage = () => {
       Fecha: "",
       "Pto Venta": "",
       "N° Informe": "",
-      Cliente: "Total",
+      Cliente: "",
       "Neto 10,5%": "",
       "IVA 10,5%": "",
       "Neto 21%": "",
-      "IVA 21%": "",
+      "IVA 21%": "Total",
       "Total General": formatCurrency(totalSum),
     });
 
