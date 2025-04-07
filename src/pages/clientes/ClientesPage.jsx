@@ -7,6 +7,7 @@ import { getClientes, createCliente, updateCliente, deleteCliente } from "../../
 // Componentes
 import ClienteModal from "../../modales/ClienteModal.jsx";
 import Pagination from "../../components/Pagination.jsx";
+import Loader from "../../components/Loader.jsx";
 
 const ClientesPage = () => {
   const [clientes, setClientes] = useState([]);
@@ -222,7 +223,7 @@ const ClientesPage = () => {
         </div>
       </div>
 
-      {isLoading && <div className="loader"></div>}
+      {isLoading && <Loader/>}
 
       <div className="table-container">
         <table className="table">

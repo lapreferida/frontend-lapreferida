@@ -9,6 +9,7 @@ import { getMovimientosNotasCredito } from "../../services/ventas/notasCreditoSe
 // Asegúrate de tener implementado e importado el servicio de ingresos
 import { getMovimientosIngresos } from "../../services/ingresosService";
 import Pagination from "../../components/Pagination";
+import Loader from "../../components/Loader";
 
 const HistorialMovimientosPage = () => {
   // Estado para el usuario y para la pestaña activa ("informes", "notas" o "ingresos")
@@ -233,7 +234,7 @@ const HistorialMovimientosPage = () => {
       </div>
 
       {isLoading ? (
-        <div className="loader"></div>
+        <Loader />
       ) : (
         <>
           {activeTab === "informes" && (

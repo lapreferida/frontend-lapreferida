@@ -26,6 +26,7 @@ import { getRemitos, deleteRemito } from "../../services/ventas/remitosService";
 import Pagination from "../../components/Pagination";
 import HistorialModal from "../../modales/HistorialVentasModal";
 import EditInformeZModal from "../../modales/EditInformeZModal";
+import Loader from "../../components/Loader";
 
 const HistorialVentasPage = () => {
   // Estados para usuario y pestañas
@@ -683,7 +684,7 @@ const HistorialVentasPage = () => {
       </div>
 
       {isLoading ? (
-        <div className="loader"></div>
+        <Loader />
       ) : (
         <>
           <div className="table-container">

@@ -7,6 +7,7 @@ import { getPuntosVentas, createPuntoVenta, updatePuntoVenta, deletePuntoVenta }
 import PuntoVentaModal from "../../modales/PuntoVentaModal.jsx";
 import Pagination from "../../components/Pagination.jsx";
 import "../../styles/puntosVentasPage.css";
+import Loader from "../../components/Loader.jsx";
 
 const PuntosVentasPage = () => {
   const [puntosVentas, setPuntosVentas] = useState([]);
@@ -172,7 +173,7 @@ const PuntosVentasPage = () => {
         </div>
       </div>
 
-      {isLoading && <div className="loader"></div>}
+      {isLoading && <Loader/>}
 
       <div className="table-container">
         <table className="table">

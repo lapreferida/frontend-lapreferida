@@ -18,6 +18,7 @@ import DiferenciaModal from "../../modales/ingresos/DiferenciaModal";
 
 import { checkSession } from "../../services/authService";
 import Pagination from "../../components/Pagination";
+import Loader from "../../components/Loader";
 
 const ingresoTypes = [
   { key: "ingreso_manana", label: "Mañana" },
@@ -301,7 +302,7 @@ const IngresosPage = () => {
         </button>
       </div>
 
-      {isLoading && <p className="loader"></p>}
+      {isLoading && <Loader/>}
 
       <div className="table-container">
         <table className="table">

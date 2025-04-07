@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import {
   FaHome,
@@ -61,19 +61,6 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
   // Extraemos el usuario del contexto para saber su rol (se usa user.role)
   const { logout: logoutContext, user } = useAuthContext();
   const navigate = useNavigate();
-
-  // Si el usuario es "user", mostramos el submenú de ventas automáticamente
-  useEffect(() => {
-    if (user) {
-      // Para ambos roles abrimos ventas, y para admin también configuraciones
-      setShowVentas(true);
-      if (user.rol === "admin") {
-        setShowConfiguraciones(true);
-      } else {
-        setShowConfiguraciones(false);
-      }
-    }
-  }, [user]);
 
   const toggleSubMenu = (menu) => {
     if (menu === "ventas") {
