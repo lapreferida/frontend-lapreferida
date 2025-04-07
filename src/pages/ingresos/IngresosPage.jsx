@@ -17,6 +17,7 @@ import EditIngresoModal from "../../modales/ingresos/EditIngresoModal";
 import DiferenciaModal from "../../modales/ingresos/DiferenciaModal";
 
 import { checkSession } from "../../services/authService";
+import Pagination from "../../components/Pagination";
 
 const ingresoTypes = [
   { key: "ingreso_manana", label: "Mañana" },
@@ -33,6 +34,7 @@ const addIngresoTypes = ingresoTypes;
 const IngresosPage = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+
   // Estados principales
   const [ingresos, setIngresos] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -55,25 +57,16 @@ const IngresosPage = () => {
 
   const swalOptions = { zIndex: 2000 };
 
+  // Estados de paginación
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+
   // Helpers para fechas
   const formatDate = (fecha) => {
     const normalized = fecha.includes("T") ? fecha.split("T")[0] : fecha;
     const [year, month, day] = normalized.split("-");
     return `${parseInt(day)}/${parseInt(month)}/${year}`;
   };
-
-  // Verificar sesión
-  useEffect(() => {
-    const fetchSession = async () => {
-      try {
-        const sessionData = await checkSession();
-        setUser(sessionData.user);
-      } catch {
-        navigate('/auth');
-      }
-    };
-    fetchSession();
-  }, [navigate]);
 
   const normalizeDate = (fecha) =>
     fecha.includes("T") ? fecha.split("T")[0] : fecha;
@@ -94,8 +87,44 @@ const IngresosPage = () => {
     return dayNames[dateObj.getDay()];
   };
 
+  // Verificar sesión y obtener usuario
+  useEffect(() => {
+    const fetchSession = async () => {
+      try {
+        const sessionData = await checkSession();
+        setUser(sessionData.user);
+      } catch {
+        navigate('/auth');
+      }
+    };
+    fetchSession();
+  }, [navigate]);
+
   useEffect(() => {
     fetchIngresos();
+  }, []);
+
+  // Ajustar cantidad de ítems según la altura de la ventana (similar a ClientesPage)
+  useEffect(() => {
+    const updateItemsPerPage = () => {
+      const height = window.innerHeight;
+      if (height <= 576) {
+        setItemsPerPage(5);
+      } else if (height <= 700) {
+        setItemsPerPage(7);
+      } else if (height <= 800) {
+        setItemsPerPage(10);
+      } else if (height <= 1200) {
+        setItemsPerPage(12);
+      } else {
+        setItemsPerPage(14);
+      }
+      setCurrentPage(1);
+    };
+
+    updateItemsPerPage();
+    window.addEventListener("resize", updateItemsPerPage);
+    return () => window.removeEventListener("resize", updateItemsPerPage);
   }, []);
 
   const fetchIngresos = async () => {
@@ -143,7 +172,6 @@ const IngresosPage = () => {
       setErrorMsg("Debes completar la fecha y el importe.");
       return;
     }
-    // Asegúrate de que ya se obtuvo el usuario de la sesión
     if (!user) {
       setErrorMsg("No se encontró el usuario en sesión.");
       return;
@@ -224,13 +252,12 @@ const IngresosPage = () => {
       console.error("Error al actualizar ingreso:", error);
       setErrorMsg(
         error.message ||
-        "Error al guardar cambios. Verifica la información y vuelve a intentarlo."
+          "Error al guardar cambios. Verifica la información y vuelve a intentarlo."
       );
     } finally {
       setIsLoading(false);
     }
   };
-
 
   const formatCurrency = (value) => {
     return new Intl.NumberFormat("es-AR", {
@@ -251,6 +278,18 @@ const IngresosPage = () => {
   const closeDiferenciaModal = () => {
     setDiferenciaModalOpen(false);
     setSelectedIngreso(null);
+  };
+
+  // Cálculos para la tabla
+  const currentItems = ingresos.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+  const totalItems = ingresos.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
   };
 
   return (
@@ -283,9 +322,9 @@ const IngresosPage = () => {
             </tr>
           </thead>
           <tbody>
-            {ingresos.length > 0 ? (
-              ingresos.map((ingreso) => {
-                // Calcular cada valor usando un valor por defecto (0) en caso de ser undefined
+            {currentItems.length > 0 ? (
+              currentItems.map((ingreso) => {
+                // Calcular cada valor usando 0 si es undefined
                 const mañana = parseFloat(ingreso.ingreso_manana || 0);
                 const tarde = parseFloat(ingreso.ingreso_tarde || 0);
                 const transferencia = parseFloat(ingreso.ingreso_transferencia || 0);
@@ -348,6 +387,12 @@ const IngresosPage = () => {
         </table>
       </div>
 
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
+
       {/* Modales de agregar y editar */}
       <AddIngresoStep1Modal
         isOpen={addStep1Open}
@@ -385,7 +430,6 @@ const IngresosPage = () => {
         ingresoTypes={ingresoTypes}
       />
 
-      {/* Modal de diferencia */}
       {diferenciaModalOpen && (
         <DiferenciaModal
           isOpen={diferenciaModalOpen}
