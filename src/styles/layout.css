@@ -17,23 +17,6 @@
   transition: margin-left 0.4s ease;
 }
 
-@media (max-width: 768px) {
-
-  /* Para móviles permitimos el scroll vertical */
-  .layout {
-    height: auto;
-    /* Permite que se ajuste a la altura del contenido */
-    overflow-y: auto;
-  }
-
-  .content {
-    margin-left: 0;
-    /* Si el sidebar se vuelve overlay o se oculta, el contenido ocupa el ancho completo */
-    padding: 20px;
-    /* Opcional: agrega padding para que no quede pegado a los bordes */
-  }
-}
-
 .page-content {
   flex: 1;
   display: flex;
