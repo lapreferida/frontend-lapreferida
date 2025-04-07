@@ -25,17 +25,18 @@ const InformeZPage = () => {
   const [selectedPuntoVenta, setSelectedPuntoVenta] = useState(null);
   const [observaciones, setObservaciones] = useState('');
 
-  // Estados para el modo de ingreso: "neto" o "iva"
-  const [modoIngreso, setModoIngreso] = useState('neto');
-
-  // Estados para los importes: se usan tanto para neto como para IVA
+  // Estados para los importes del 10,5% y 21%
   const [neto10_5, setNeto10_5] = useState('');
-  const [neto21, setNeto21] = useState('');
   const [iva10_5, setIva10_5] = useState('0.00');
+  const [neto21, setNeto21] = useState('');
   const [iva21, setIva21] = useState('0.00');
   const [subtotal10_5, setSubtotal10_5] = useState('0.00');
   const [subtotal21, setSubtotal21] = useState('0.00');
   const [totalGeneral, setTotalGeneral] = useState('0.00');
+
+  // Estados para saber cuál campo fue modificado por última vez (por alícuota)
+  const [lastModified10_5, setLastModified10_5] = useState(null); // "neto" o "iva"
+  const [lastModified21, setLastModified21] = useState(null); // "neto" o "iva"
 
   // Verificar sesión de usuario
   useEffect(() => {
@@ -96,36 +97,47 @@ const InformeZPage = () => {
       .catch((err) => console.error('Error al cargar puntos de venta:', err));
   }, []);
 
-  // Calcular automáticamente los importes según el modo de ingreso
+  // Efecto para recalcular valores del 10,5%
   useEffect(() => {
-    if (modoIngreso === 'neto') {
-      // Si el usuario ingresa el NETO, calculamos el IVA a partir de él
-      const parsedNeto10_5 = parseFloat(neto10_5) || 0;
-      const computedIva10_5 = Number((parsedNeto10_5 * 0.105).toFixed(2));
-      const parsedNeto21 = parseFloat(neto21) || 0;
-      const computedIva21 = Number((parsedNeto21 * 0.21).toFixed(2));
-      setIva10_5(computedIva10_5);
-      setIva21(computedIva21);
-      const calcSubtotal10_5 = parsedNeto10_5 + computedIva10_5;
-      const calcSubtotal21 = parsedNeto21 + computedIva21;
-      setSubtotal10_5(Number(calcSubtotal10_5.toFixed(2)));
-      setSubtotal21(Number(calcSubtotal21.toFixed(2)));
-      setTotalGeneral(Number((calcSubtotal10_5 + calcSubtotal21).toFixed(2)));
-    } else if (modoIngreso === 'iva') {
-      // Si el usuario ingresa el IVA, calculamos el NETO a partir de él
-      const parsedIva10_5 = parseFloat(iva10_5) || 0;
-      const computedNeto10_5 = Number((parsedIva10_5 / 0.105).toFixed(2));
-      const parsedIva21 = parseFloat(iva21) || 0;
-      const computedNeto21 = Number((parsedIva21 / 0.21).toFixed(2));
-      setNeto10_5(computedNeto10_5);
-      setNeto21(computedNeto21);
-      const calcSubtotal10_5 = computedNeto10_5 + parsedIva10_5;
-      const calcSubtotal21 = computedNeto21 + parsedIva21;
-      setSubtotal10_5(Number(calcSubtotal10_5.toFixed(2)));
-      setSubtotal21(Number(calcSubtotal21.toFixed(2)));
-      setTotalGeneral(Number((calcSubtotal10_5 + calcSubtotal21).toFixed(2)));
+    // Si se modificó el neto, recalcular IVA; si se modificó el IVA, recalcular neto.
+    if (lastModified10_5 === 'neto') {
+      const parsedNeto = parseFloat(neto10_5) || 0;
+      const computedIva = Number((parsedNeto * 0.105).toFixed(2));
+      setIva10_5(computedIva);
+    } else if (lastModified10_5 === 'iva') {
+      const parsedIva = parseFloat(iva10_5) || 0;
+      const computedNeto = Number((parsedIva / 0.105).toFixed(2));
+      setNeto10_5(computedNeto);
     }
-  }, [neto10_5, neto21, iva10_5, iva21, modoIngreso]);
+    // Recalcular subtotales y total
+    const parsedNeto10 = parseFloat(neto10_5) || 0;
+    const computedIva10 = parseFloat(iva10_5) || 0;
+    const calcSubtotal10 = parsedNeto10 + computedIva10;
+    setSubtotal10_5(Number(calcSubtotal10.toFixed(2)));
+  }, [neto10_5, iva10_5, lastModified10_5]);
+
+  // Efecto para recalcular valores del 21%
+  useEffect(() => {
+    if (lastModified21 === 'neto') {
+      const parsedNeto = parseFloat(neto21) || 0;
+      const computedIva = Number((parsedNeto * 0.21).toFixed(2));
+      setIva21(computedIva);
+    } else if (lastModified21 === 'iva') {
+      const parsedIva = parseFloat(iva21) || 0;
+      const computedNeto = Number((parsedIva / 0.21).toFixed(2));
+      setNeto21(computedNeto);
+    }
+    const parsedNeto21Val = parseFloat(neto21) || 0;
+    const computedIva21Val = parseFloat(iva21) || 0;
+    const calcSubtotal21 = parsedNeto21Val + computedIva21Val;
+    setSubtotal21(Number(calcSubtotal21.toFixed(2)));
+  }, [neto21, iva21, lastModified21]);
+
+  // Efecto para recalcular el Total General cuando cambien los subtotales
+  useEffect(() => {
+    const total = (parseFloat(subtotal10_5) || 0) + (parseFloat(subtotal21) || 0);
+    setTotalGeneral(Number(total.toFixed(2)));
+  }, [subtotal10_5, subtotal21]);
 
   // Manejo del envío del formulario
   const handleSubmit = async (e) => {
@@ -172,10 +184,12 @@ const InformeZPage = () => {
       setNumeroInforme('');
       setFecha(new Date().toISOString().split('T')[0]);
       setNeto10_5('');
-      setNeto21('');
       setIva10_5('0.00');
+      setNeto21('');
       setIva21('0.00');
       setObservaciones('');
+      setLastModified10_5(null);
+      setLastModified21(null);
 
       // Actualizar el próximo número de informe
       getNextNumeroInformeZ()
@@ -259,96 +273,42 @@ const InformeZPage = () => {
             </div>
           </div>
 
-          {/* Toggle para elegir el modo de ingreso */}
-          <div className="informez-row">
-            <label>Modo de ingreso:</label>
-            <label>
-              <input
-                type="radio"
-                name="modoIngreso"
-                value="neto"
-                checked={modoIngreso === 'neto'}
-                onChange={() => setModoIngreso('neto')}
-              />
-              Ingresar Neto
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="modoIngreso"
-                value="iva"
-                checked={modoIngreso === 'iva'}
-                onChange={() => setModoIngreso('iva')}
-              />
-              Ingresar IVA
-            </label>
-          </div>
-
           {/* Campos para 10,5% */}
           <div className="informez-datos-row">
-            {modoIngreso === 'neto' ? (
-              <>
-                <div className="form-group">
-                  <label htmlFor="neto10_5">Neto (10,5%)</label>
-                  <NumericFormat
-                    id="neto10_5"
-                    thousandSeparator="."
-                    decimalSeparator=","
-                    decimalScale={2}
-                    fixedDecimalScale
-                    prefix="$ "
-                    placeholder="0.00"
-                    value={neto10_5}
-                    onValueChange={(values) => setNeto10_5(values.value)}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="iva10_5">IVA Calculado (10,5%)</label>
-                  <NumericFormat
-                    id="iva10_5"
-                    thousandSeparator="."
-                    decimalSeparator=","
-                    decimalScale={2}
-                    fixedDecimalScale
-                    prefix="$ "
-                    value={iva10_5}
-                    displayType="input"
-                    readOnly
-                  />
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="form-group">
-                  <label htmlFor="iva10_5">IVA (10,5%)</label>
-                  <NumericFormat
-                    id="iva10_5"
-                    thousandSeparator="."
-                    decimalSeparator=","
-                    decimalScale={2}
-                    fixedDecimalScale
-                    prefix="$ "
-                    placeholder="0.00"
-                    value={iva10_5}
-                    onValueChange={(values) => setIva10_5(values.value)}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="neto10_5">Neto Calculado (10,5%)</label>
-                  <NumericFormat
-                    id="neto10_5"
-                    thousandSeparator="."
-                    decimalSeparator=","
-                    decimalScale={2}
-                    fixedDecimalScale
-                    prefix="$ "
-                    value={neto10_5}
-                    displayType="input"
-                    readOnly
-                  />
-                </div>
-              </>
-            )}
+            <div className="form-group">
+              <label htmlFor="neto10_5">Neto (10,5%)</label>
+              <NumericFormat
+                id="neto10_5"
+                thousandSeparator="."
+                decimalSeparator=","
+                decimalScale={2}
+                fixedDecimalScale
+                prefix="$ "
+                placeholder="0.00"
+                value={neto10_5}
+                onValueChange={(values) => {
+                  setNeto10_5(values.value);
+                  setLastModified10_5("neto");
+                }}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="iva10_5">IVA (10,5%)</label>
+              <NumericFormat
+                id="iva10_5"
+                thousandSeparator="."
+                decimalSeparator=","
+                decimalScale={2}
+                fixedDecimalScale
+                prefix="$ "
+                placeholder="0.00"
+                value={iva10_5}
+                onValueChange={(values) => {
+                  setIva10_5(values.value);
+                  setLastModified10_5("iva");
+                }}
+              />
+            </div>
             <div className="form-group">
               <label htmlFor="subtotal10_5">Subtotal (10,5%)</label>
               <NumericFormat
@@ -366,69 +326,40 @@ const InformeZPage = () => {
 
           {/* Campos para 21% */}
           <div className="informez-datos-row">
-            {modoIngreso === 'neto' ? (
-              <>
-                <div className="form-group">
-                  <label htmlFor="neto21">Neto (21%)</label>
-                  <NumericFormat
-                    id="neto21"
-                    thousandSeparator="."
-                    decimalSeparator=","
-                    decimalScale={2}
-                    fixedDecimalScale
-                    prefix="$ "
-                    placeholder="0.00"
-                    value={neto21}
-                    onValueChange={(values) => setNeto21(values.value)}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="iva21">IVA Calculado (21%)</label>
-                  <NumericFormat
-                    id="iva21"
-                    thousandSeparator="."
-                    decimalSeparator=","
-                    decimalScale={2}
-                    fixedDecimalScale
-                    prefix="$ "
-                    value={iva21}
-                    displayType="input"
-                    readOnly
-                  />
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="form-group">
-                  <label htmlFor="iva21">IVA (21%)</label>
-                  <NumericFormat
-                    id="iva21"
-                    thousandSeparator="."
-                    decimalSeparator=","
-                    decimalScale={2}
-                    fixedDecimalScale
-                    prefix="$ "
-                    placeholder="0.00"
-                    value={iva21}
-                    onValueChange={(values) => setIva21(values.value)}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="neto21">Neto Calculado (21%)</label>
-                  <NumericFormat
-                    id="neto21"
-                    thousandSeparator="."
-                    decimalSeparator=","
-                    decimalScale={2}
-                    fixedDecimalScale
-                    prefix="$ "
-                    value={neto21}
-                    displayType="input"
-                    readOnly
-                  />
-                </div>
-              </>
-            )}
+            <div className="form-group">
+              <label htmlFor="neto21">Neto (21%)</label>
+              <NumericFormat
+                id="neto21"
+                thousandSeparator="."
+                decimalSeparator=","
+                decimalScale={2}
+                fixedDecimalScale
+                prefix="$ "
+                placeholder="0.00"
+                value={neto21}
+                onValueChange={(values) => {
+                  setNeto21(values.value);
+                  setLastModified21("neto");
+                }}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="iva21">IVA (21%)</label>
+              <NumericFormat
+                id="iva21"
+                thousandSeparator="."
+                decimalSeparator=","
+                decimalScale={2}
+                fixedDecimalScale
+                prefix="$ "
+                placeholder="0.00"
+                value={iva21}
+                onValueChange={(values) => {
+                  setIva21(values.value);
+                  setLastModified21("iva");
+                }}
+              />
+            </div>
             <div className="form-group">
               <label htmlFor="subtotal21">Subtotal (21%)</label>
               <NumericFormat
