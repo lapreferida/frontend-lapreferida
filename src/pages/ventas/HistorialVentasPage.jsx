@@ -5,8 +5,7 @@ import Swal from "sweetalert2";
 import "../../styles/ventas/historialVentasPage.css";
 import { checkSession } from "../../services/authService";
 import DateModal from "../../modales/DateModal";
-import { jsPDF } from "jspdf";
-import autoTable from "jspdf-autotable";
+import * as XLSX from "xlsx";
 
 // Servicios para facturas
 import {
@@ -371,53 +370,53 @@ const HistorialVentasPage = () => {
     return item.total - item.total_pagado;
   };
 
-  const handleDescargarPDF = () => {
+  const handleDescargarExcel = () => {
     // Obtener todos los informes filtrados (sin paginación)
     const informesFiltrados = filteredData(informes);
 
-    // Mapear los datos a un arreglo de arrays para la tabla PDF
-    const tableRows = informesFiltrados.map((item) => [
-      formatDate(item.fecha),
-      item.punto_venta_numero,
-      item.numero_informe,
-      item.razon_social,
-      formatCurrency(item.neto_10_5),
-      formatCurrency(item.iva_10_5),
-      formatCurrency(item.neto_21),
-      formatCurrency(item.iva_21),
-      formatCurrency(item.total_general),
-      item.observaciones || "",
-      item.usuario_nombre,
-    ]);
+    // Mapear los datos a objetos con los nombres de columna deseados
+    const dataExcel = informesFiltrados.map((item) => ({
+      Fecha: formatDate(item.fecha),
+      "Pto Venta": item.punto_venta_numero,
+      "N° Informe": item.numero_informe,
+      Cliente: item.razon_social,
+      "Neto 10,5%": formatCurrency(item.neto_10_5),
+      "IVA 10,5%": formatCurrency(item.iva_10_5),
+      "Neto 21%": formatCurrency(item.neto_21),
+      "IVA 21%": formatCurrency(item.iva_21),
+      "Total General": parseFloat(item.total_general),
+      Observaciones: item.observaciones || "",
+      Usuario: item.usuario_nombre,
+    }));
 
-    // Definir las cabeceras de la tabla
-    const tableColumns = [
-      "Fecha",
-      "Pto Venta",
-      "N° Informe",
-      "Cliente",
-      "Neto 10,5%",
-      "IVA 10,5%",
-      "Neto 21%",
-      "IVA 21%",
-      "Total General",
-      "Observaciones",
-      "Usuario",
-    ];
+    // Calcular la suma de todos los "Total General"
+    const totalSum = informesFiltrados.reduce(
+      (acc, curr) => acc + parseFloat(curr.total_general),
+      0
+    );
 
-    // Crear el documento PDF
-    const doc = new jsPDF();
-
-    // Agregar la tabla al PDF
-    autoTable(doc, {
-      head: [tableColumns],
-      body: tableRows,
-      styles: { fontSize: 8 },
-      headStyles: { fillColor: [22, 160, 133] },
+    // Agregar una fila final que muestre el total
+    dataExcel.push({
+      Fecha: "",
+      "Pto Venta": "",
+      "N° Informe": "",
+      Cliente: "",
+      "Neto 10,5%": "",
+      "IVA 10,5%": "",
+      "Neto 21%": "",
+      "IVA 21%": "",
+      "Total General": totalSum,
+      Observaciones: "Total",
+      Usuario: "",
     });
 
-    // Descargar el PDF
-    doc.save("informes.pdf");
+    // Crear la hoja de cálculo y el libro
+    const worksheet = XLSX.utils.json_to_sheet(dataExcel);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Informes");
+
+    // Descargar el archivo Excel
+    XLSX.writeFile(workbook, "informes.xlsx");
   };
 
   const handlePagoSubmit = async (e) => {
@@ -623,14 +622,15 @@ const HistorialVentasPage = () => {
           )}
           {activeTab === "informes" && (
             <button
-              className="descargar-pdf-button"
-              onClick={handleDescargarPDF}
+              className="historial-pagos-button"
+              onClick={handleDescargarExcel}
             >
-              Descargar PDF
+              Descargar Excel
             </button>
           )}
           {activeTab === "remitos" && selectedRemitos.length > 0 && (
-            <button className="facturar-button" onClick={handleFacturar}>
+            <button className="facturar-button"
+              onClick={handleFacturar}>
               Facturar
             </button>
           )}
