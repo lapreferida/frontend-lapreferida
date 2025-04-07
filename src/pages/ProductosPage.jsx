@@ -238,7 +238,7 @@ const ProductosPage = () => {
         </div>
 
         {/* === Tabla y controles === */}
-        <div className="table-container">
+        <div className="table-container-prod">
           {/* Buscador único */}
           <div className="header-container">
             <div className="search-wrapper">
