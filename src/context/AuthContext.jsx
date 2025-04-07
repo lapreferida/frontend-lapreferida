@@ -1,5 +1,4 @@
 // AuthContext.jsx
-
 import { createContext, useContext, useState, useEffect } from 'react';
 import { checkSession } from '../services/authService';
 import Loader from '../components/Loader';
@@ -9,6 +8,7 @@ const AuthContext = createContext();
 export const useAuthContext = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null); // Guardar el usuario
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true); // Carga inicial del contexto
   const [isLoading, setIsLoading] = useState(false); // Estado de carga global
@@ -20,11 +20,14 @@ export const AuthProvider = ({ children }) => {
       try {
         const session = await checkSession();
         if (session && session.user) {
+          setUser(session.user); // Guardar usuario
           setIsAuthenticated(true);
         } else {
+          setUser(null);
           setIsAuthenticated(false);
         }
       } catch {
+        setUser(null);
         setIsAuthenticated(false);
       } finally {
         setLoading(false); // Ocultar loader al terminar la verificación
@@ -34,8 +37,12 @@ export const AuthProvider = ({ children }) => {
     initializeAuth();
   }, []);
 
-  const login = () => setIsAuthenticated(true);
+  const login = (userData) => {
+    setUser(userData);
+    setIsAuthenticated(true);
+  };
   const logout = () => {
+    setUser(null);
     setIsAuthenticated(false);
     setRedirectToDashboard(false); // Resetear redirección al cerrar sesión
   };
@@ -48,6 +55,7 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
+        user, // Ahora el contexto expone el usuario completo
         isAuthenticated,
         login,
         logout,

@@ -1,7 +1,22 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import {
-  FaHome, FaSignOutAlt, FaChevronLeft, FaChevronRight, FaAngleDown, FaAngleUp, FaDollarSign, FaShoppingCart, FaFileInvoiceDollar, FaUsers, FaChartBar, FaListAlt, FaCog, FaProductHunt, FaStore, FaHistory
+  FaHome,
+  FaSignOutAlt,
+  FaChevronLeft,
+  FaChevronRight,
+  FaAngleDown,
+  FaAngleUp,
+  FaDollarSign,
+  FaShoppingCart,
+  FaFileInvoiceDollar,
+  FaUsers,
+  FaChartBar,
+  FaListAlt,
+  FaCog,
+  FaProductHunt,
+  FaStore,
+  FaHistory,
 } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuthContext } from "../context/AuthContext";
@@ -40,13 +55,11 @@ const submenuVariants = {
   },
 };
 
-// ... otras importaciones y código previo
-
 const SideBar = ({ isOpen, toggleSidebar }) => {
   const [showVentas, setShowVentas] = useState(false);
-  // Eliminamos la variable de estado y lógica para "ingresos" ya que ya no se necesita
   const [showConfiguraciones, setShowConfiguraciones] = useState(false);
-  const { logout: logoutContext } = useAuthContext();
+  // Extraemos el usuario del contexto para saber su rol
+  const { logout: logoutContext, user } = useAuthContext();
   const navigate = useNavigate();
 
   const toggleSubMenu = (menu) => {
@@ -108,10 +121,9 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
       {/* Opciones del menú */}
       <div className="options-container">
         <ul className="menu">
-          {/* Dashboard */}
+          {/* Dashboard: siempre visible */}
           <Link to="/dashboard">
             <li className="menu-item">
-
               <div className="menu-link">
                 <FaHome className="menu-icon" />
                 {isOpen && (
@@ -128,12 +140,34 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
               </div>
             </li>
           </Link>
-          {/* Clientes */}
-          <Link to="/clientes">
-            <li className="menu-item">
 
+          {/* Clientes: solo para admin */}
+          {user && user.rol === "admin" && (
+            <Link to="/clientes">
+              <li className="menu-item">
+                <div className="menu-link">
+                  <FaUsers className="menu-icon" />
+                  {isOpen && (
+                    <motion.span
+                      className="menu-text"
+                      initial="hidden"
+                      animate="visible"
+                      exit="hidden"
+                      variants={fadeVariants}
+                    >
+                      Clientes
+                    </motion.span>
+                  )}
+                </div>
+              </li>
+            </Link>
+          )}
+
+          {/* Ventas: para admin se muestran todas; para user solo Informe Z y Remitos */}
+          {user && (
+            <li className="menu-item" onClick={() => toggleSubMenu("ventas")}>
               <div className="menu-link">
-                <FaUsers className="menu-icon" />
+                <FaChartBar className="menu-icon" />
                 {isOpen && (
                   <motion.span
                     className="menu-text"
@@ -142,36 +176,19 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
                     exit="hidden"
                     variants={fadeVariants}
                   >
-                    Clientes
+                    Ventas
                   </motion.span>
                 )}
               </div>
-            </li>
-          </Link>
-          {/* Ventas con submenú */}
-          <li className="menu-item" onClick={() => toggleSubMenu("ventas")}>
-            <div className="menu-link">
-              <FaChartBar className="menu-icon" />
               {isOpen && (
-                <motion.span
-                  className="menu-text"
-                  initial="hidden"
-                  animate="visible"
-                  exit="hidden"
-                  variants={fadeVariants}
-                >
-                  Ventas
-                </motion.span>
+                <div className="submenu-toggle">
+                  {showVentas ? <FaAngleUp /> : <FaAngleDown />}
+                </div>
               )}
-            </div>
-            {isOpen && (
-              <div className="submenu-toggle">
-                {showVentas ? <FaAngleUp /> : <FaAngleDown />}
-              </div>
-            )}
-          </li>
+            </li>
+          )}
           <AnimatePresence initial={false}>
-            {isOpen && (
+            {isOpen && user && (
               <motion.ul
                 className="submenu"
                 variants={submenuVariants}
@@ -179,14 +196,16 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
                 animate={showVentas ? "open" : "collapsed"}
                 exit="collapsed"
               >
-                <Link to="/facturar-venta">
-                  <li className="submenu-item">
-                    <div className="submenu-link">
-                      <FaFileInvoiceDollar className="submenu-icon" />
-                      <span>Facturar Venta</span>
-                    </div>
-                  </li>
-                </Link>
+                {user.rol === "admin" && (
+                  <Link to="/facturar-venta">
+                    <li className="submenu-item">
+                      <div className="submenu-link">
+                        <FaFileInvoiceDollar className="submenu-icon" />
+                        <span>Facturar Venta</span>
+                      </div>
+                    </li>
+                  </Link>
+                )}
                 <Link to="/informe-z">
                   <li className="submenu-item">
                     <div className="submenu-link">
@@ -203,19 +222,21 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
                     </div>
                   </li>
                 </Link>
-                <Link to="/ventas-historial">
-                  <li className="submenu-item">
-                    <div className="submenu-link">
-                      <FaListAlt className="submenu-icon" />
-                      <span>Historial</span>
-                    </div>
-                  </li>
-                </Link>
+                {user.rol === "admin" && (
+                  <Link to="/ventas-historial">
+                    <li className="submenu-item">
+                      <div className="submenu-link">
+                        <FaListAlt className="submenu-icon" />
+                        <span>Historial</span>
+                      </div>
+                    </li>
+                  </Link>
+                )}
               </motion.ul>
             )}
           </AnimatePresence>
 
-          {/* Ingresos sin submenú: enlace directo */}
+          {/* Ingresos: para ambos */}
           <Link to="/ingresos">
             <li className="menu-item">
               <div className="menu-link">
@@ -235,67 +256,71 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
             </li>
           </Link>
 
-          {/* Configuraciones con submenú */}
-          <li
-            className="menu-item"
-            onClick={() => toggleSubMenu("configuraciones")}
-          >
-            <div className="menu-link">
-              <FaCog className="menu-icon" />
-              {isOpen && (
-                <motion.span
-                  className="menu-text"
-                  initial="hidden"
-                  animate="visible"
-                  exit="hidden"
-                  variants={fadeVariants}
-                >
-                  Configuraciones
-                </motion.span>
-              )}
-            </div>
-            {isOpen && (
-              <div className="submenu-toggle">
-                {showConfiguraciones ? <FaAngleUp /> : <FaAngleDown />}
-              </div>
-            )}
-          </li>
-          <AnimatePresence initial={false}>
-            {isOpen && (
-              <motion.ul
-                className="submenu"
-                variants={submenuVariants}
-                initial="collapsed"
-                animate={showConfiguraciones ? "open" : "collapsed"}
-                exit="collapsed"
+          {/* Configuraciones: solo para admin */}
+          {user && user.rol === "admin" && (
+            <>
+              <li
+                className="menu-item"
+                onClick={() => toggleSubMenu("configuraciones")}
               >
-                <Link to="/puntos-ventas">
-                  <li className="submenu-item">
-                    <div className="submenu-link">
-                      <FaStore className="submenu-icon" />
-                      <span>Puntos de Ventas</span>
-                    </div>
-                  </li>
-                </Link>
-                <Link to="/productos">
-                  <li className="submenu-item">
-                    <div className="submenu-link">
-                      <FaProductHunt className="submenu-icon" />
-                      <span>Productos</span>
-                    </div>
-                  </li>
-                </Link>
-                <Link to="/historial-movimientos">
-                  <li className="submenu-item">
-                    <div className="submenu-link">
-                      <FaHistory className="submenu-icon" />
-                      <span>Historial de Movimientos</span>
-                    </div>
-                  </li>
-                </Link>
-              </motion.ul>
-            )}
-          </AnimatePresence>
+                <div className="menu-link">
+                  <FaCog className="menu-icon" />
+                  {isOpen && (
+                    <motion.span
+                      className="menu-text"
+                      initial="hidden"
+                      animate="visible"
+                      exit="hidden"
+                      variants={fadeVariants}
+                    >
+                      Configuraciones
+                    </motion.span>
+                  )}
+                </div>
+                {isOpen && (
+                  <div className="submenu-toggle">
+                    {showConfiguraciones ? <FaAngleUp /> : <FaAngleDown />}
+                  </div>
+                )}
+              </li>
+              <AnimatePresence initial={false}>
+                {isOpen && (
+                  <motion.ul
+                    className="submenu"
+                    variants={submenuVariants}
+                    initial="collapsed"
+                    animate={showConfiguraciones ? "open" : "collapsed"}
+                    exit="collapsed"
+                  >
+                    <Link to="/puntos-ventas">
+                      <li className="submenu-item">
+                        <div className="submenu-link">
+                          <FaStore className="submenu-icon" />
+                          <span>Puntos de Ventas</span>
+                        </div>
+                      </li>
+                    </Link>
+                    <Link to="/productos">
+                      <li className="submenu-item">
+                        <div className="submenu-link">
+                          <FaProductHunt className="submenu-icon" />
+                          <span>Productos</span>
+                        </div>
+                      </li>
+                    </Link>
+                    <Link to="/historial-movimientos">
+                      <li className="submenu-item">
+                        <div className="submenu-link">
+                          <FaHistory className="submenu-icon" />
+                          <span>Historial de Movimientos</span>
+                        </div>
+                      </li>
+                    </Link>
+                  </motion.ul>
+                )}
+              </AnimatePresence>
+            </>
+          )}
         </ul>
       </div>
 
@@ -316,9 +341,8 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
           )}
         </button>
       </div>
-    </motion.div >
+    </motion.div>
   );
 };
 
 export default SideBar;
-
