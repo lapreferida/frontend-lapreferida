@@ -38,8 +38,10 @@ const AuthPage = () => {
       if (isLogin) {
         // Proceso de inicio de sesión
         const { email, password } = formData;
-        await login({ email, password });
-        setAuth();
+        // Capturamos la respuesta del login
+        const userData = await login({ email, password });
+        // Actualizamos el contexto con los datos del usuario
+        setAuth(userData);
 
         const result = await Swal.fire({
           icon: "success",
