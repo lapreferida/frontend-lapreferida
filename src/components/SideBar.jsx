@@ -58,7 +58,7 @@ const submenuVariants = {
 const SideBar = ({ isOpen, toggleSidebar }) => {
   const [showVentas, setShowVentas] = useState(false);
   const [showConfiguraciones, setShowConfiguraciones] = useState(false);
-  // Extraemos el usuario del contexto para saber su rol
+  // Extraemos el usuario del contexto para saber su rol (se usa user.role)
   const { logout: logoutContext, user } = useAuthContext();
   const navigate = useNavigate();
 
@@ -140,9 +140,8 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
               </div>
             </li>
           </Link>
-
           {/* Clientes: solo para admin */}
-          {user && user.rol === "admin" && (
+          {user && user.role === "admin" && (
             <Link to="/clientes">
               <li className="menu-item">
                 <div className="menu-link">
@@ -162,7 +161,6 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
               </li>
             </Link>
           )}
-
           {/* Ventas: para admin se muestran todas; para user solo Informe Z y Remitos */}
           {user && (
             <li className="menu-item" onClick={() => toggleSubMenu("ventas")}>
@@ -196,7 +194,7 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
                 animate={showVentas ? "open" : "collapsed"}
                 exit="collapsed"
               >
-                {user.rol === "admin" && (
+                {user.role === "admin" && (
                   <Link to="/facturar-venta">
                     <li className="submenu-item">
                       <div className="submenu-link">
@@ -222,7 +220,7 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
                     </div>
                   </li>
                 </Link>
-                {user.rol === "admin" && (
+                {user.role === "admin" && (
                   <Link to="/ventas-historial">
                     <li className="submenu-item">
                       <div className="submenu-link">
@@ -257,7 +255,7 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
           </Link>
 
           {/* Configuraciones: solo para admin */}
-          {user && user.rol === "admin" && (
+          {user && user.role === "admin" && (
             <>
               <li
                 className="menu-item"
