@@ -214,6 +214,18 @@ const HistorialVentasPage = () => {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+  const filteredFacturas = filteredData(facturas);
+  const filteredInformes = filteredData(informes);
+
+  // Totales
+  const totalFacturas = filteredFacturas.reduce(
+    (sum, item) => sum + parseFloat(item.total || 0),
+    0
+  );
+  const totalInformes = filteredInformes.reduce(
+    (sum, item) => sum + parseFloat(item.total_general || 0),
+    0
+  );
 
   // Obtener la sesión del usuario
   useEffect(() => {
@@ -610,20 +622,24 @@ const HistorialVentasPage = () => {
         </div>
         <div className="header-right">
           {activeTab === "facturas" && (
-            <button
-              className="historial-pagos-button"
-              onClick={() => navigate("/pagos-historial")}
-            >
-              Ver pagos
-            </button>
+            <>
+              <span className="total-label">
+                Total facturas: {formatCurrency(totalFacturas)}
+              </span>
+              <button className="historial-pagos-button" onClick={() => navigate("/pagos-historial")}>
+                Ver pagos
+              </button>
+            </>
           )}
           {activeTab === "informes" && (
-            <button
-              className="historial-pagos-button"
-              onClick={handleDescargarExcel}
-            >
-              Descargar Excel
-            </button>
+            <>
+              <span className="total-label">
+                Total informes: {formatCurrency(totalInformes)}
+              </span>
+              <button className="historial-pagos-button" onClick={handleDescargarExcel}>
+                Descargar Excel
+              </button>
+            </>
           )}
           {activeTab === "remitos" && selectedRemitos.length > 0 && (
             <button className="facturar-button"

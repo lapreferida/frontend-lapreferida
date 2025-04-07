@@ -27,9 +27,9 @@ const InformeZPage = () => {
 
   // Estados para los importes del 10,5% y 21%
   const [neto10_5, setNeto10_5] = useState('');
-  const [iva10_5, setIva10_5] = useState('0.00');
+  const [iva10_5, setIva10_5] = useState('');
   const [neto21, setNeto21] = useState('');
-  const [iva21, setIva21] = useState('0.00');
+  const [iva21, setIva21] = useState('');
   const [subtotal10_5, setSubtotal10_5] = useState('0.00');
   const [subtotal21, setSubtotal21] = useState('0.00');
   const [totalGeneral, setTotalGeneral] = useState('0.00');
