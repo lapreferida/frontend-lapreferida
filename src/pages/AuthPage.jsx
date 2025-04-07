@@ -79,7 +79,7 @@ const AuthPage = () => {
   };
 
   return (
-    <section className="form-container">
+    <section className="form-container-auth">
       {localLoading && <Loader />}
       <div className="form-wrapper">
         <div className="tabs">

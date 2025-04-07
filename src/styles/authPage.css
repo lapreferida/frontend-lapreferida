@@ -1,5 +1,5 @@
 /* General Layout */
-.form-container {
+.form-container-auth {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -175,5 +175,19 @@
     to {
         opacity: 1;
         transform: translateX(0);
+    }
+}
+
+/* Para dispositivos pequeños, sin scroll y con más espacio lateral */
+@media (max-width: 768px) {
+
+    html,
+    body {
+        overflow: hidden;
+    }
+
+    .form-container-auth {
+        padding: 0 20px;
+        /* Aumenta el padding lateral si lo deseas */
     }
 }
