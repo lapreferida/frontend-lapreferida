@@ -374,7 +374,7 @@ const HistorialVentasPage = () => {
     // Obtener todos los informes filtrados (sin paginación)
     const informesFiltrados = filteredData(informes);
 
-    // Mapear los datos a objetos con los nombres de columna deseados
+    // Mapear los datos a objetos, formateando cada valor según corresponda
     const dataExcel = informesFiltrados.map((item) => ({
       Fecha: formatDate(item.fecha),
       "Pto Venta": item.punto_venta_numero,
@@ -384,30 +384,26 @@ const HistorialVentasPage = () => {
       "IVA 10,5%": formatCurrency(item.iva_10_5),
       "Neto 21%": formatCurrency(item.neto_21),
       "IVA 21%": formatCurrency(item.iva_21),
-      "Total General": parseFloat(item.total_general),
-      Observaciones: item.observaciones || "",
-      Usuario: item.usuario_nombre,
+      "Total General": formatCurrency(item.total_general),
     }));
 
-    // Calcular la suma de todos los "Total General"
+    // Calcular la suma de todos los "Total General" (como número)
     const totalSum = informesFiltrados.reduce(
       (acc, curr) => acc + parseFloat(curr.total_general),
       0
     );
 
-    // Agregar una fila final que muestre el total
+    // Agregar una fila final que muestre el total, aplicando el formato de moneda argentina
     dataExcel.push({
       Fecha: "",
       "Pto Venta": "",
       "N° Informe": "",
-      Cliente: "",
+      Cliente: "Total",
       "Neto 10,5%": "",
       "IVA 10,5%": "",
       "Neto 21%": "",
       "IVA 21%": "",
-      "Total General": totalSum,
-      Observaciones: "Total",
-      Usuario: "",
+      "Total General": formatCurrency(totalSum),
     });
 
     // Crear la hoja de cálculo y el libro
@@ -418,6 +414,7 @@ const HistorialVentasPage = () => {
     // Descargar el archivo Excel
     XLSX.writeFile(workbook, "informes.xlsx");
   };
+
 
   const handlePagoSubmit = async (e) => {
     e.preventDefault();
