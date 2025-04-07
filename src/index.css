@@ -339,6 +339,7 @@
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
+  width: auto;
 }
 
 .add-button svg {
@@ -348,6 +349,20 @@
 .add-button:hover {
   background-color: #cd6504;
   transform: translateY(-2px);
+}
+
+/* Media query para dispositivos pequeños */
+@media (max-width: 768px) {
+  .add-button {
+    padding: 4px 8px;
+    /* Reduce el padding */
+    font-size: 0.8rem;
+    /* Disminuye el tamaño de fuente */
+    margin: 0;
+    /* Quita márgenes para alinear a la izquierda */
+    width: auto;
+    /* Asegura que no ocupe todo el ancho */
+  }
 }
 
 /* botones de modal editar */
