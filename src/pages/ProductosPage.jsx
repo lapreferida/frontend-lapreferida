@@ -1,24 +1,43 @@
+// src/pages/ProductosPage.jsx
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { FaTrash, FaEdit } from "react-icons/fa";
 import { NumericFormat } from "react-number-format";
-import { getProductos, createProducto, updateProducto, deleteProducto } from "../services/productosService";
+import {
+  getProductos,
+  createProducto,
+  updateProducto,
+  deleteProducto,
+} from "../services/productosService";
+import Pagination from "../components/Pagination";
 import "../styles/dosColumnas.css";
 
 const ProductosPage = () => {
-  // Estados para el formulario de producto
+  // --- Formulario ---
   const [codigo, setCodigo] = useState("");
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
-  const [unidadMedida, setUnidadMedida] = useState(""); // ahora se usará con select
+  const [unidadMedida, setUnidadMedida] = useState("");
   const [precio, setPrecio] = useState("");
 
-  // Estados para manejar el listado y la edición
+  // --- Listado y edición ---
   const [productos, setProductos] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [editingId, setEditingId] = useState(null);
 
-  // Cargar productos desde la API
+  // --- Búsqueda y paginación ---
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  // Formatea número a moneda ARS
+  const formatCurrency = (value) =>
+    new Intl.NumberFormat("es-AR", {
+      style: "currency",
+      currency: "ARS",
+    }).format(value);
+
+  // Carga inicial
   const fetchProductos = async () => {
     try {
       const data = await getProductos();
@@ -33,15 +52,13 @@ const ProductosPage = () => {
     fetchProductos();
   }, []);
 
-  // Manejar el envío del formulario
+  // --- Handlers del formulario ---
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!codigo || !nombre || !unidadMedida || !precio) {
       Swal.fire("Error", "Complete los campos obligatorios", "error");
       return;
     }
-
     const productoData = {
       codigo,
       nombre,
@@ -49,18 +66,15 @@ const ProductosPage = () => {
       unidad_medida: unidadMedida,
       precio,
     };
-
     try {
       if (isEditing) {
-        // Actualizamos producto
         await updateProducto(editingId, productoData);
         Swal.fire("Éxito", "Producto actualizado correctamente", "success");
       } else {
-        // Creamos nuevo producto
         await createProducto(productoData);
         Swal.fire("Éxito", "Producto creado correctamente", "success");
       }
-      // Limpiamos el formulario
+      // limpiar
       setCodigo("");
       setNombre("");
       setDescripcion("");
@@ -71,23 +85,20 @@ const ProductosPage = () => {
       fetchProductos();
     } catch (error) {
       console.error(error);
-      const errorMessage = error.message || "Error al procesar la solicitud";
-      Swal.fire("Error", errorMessage, "error");
+      Swal.fire("Error", error.message || "Error al procesar la solicitud", "error");
     }
   };
 
-  // Cargar los datos en el formulario para editar
-  const handleEdit = (producto) => {
-    setCodigo(producto.codigo);
-    setNombre(producto.nombre);
-    setDescripcion(producto.descripcion);
-    setUnidadMedida(producto.unidad_medida); // se asigna el valor ya guardado (ya sea "unidad" o "kg")
-    setPrecio(producto.precio);
+  const handleEdit = (p) => {
+    setCodigo(p.codigo);
+    setNombre(p.nombre);
+    setDescripcion(p.descripcion);
+    setUnidadMedida(p.unidad_medida);
+    setPrecio(p.precio);
     setIsEditing(true);
-    setEditingId(producto.id);
+    setEditingId(p.id);
   };
 
-  // Confirmar y eliminar producto
   const handleDelete = (id) => {
     Swal.fire({
       title: "¿Eliminar producto?",
@@ -104,18 +115,42 @@ const ProductosPage = () => {
           fetchProductos();
         } catch (error) {
           console.error(error);
-          const errorMsg = error.message || "Error al eliminar el producto";
-          Swal.fire("Error", errorMsg, "error");
+          Swal.fire("Error", error.message || "Error al eliminar el producto", "error");
         }
       }
     });
+  };
+
+  // --- Filtrado ---
+  const filteredProductos = productos.filter((p) => {
+    const term = searchTerm.trim().toLowerCase();
+    return (
+      !term ||
+      p.codigo.toLowerCase().includes(term) ||
+      p.nombre.toLowerCase().includes(term) ||
+      (p.descripcion && p.descripcion.toLowerCase().includes(term))
+    );
+  });
+
+  // --- Paginación ---
+  const totalItems = filteredProductos.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const currentItems = filteredProductos.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  // Si el usuario cambia la búsqueda, volvemos a la página 1
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+    setCurrentPage(1);
   };
 
   return (
     <main className="container productos-container">
       <h1>Gestión de Productos</h1>
       <div className="content-wrapper-dc">
-        {/* Formulario en la columna izquierda */}
+        {/* === Formulario === */}
         <div className="form-container-dc">
           <h2>{isEditing ? "Editar Producto" : "Nuevo Producto"}</h2>
           <form onSubmit={handleSubmit} className="producto-form">
@@ -168,7 +203,7 @@ const ProductosPage = () => {
                   thousandSeparator="."
                   decimalSeparator=","
                   decimalScale={2}
-                  fixedDecimalScale={true}
+                  fixedDecimalScale
                   prefix="$ "
                   placeholder="$ 0"
                   onValueChange={(values) => setPrecio(values.value)}
@@ -202,8 +237,20 @@ const ProductosPage = () => {
           </form>
         </div>
 
-        {/* Tabla en la columna derecha */}
+        {/* === Tabla y controles === */}
         <div className="table-container">
+          {/* Buscador único */}
+          <div className="search-header">
+            <input
+              type="text"
+              className="search-input"
+              placeholder="Buscar por código, nombre o descripción..."
+              value={searchTerm}
+              onChange={handleSearchChange}
+            />
+          </div>
+
+          {/* Tabla */}
           <table className="table">
             <thead>
               <tr>
@@ -216,19 +263,14 @@ const ProductosPage = () => {
               </tr>
             </thead>
             <tbody>
-              {productos.length > 0 ? (
-                productos.map((producto) => (
+              {currentItems.length > 0 ? (
+                currentItems.map((producto) => (
                   <tr key={producto.id}>
                     <td>{producto.codigo}</td>
                     <td>{producto.nombre}</td>
                     <td>{producto.descripcion}</td>
                     <td>{producto.unidad_medida}</td>
-                    <td>
-                      {new Intl.NumberFormat("es-AR", {
-                        style: "currency",
-                        currency: "ARS",
-                      }).format(producto.precio)}
-                    </td>
+                    <td>{formatCurrency(producto.precio)}</td>
                     <td>
                       <button
                         className="action-button editar"
@@ -256,6 +298,13 @@ const ProductosPage = () => {
               )}
             </tbody>
           </table>
+
+          {/* Paginación */}
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
         </div>
       </div>
     </main>
