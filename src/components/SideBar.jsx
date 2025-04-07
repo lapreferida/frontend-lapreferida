@@ -65,9 +65,9 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
   // Si el usuario es "user", mostramos el submenú de ventas automáticamente
   useEffect(() => {
     if (user) {
-      if (user.role === "user") {
+      if (user.rol === "user") {
         setShowVentas(true);
-      } else if (user.role === "admin") {
+      } else if (user.rol === "admin") {
         setShowVentas(true);
         setShowConfiguraciones(true);
       }
@@ -153,7 +153,7 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
             </li>
           </Link>
           {/* Clientes: solo para admin */}
-          {user && user.role === "admin" && (
+          {user && user.rol === "admin" && (
             <Link to="/clientes">
               <li className="menu-item">
                 <div className="menu-link">
@@ -207,7 +207,7 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
                 animate={showVentas ? "open" : "collapsed"}
                 exit="collapsed"
               >
-                {user.role === "admin" && (
+                {user.rol === "admin" && (
                   <Link to="/facturar-venta">
                     <li className="submenu-item">
                       <div className="submenu-link">
@@ -233,7 +233,7 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
                     </div>
                   </li>
                 </Link>
-                {user.role === "admin" && (
+                {user.rol === "admin" && (
                   <Link to="/ventas-historial">
                     <li className="submenu-item">
                       <div className="submenu-link">
@@ -268,7 +268,7 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
           </Link>
 
           {/* Configuraciones: solo para admin */}
-          {user && user.role === "admin" && (
+          {user && user.rol === "admin" && (
             <>
               <li
                 className="menu-item"

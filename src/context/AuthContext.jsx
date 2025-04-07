@@ -10,17 +10,17 @@ export const useAuthContext = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null); // Guardar el usuario
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true); // Carga inicial del contexto
-  const [isLoading, setIsLoading] = useState(false); // Estado de carga global
-  const [redirectToDashboard, setRedirectToDashboard] = useState(false); // Control de redirección
+  const [loading, setLoading] = useState(true); 
+  const [isLoading, setIsLoading] = useState(false); 
+  const [redirectToDashboard, setRedirectToDashboard] = useState(false); 
 
   useEffect(() => {
     const initializeAuth = async () => {
-      setLoading(true); // Mostrar loader mientras se verifica la sesión
+      setLoading(true);
       try {
         const session = await checkSession();
         if (session && session.user) {
-          setUser(session.user); // Guardar usuario
+          setUser(session.user); // Se espera que session.user incluya la propiedad 'rol'
           setIsAuthenticated(true);
         } else {
           setUser(null);
@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
         setIsAuthenticated(false);
       } finally {
-        setLoading(false); // Ocultar loader al terminar la verificación
+        setLoading(false);
       }
     };
 
@@ -44,25 +44,24 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setUser(null);
     setIsAuthenticated(false);
-    setRedirectToDashboard(false); // Resetear redirección al cerrar sesión
+    setRedirectToDashboard(false);
   };
 
   if (loading) {
-    // Mostrar loader general mientras el contexto se inicializa
     return <Loader />;
   }
 
   return (
     <AuthContext.Provider
       value={{
-        user, // Ahora el contexto expone el usuario completo
+        user, // Aquí se expone el objeto con "rol"
         isAuthenticated,
         login,
         logout,
         isLoading,
-        setIsLoading, // Permite modificar el loader desde otros componentes
+        setIsLoading,
         redirectToDashboard,
-        setRedirectToDashboard, // Permite modificar el estado de redirección
+        setRedirectToDashboard,
       }}
     >
       {children}
