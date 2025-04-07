@@ -65,11 +65,12 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
   // Si el usuario es "user", mostramos el submenú de ventas automáticamente
   useEffect(() => {
     if (user) {
-      if (user.rol === "user") {
-        setShowVentas(true);
-      } else if (user.rol === "admin") {
-        setShowVentas(true);
+      // Para ambos roles abrimos ventas, y para admin también configuraciones
+      setShowVentas(true);
+      if (user.rol === "admin") {
         setShowConfiguraciones(true);
+      } else {
+        setShowConfiguraciones(false);
       }
     }
   }, [user]);
