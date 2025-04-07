@@ -6,6 +6,7 @@ import { createRemito, getNextNumeroRemito } from '../../services/ventas/remitos
 import { getProductos } from '../../services/productosService'
 import { NumericFormat } from 'react-number-format';
 import { Link } from 'react-router-dom';
+import { useAuthContext } from '../../context/AuthContext'
 import '../../styles/ventas/remitosPage.css';
 
 const RemitosPage = () => {
@@ -26,6 +27,8 @@ const RemitosPage = () => {
   const [precioProducto, setPrecioProducto] = useState('');
   const [detalle, setDetalle] = useState([]);
   const [totalRemito, setTotalRemito] = useState(0);
+
+  const { user } = useAuthContext();
 
   // Cargar clientes, productos y el siguiente número de remito al montar el componente
   useEffect(() => {
@@ -205,10 +208,15 @@ const RemitosPage = () => {
     <main className="container remitos-container">
       <div className="page-header">
         <h1>Remitos</h1>
-        {/* Botón para ir al historial, estilizado como acción secundaria */}
-        <Link to="/remitos-informes" className="btn btn-secondary history-btn" title="Ver informes de remitos">
-          Ver Informe
-        </Link>
+        {user && user.rol === "admin" && (
+          <Link
+            to="/remitos-informes"
+            className="btn btn-secondary history-btn"
+            title="Ver informes de remitos"
+          >
+            Ver Informe
+          </Link>
+        )}
       </div>
       <form className="remitos-form" onSubmit={handleSubmit}>
         <div className="row-two-sections-remitos">

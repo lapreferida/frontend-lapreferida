@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { checkSession } from "../services/authService";
 import { FaChartBar, FaShoppingCart, FaUsers, FaMoneyBillWave } from "react-icons/fa";
 import "../styles/dashboard.css";
+import Loader from "../components/Loader";
 
 const DashboardPage = () => {
   const [user, setUser] = useState(null);
@@ -22,7 +23,7 @@ const DashboardPage = () => {
   }, [navigate]);
 
   if (!user) {
-    return <div className="loading">Cargando...</div>;
+    return <Loader />;
   }
 
   return (
