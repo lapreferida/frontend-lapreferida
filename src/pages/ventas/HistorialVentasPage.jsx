@@ -5,6 +5,8 @@ import Swal from "sweetalert2";
 import "../../styles/ventas/historialVentasPage.css";
 import { checkSession } from "../../services/authService";
 import DateModal from "../../modales/DateModal";
+import { jsPDF } from "jspdf";
+import autoTable from "jspdf-autotable";
 
 // Servicios para facturas
 import {
@@ -369,6 +371,55 @@ const HistorialVentasPage = () => {
     return item.total - item.total_pagado;
   };
 
+  const handleDescargarPDF = () => {
+    // Obtener todos los informes filtrados (sin paginación)
+    const informesFiltrados = filteredData(informes);
+
+    // Mapear los datos a un arreglo de arrays para la tabla PDF
+    const tableRows = informesFiltrados.map((item) => [
+      formatDate(item.fecha),
+      item.punto_venta_numero,
+      item.numero_informe,
+      item.razon_social,
+      formatCurrency(item.neto_10_5),
+      formatCurrency(item.iva_10_5),
+      formatCurrency(item.neto_21),
+      formatCurrency(item.iva_21),
+      formatCurrency(item.total_general),
+      item.observaciones || "",
+      item.usuario_nombre,
+    ]);
+
+    // Definir las cabeceras de la tabla
+    const tableColumns = [
+      "Fecha",
+      "Pto Venta",
+      "N° Informe",
+      "Cliente",
+      "Neto 10,5%",
+      "IVA 10,5%",
+      "Neto 21%",
+      "IVA 21%",
+      "Total General",
+      "Observaciones",
+      "Usuario",
+    ];
+
+    // Crear el documento PDF
+    const doc = new jsPDF();
+
+    // Agregar la tabla al PDF
+    autoTable(doc, {
+      head: [tableColumns],
+      body: tableRows,
+      styles: { fontSize: 8 },
+      headStyles: { fillColor: [22, 160, 133] },
+    });
+
+    // Descargar el PDF
+    doc.save("informes.pdf");
+  };
+
   const handlePagoSubmit = async (e) => {
     e.preventDefault();
     if (!selectedItem || selectedItem.estado !== "Pendiente") return;
@@ -568,6 +619,14 @@ const HistorialVentasPage = () => {
               onClick={() => navigate("/pagos-historial")}
             >
               Ver pagos
+            </button>
+          )}
+          {activeTab === "informes" && (
+            <button
+              className="descargar-pdf-button"
+              onClick={handleDescargarPDF}
+            >
+              Descargar PDF
             </button>
           )}
           {activeTab === "remitos" && selectedRemitos.length > 0 && (
