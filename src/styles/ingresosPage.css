@@ -112,13 +112,6 @@
     margin: 0;
 }
 
-/* Contenedor derecho en el header */
-.header-right {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
 /* Label de fecha dentro del header */
 .modal-label-date {
     font-size: 0.9rem;

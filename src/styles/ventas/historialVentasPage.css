@@ -72,6 +72,21 @@
   }
 }
 
+/* Contenedor derecho en el header */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.total-label {
+  font-size: 0.8rem;
+  color: #fff;
+  white-space: nowrap;
+  margin-right: 0.5rem;
+  /* separación pequeña al botón */
+}
+
 /* Status badges */
 .status-pendiente,
 .status-pagado,
@@ -316,7 +331,8 @@
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  display: inline-block;   /* Se adapta al contenido */
+  display: inline-block;
+  /* Se adapta al contenido */
   white-space: nowrap;
 }
 
@@ -333,7 +349,8 @@
   cursor: pointer;
   margin-right: 0px;
   transition: background-color 0.3s ease;
-  display: inline-block;   /* Se adapta al contenido */
+  display: inline-block;
+  /* Se adapta al contenido */
   white-space: nowrap;
 }
 
