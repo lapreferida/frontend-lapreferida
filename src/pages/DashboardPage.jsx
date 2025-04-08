@@ -14,7 +14,7 @@ const DashboardPage = () => {
       try {
         const sessionData = await checkSession();
         setUser(sessionData.user);
-      } catch (error) {
+      } catch {
         navigate("/auth");
       }
     };
@@ -27,7 +27,7 @@ const DashboardPage = () => {
   }
 
   return (
-    <div className="container">
+    <div className="dashboard-container">
       <header className="dashboard-header">
         <h1>Bienvenido {user.nombre}</h1>
       </header>
@@ -48,54 +48,6 @@ const DashboardPage = () => {
               </div>
             </div>
           ))}
-        </div>
-
-        <div className="charts">
-          <div className="chart-card">
-            <h3 className="titulos-sec-dashboard">Ventas Mensuales</h3>
-            <div className="chart-placeholder">Gráfico de Ventas</div>
-          </div>
-
-          <div className="chart-card">
-            <h3 className="titulos-sec-dashboard">Pedidos por Categoría</h3>
-            <div className="chart-placeholder">Gráfico de Categorías</div>
-          </div>
-        </div>
-
-        <div className="additional-section">
-          <div className="tasks">
-            <h3 className="titulos-sec-dashboard">Tareas Pendientes</h3>
-            <ul>
-              <li>Revisar inventario</li>
-              <li>Confirmar pedidos pendientes</li>
-              <li>Actualizar precios</li>
-            </ul>
-          </div>
-
-          <div className="recent-orders">
-            <h3 className="titulos-sec-dashboard">Últimos Pedidos</h3>
-            <table>
-              <thead>
-                <tr>
-                  <th>Cliente</th>
-                  <th>Fecha</th>
-                  <th>Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Juan Pérez</td>
-                  <td>2025-01-15</td>
-                  <td>$123.45</td>
-                </tr>
-                <tr>
-                  <td>María López</td>
-                  <td>2025-01-14</td>
-                  <td>$67.89</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
         </div>
       </div>
     </div>
