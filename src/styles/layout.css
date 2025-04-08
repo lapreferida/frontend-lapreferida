@@ -7,10 +7,12 @@
 
 .content {
   flex: 1;
+  /* Ocupar todo el espacio libre a lo ancho */
   display: flex;
+  /* Para controlar altura de hijos con flex */
   flex-direction: column;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden;
+  /* Evita scroll en este contenedor */
   position: relative;
   transition: margin-left 0.4s ease;
 }
@@ -19,34 +21,26 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 20px;
+  overflow: auto;
 }
 
-/* Espacio para el Sidebar */
 .content.with-sidebar {
   margin-left: 250px;
+  /* Ancho del sidebar expandido */
 }
 
 .content.minimized-sidebar {
   margin-left: 60px;
+  /* Ancho del sidebar minimizado */
 }
 
-/* En pantallas pequeñas se quita el margen para ocupar el 100% */
-@media (max-width: 768px) {
-  .content.with-sidebar,
-  .content.minimized-sidebar {
-    margin-left: 0;
-  }
-}
-
-/* Animaciones */
+/* Animaciones modernas */
 @keyframes zoomIn {
   from {
     opacity: 0;
     transform: scale(0.9);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -58,6 +52,7 @@
     opacity: 1;
     transform: scale(1);
   }
+
   to {
     opacity: 0;
     transform: scale(0.9);

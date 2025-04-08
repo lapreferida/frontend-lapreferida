@@ -19,11 +19,7 @@ const Layout = ({ children }) => {
   return (
     <div className="layout">
       <SideBar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-      <main
-        className={`content ${
-          isSidebarOpen ? "with-sidebar" : "minimized-sidebar"
-        }`}
-      >
+      <main className={`content ${isSidebarOpen ? "with-sidebar" : "minimized-sidebar"}`}>
         <AnimatePresence mode="wait">
           <motion.div
             key={location.pathname}
