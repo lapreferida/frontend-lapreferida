@@ -16,10 +16,21 @@ const AddIngresoStep1Modal = ({
   closeModal,
   selectedType,
   setSelectedType,
-  addIngresoTypes,
+  addIngresoTypes, // Se recibe la lista completa de tipos
   handleContinueAdd,
   errorMsg,
+  userRole // Nuevo prop para determinar el rol del usuario ("user" o "admin")
 }) => {
+  // Filtrar según el rol:
+  // Para rol "user" se muestran solo Mañana, Tarde, Transferencia y Reparto
+  const filteredIngresoTypes = addIngresoTypes.filter((tipo) => {
+    if (userRole === "user") {
+      return ["ingreso_manana", "ingreso_tarde", "ingreso_transferencia", "ingreso_reparto"].includes(tipo.key);
+    }
+    // Si no es "user", puede ser admin y se muestran todos
+    return true;
+  });
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -40,7 +51,7 @@ const AddIngresoStep1Modal = ({
               <h3>Selecciona el Tipo de Ingreso</h3>
             </div>
             <div className="ingreso-type-selection addIngresoStep1Modal__type-selection">
-              {addIngresoTypes.map((tipo) => (
+              {filteredIngresoTypes.map((tipo) => (
                 <motion.div
                   key={tipo.key}
                   className={`ingreso-type-option ${selectedType === tipo.key ? "selected" : ""}`}

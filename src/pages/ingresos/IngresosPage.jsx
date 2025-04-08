@@ -253,7 +253,7 @@ const IngresosPage = () => {
       console.error("Error al actualizar ingreso:", error);
       setErrorMsg(
         error.message ||
-          "Error al guardar cambios. Verifica la información y vuelve a intentarlo."
+        "Error al guardar cambios. Verifica la información y vuelve a intentarlo."
       );
     } finally {
       setIsLoading(false);
@@ -302,7 +302,7 @@ const IngresosPage = () => {
         </button>
       </div>
 
-      {isLoading && <Loader/>}
+      {isLoading && <Loader />}
 
       <div className="table-container">
         <table className="table">
@@ -403,9 +403,10 @@ const IngresosPage = () => {
           setSelectedType(tipo);
           setErrorMsg("");
         }}
-        addIngresoTypes={addIngresoTypes}
+        addIngresoTypes={addIngresoTypes}  // Se pasa la lista completa de tipos
         handleContinueAdd={handleContinueAdd}
         errorMsg={errorMsg}
+        userRole={user ? user.rol : "user"} // Se pasa el rol del usuario. Si no hay usuario, por defecto "user"
       />
 
       <AddIngresoStep2Modal
