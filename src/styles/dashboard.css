@@ -1,7 +1,6 @@
 /* Contenedor general */
 .dashboard-container {
   padding: 10px;
-  background-color: #f7f7f7;
   min-height: 100vh;
 }
 
@@ -14,7 +13,7 @@
 .dashboard-header h1 {
   font-size: 1.5rem;
   margin: 0;
-  color: #333;
+  color: #fff;
 }
 
 /* Contenido principal */
