@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { checkSession } from "../services/authService";
-import { FaChartBar, FaShoppingCart, FaUsers, FaMoneyBillWave } from "react-icons/fa";
+import {
+  FaChartBar,
+  FaShoppingCart,
+  FaUsers,
+  FaMoneyBillWave
+} from "react-icons/fa";
 import "../styles/dashboard.css";
 import Loader from "../components/Loader";
 
@@ -26,20 +31,22 @@ const DashboardPage = () => {
     return <Loader />;
   }
 
+  const metrics = [
+    { icon: <FaChartBar />, title: "Ventas", value: "$12,345" },
+    { icon: <FaShoppingCart />, title: "Pedidos", value: "128" },
+    { icon: <FaUsers />, title: "Clientes", value: "54" },
+    { icon: <FaMoneyBillWave />, title: "Ganancias", value: "$8,765" }
+  ];
+
   return (
-    <div className="container">
+    <div className="dashboard-container">
       <header className="dashboard-header">
         <h1>Bienvenido {user.nombre}</h1>
       </header>
 
       <div className="dashboard-content">
         <div className="metrics">
-          {[
-            { icon: <FaChartBar />, title: "Ventas", value: "$12,345" },
-            { icon: <FaShoppingCart />, title: "Pedidos", value: "128" },
-            { icon: <FaUsers />, title: "Clientes", value: "54" },
-            { icon: <FaMoneyBillWave />, title: "Ganancias", value: "$8,765" },
-          ].map((metric, index) => (
+          {metrics.map((metric, index) => (
             <div key={index} className="card">
               <div className="card-icon">{metric.icon}</div>
               <div className="card-info">
