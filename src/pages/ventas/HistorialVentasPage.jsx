@@ -428,6 +428,101 @@ const HistorialVentasPage = () => {
     XLSX.writeFile(workbook, "informes.xlsx");
   };
 
+  const handleDescargarFacturas = () => {
+    // Obtener todas las facturas filtradas (sin paginación)
+    const facturasFiltradas = filteredData(facturas);
+
+    // Mapear los datos: se incluyen todos los campos excepto "observaciones".
+    // Asegúrate de incluir los que se muestran en el modal o en la tabla.
+    const dataExcel = facturasFiltradas.map((item) => ({
+      Fecha: formatDate(item.fecha),
+      Cliente: item.razon_social ? `${item.razon_social} - ${item.direccion}` : item.cliente_nombre,
+      "Pto Venta": item.numero_punto,
+      "N° Factura": item.numero_factura,
+      "Tipo Factura": item.tipo_factura,
+      Neto: formatCurrency(item.neto),
+      Estado: item.estado,
+      Total: formatCurrency(item.total),
+      Abonado: formatCurrency(item.total_pagado),
+      Usuario: item.usuario_nombre,
+      // Si hay otros datos que ves en el detalle, agrégalos aquí.
+    }));
+
+    // 3. Calcular la suma total de la columna "Total" de las facturas
+    const sumaTotal = facturasFiltradas.reduce(
+      (acc, curr) => acc + parseFloat(curr.total || 0),
+      0
+    );
+
+    // 4. Agregar una fila final que muestre el total
+    dataExcel.push({
+      Fecha: "",
+      Cliente: "",
+      "Pto Venta": "",
+      "N° Factura": "",
+      "Tipo Factura": "",
+      Neto: "",
+      Estado: "Total", // Puedes colocar aquí "Total facturas" para mayor claridad
+      Total: formatCurrency(sumaTotal),
+      Abonado: "",
+      Usuario: "",
+    });
+    
+    // Crear la hoja de cálculo y el libro de Excel:
+    const worksheet = XLSX.utils.json_to_sheet(dataExcel);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Facturas");
+
+    // Descargar el archivo Excel
+    XLSX.writeFile(workbook, "facturas.xlsx");
+  };
+
+  const handleDescargarNotas = () => {
+    // Obtener todas las notas de crédito filtradas (sin aplicar paginación)
+    const notasFiltradas = filteredData(notas);
+
+    // Mapeo de cada nota de crédito para que se exporte igual que en la tabla
+    const dataExcel = notasFiltradas.map((nota) => {
+      // Utilizamos la función padNumber para formatear correctamente los números
+      const puntoVenta = padNumber(nota.numero_punto, 5);
+      const facturaPart = padNumber(nota.numero_factura, 8);
+      const fullFacturaNumber = `${puntoVenta}-${facturaPart}`;
+
+      return {
+        Fecha: formatDate(nota.fecha),
+        "N° Nota": `${puntoVenta}-${padNumber(nota.numero_nota, 8)}`,
+        "N° Factura": fullFacturaNumber,
+        Cliente: nota.razon_social ? `${nota.razon_social} - ${nota.domicilio}` : "",
+        Motivo: nota.motivo,
+        Monto: nota.monto, // Se guarda el número para poder sumar y luego formatearlo según convenga
+      };
+    });
+
+    // Calcular la suma total de la columna "Monto"
+    const totalNotas = notasFiltradas.reduce(
+      (acc, curr) => acc + parseFloat(curr.monto || 0),
+      0
+    );
+
+    // Agregar una fila final con el total
+    dataExcel.push({
+      Fecha: "",
+      "N° Nota": "",
+      "N° Factura": "",
+      Cliente: "",
+      Motivo: "Total",
+      Monto: formatCurrency(totalNotas),
+    });
+
+    // Crear la hoja de cálculo y el libro utilizando la librería XLSX
+    const worksheet = XLSX.utils.json_to_sheet(dataExcel);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Notas de Crédito");
+
+    // Descargar el archivo Excel
+    XLSX.writeFile(workbook, "notas_credito.xlsx");
+  };
+
 
   const handlePagoSubmit = async (e) => {
     e.preventDefault();
@@ -627,6 +722,9 @@ const HistorialVentasPage = () => {
               <span className="total-label">
                 Total facturas: {formatCurrency(totalFacturas)}
               </span>
+              <button className="historial-pagos-button" onClick={handleDescargarFacturas}>
+                Descargar Excel
+              </button>
               <button className="historial-pagos-button" onClick={() => navigate("/pagos-historial")}>
                 Ver pagos
               </button>
@@ -638,6 +736,13 @@ const HistorialVentasPage = () => {
                 Total informes: {formatCurrency(totalInformes)}
               </span>
               <button className="historial-pagos-button" onClick={handleDescargarExcel}>
+                Descargar Excel
+              </button>
+            </>
+          )}
+          {activeTab === "notas" && (
+            <>
+              <button className="historial-pagos-button" onClick={handleDescargarNotas}>
                 Descargar Excel
               </button>
             </>
