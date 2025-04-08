@@ -32,8 +32,8 @@
 
 /* Estilos de cada tarjeta */
 .card {
-  background-color: #fff;
-  color: #333;
+  background-color: #333;
+  color: #fff;
   border-radius: 8px;
   padding: 10px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -55,7 +55,7 @@
 .card-info p {
   margin: 0;
   font-size: 0.9rem;
-  color: #666;
+  color: #fff;
 }
 
 /* Ajustes responsivos para pantallas pequeñas */
