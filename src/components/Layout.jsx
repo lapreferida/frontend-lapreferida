@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import SideBar from "./SideBar";
+import { useLocation } from 'react-router-dom';
 import "../styles/layout.css";
 
 const pageVariants = {
@@ -10,6 +11,7 @@ const pageVariants = {
 };
 
 const Layout = ({ children }) => {
+  const location = useLocation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
