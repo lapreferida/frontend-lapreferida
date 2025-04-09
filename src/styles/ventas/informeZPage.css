@@ -128,25 +128,24 @@
     /* Cada campo ocupará el mismo espacio */
 }
 
-@media only screen and (max-width: 768px) {
+@media (max-width: 768px) {
 
-    /* Restablecer la apariencia nativa y aplicar estilos en móviles */
+    /* Estilos para select e input[type="date"] */
     select,
     input[type="date"] {
         -webkit-appearance: none;
         -moz-appearance: none;
         appearance: none;
-        background-color: #333;
-        border: 1px solid #ccc;
-        padding: 10px;
+        padding: 6px;
+        font-size: 13px;
         border-radius: 4px;
+        background-color: #484545;
         color: #fff;
-        font-size: 14px;
         width: 100%;
         box-sizing: border-box;
     }
 
-    /* Estilo adicional para el select, agregando la flecha custom */
+    /* Contenedor para personalizar el select y agregar la flecha */
     .select-custom {
         position: relative;
         display: inline-block;
@@ -155,7 +154,7 @@
 
     .select-custom::after {
         content: '\25BC';
-        /* Flecha hacia abajo */
+        /* Unicode para flecha hacia abajo */
         position: absolute;
         right: 10px;
         top: 50%;
