@@ -231,22 +231,32 @@ const IngresosPage = () => {
     setErrorMsg("");
     setEditModalOpen(true);
   };
-
+  
   const handleSaveEdit = async (e) => {
     e.preventDefault();
+    if (!user) {
+      Swal.fire('Error', 'No se encontró el usuario en sesión.', 'error');
+      return;
+    }
+    // Aseguramos incluir usuario_id en el objeto de edición.
+    const ingresoEditado = {
+      ...editingIngreso,
+      usuario_id: user.id
+    };
+
     try {
       setIsLoading(true);
-      await updateIngreso(editingIngreso.id, editingIngreso);
+      await updateIngreso(editingIngreso.id, ingresoEditado);
       setIngresos(
         ingresos.map((ing) =>
-          ing.id === editingIngreso.id ? editingIngreso : ing
+          ing.id === editingIngreso.id ? ingresoEditado : ing
         )
       );
       Swal.fire({
         icon: "success",
         title: "Ingreso actualizado",
         text: "El ingreso se actualizó correctamente.",
-        ...swalOptions,
+        zIndex: 2000,
       });
       setEditModalOpen(false);
     } catch (error) {
@@ -259,6 +269,7 @@ const IngresosPage = () => {
       setIsLoading(false);
     }
   };
+
 
   const formatCurrency = (value) => {
     return new Intl.NumberFormat("es-AR", {
