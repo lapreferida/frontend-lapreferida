@@ -175,7 +175,7 @@ const RemitosPage = () => {
     }
     const remitoData = {
       cliente_id: selectedCliente.value,
-      usuario_id: 1, // Valor de ejemplo
+      usuario_id: user.id,
       numero_remito: numeroRemito,
       fecha,
       observaciones,
