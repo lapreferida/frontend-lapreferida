@@ -127,19 +127,9 @@
     flex: 1; /* Cada campo ocupará el mismo espacio */
   }
   
-  /* Si deseas ajustar tamaños particulares, puedes usar clases adicionales */
-  .informez-row .punto-venta {
-    /* Ejemplo: ocupar un 25% del ancho */
-    /* flex: 0 0 25%; */
+  select,
+  input[type="date"] {
+    -webkit-appearance: none; /* para Safari y Chrome */
+       -moz-appearance: none; /* para Firefox */
+            appearance: none;
   }
-  
-  .informez-row .numero-informe {
-    /* Ejemplo: ocupar 1.5 veces el espacio de los demás */
-    /* flex: 1.5; */
-  }
-  
-  /* Opcional: para el campo Fecha, si se requiere un ancho específico */
-  .informez-row .fecha {
-    /* flex: 1; */
-  }
-  
