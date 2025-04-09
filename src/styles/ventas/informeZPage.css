@@ -121,15 +121,46 @@
     gap: 1rem;
     flex-wrap: wrap;
     align-items: flex-end;
-  }
-  
-  .informez-row .form-group {
-    flex: 1; /* Cada campo ocupará el mismo espacio */
-  }
-  
-  select,
-  input[type="date"] {
-    -webkit-appearance: none; /* para Safari y Chrome */
-       -moz-appearance: none; /* para Firefox */
-            appearance: none;
-  }
+}
+
+.informez-row .form-group {
+    flex: 1;
+    /* Cada campo ocupará el mismo espacio */
+}
+
+@media only screen and (max-width: 768px) {
+
+    /* Restablecer la apariencia nativa y aplicar estilos en móviles */
+    select,
+    input[type="date"] {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background-color: #333;
+        border: 1px solid #ccc;
+        padding: 10px;
+        border-radius: 4px;
+        color: #fff;
+        font-size: 14px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* Estilo adicional para el select, agregando la flecha custom */
+    .select-custom {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+    }
+
+    .select-custom::after {
+        content: '\25BC';
+        /* Flecha hacia abajo */
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #fff;
+        pointer-events: none;
+    }
+}
