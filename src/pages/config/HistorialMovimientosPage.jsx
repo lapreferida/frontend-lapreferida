@@ -243,9 +243,10 @@ const HistorialMovimientosPage = () => {
                 <table className="table">
                   <thead>
                     <tr>
-                      <th>Fecha Movimiento</th>
+                      <th>Fecha</th>
                       <th>Hora</th>
-                      <th>Fecha Ingreso</th>
+                      <th>N° Informe</th>
+                      <th>Acción</th>
                       <th>Descripción</th>
                       <th>Usuario</th>
                     </tr>
@@ -254,9 +255,10 @@ const HistorialMovimientosPage = () => {
                     {currentItemsInformes.length > 0 ? (
                       currentItemsInformes.map((item) => (
                         <tr key={item.id}>
-                          <td>{item.fecha}</td>
-                          <td>{formatTime(item.fecha)}</td>
-                          <td>{item.ingreso_fecha || '-'}</td>
+                          <td>{formatDate(item.fecha)}</td>
+                          <td>{formatTime(item.fecha_formateada)}</td>
+                          <td>{item.numero_informe}</td>
+                          <td>{item.accion}</td>
                           <td title={item.descripcion}>
                             {item.descripcion &&
                               item.descripcion.length > 150
@@ -339,10 +341,9 @@ const HistorialMovimientosPage = () => {
                 <table className="table">
                   <thead>
                     <tr>
-                      <th>Fecha</th>
+                      <th>Fecha Movimiento</th>
                       <th>Hora</th>
-                      <th>ID Ingreso</th>
-                      <th>Acción</th>
+                      <th>Fecha Ingreso</th>
                       <th>Descripción</th>
                       <th>Usuario</th>
                     </tr>
@@ -351,10 +352,10 @@ const HistorialMovimientosPage = () => {
                     {currentItemsIngresos.length > 0 ? (
                       currentItemsIngresos.map((item) => (
                         <tr key={item.id}>
-                          <td>{formatDate(item.fecha)}</td>
+                          {/* La fecha del movimiento ya viene formateada: "YYYY-MM-DD" */}
+                          <td>{item.fecha}</td>
                           <td>{formatTime(item.fecha)}</td>
-                          <td>{item.ingreso_id}</td>
-                          <td>{item.accion}</td>
+                          <td>{item.ingreso_fecha || '-'}</td>
                           <td title={item.descripcion}>
                             {item.descripcion && item.descripcion.length > 150
                               ? item.descripcion.slice(0, 150) + "..."
@@ -365,7 +366,7 @@ const HistorialMovimientosPage = () => {
                       ))
                     ) : (
                       <tr>
-                        <td colSpan="6" className="no-results">
+                        <td colSpan="5" className="no-results">
                           No se encontraron registros.
                         </td>
                       </tr>
