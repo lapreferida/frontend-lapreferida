@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Select from "react-select";
 import { FaPlus, FaMinus } from "react-icons/fa"; 
-import { getProductos } from "../services/productService"; // Ajusta la ruta si es necesario
+import { getProductos } from "../services/productosService.js"; // Ajusta la ruta si es necesario
 import "../styles/RepartoPage.css";
 
 const RegistroReparto = () => {
