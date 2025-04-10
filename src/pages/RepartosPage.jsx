@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FaPlus, FaMinus } from "react-icons/fa"; 
-import "./RegistroReparto.css";
+import "../styles/RepartoPage.css"
 
 const RegistroReparto = () => {
   // Estado local para cliente, productos, estado de pago y total
