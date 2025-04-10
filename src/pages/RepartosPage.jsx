@@ -85,7 +85,7 @@ const RegistroReparto = () => {
               >
                 <option value="" disabled>
                   -- Seleccionar Cliente --
-                </option>
+                </option> 
                 {clientList.map((c) => (
                   <option key={c.id} value={c.id}>
                     {c.nombre}
