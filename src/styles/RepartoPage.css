@@ -3,14 +3,16 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  color: #fff; /* Aseguramos que el texto del formulario sea blanco */
 }
 
 /* Tarjetas (secciones) */
 .registro-card {
-  background: #ffffff;
-  border: 1px solid #ddd;
+  background: #333; /* Fondo oscuro para las tarjetas */
+  border: 1px solid #444; /* Puedes ajustar el color del borde para que haga buen contraste */
   border-radius: 8px;
   padding: 1rem;
+  color: #fff; /* Texto en blanco */
 }
 
 /* Título de cada sección */
@@ -18,7 +20,7 @@
   margin-top: 0;
   margin-bottom: 0.75rem;
   font-size: 1.1rem;
-  font-weight: bold;
+  color: #f77d0b; /* Refuerzo del color blanco para los títulos */
 }
 
 /* Selección de cliente */
@@ -27,6 +29,8 @@
   padding: 0.5rem;
   border-radius: 4px;
   border: 1px solid #ccc;
+  background-color: #333;
+  color: #fff;
 }
 
 /* Cliente seleccionado */
@@ -44,7 +48,7 @@
 .client-address {
   margin: 0;
   font-size: 0.9rem;
-  color: #666;
+  color: #ccc; /* Un gris claro para diferenciar pero mantener el contraste */
 }
 
 .remove-client-button {
@@ -52,13 +56,13 @@
   border: none;
   font-size: 1.2rem;
   cursor: pointer;
-  color: #888;
+  color: #fff;
   font-weight: bold;
   transition: color 0.3s;
 }
 
 .remove-client-button:hover {
-  color: #333;
+  color: #ccc;
 }
 
 /* Productos */
@@ -67,7 +71,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0.75rem;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid #555; /* Ajustamos el color para el fondo oscuro */
   padding-bottom: 0.5rem;
 }
 
@@ -80,12 +84,13 @@
   margin: 0;
   font-size: 1rem;
   font-weight: bold;
+  color: #fff;
 }
 
 .product-price {
   margin: 0;
   font-size: 0.9rem;
-  color: #666;
+  color: #ccc;
 }
 
 .product-quantity {
@@ -95,9 +100,9 @@
 }
 
 .quantity-button {
-  background: #f4f4f4;
-  border: 1px solid #ccc;
-  color: #333;
+  background: #444;
+  border: 1px solid #666;
+  color: #fff;
   padding: 0.3rem;
   font-size: 0.8rem;
   border-radius: 4px;
@@ -106,12 +111,13 @@
 }
 
 .quantity-button:hover {
-  background: #e4e4e4;
+  background: #555;
 }
 
 .quantity-value {
   width: 20px;
   text-align: center;
+  color: #fff;
 }
 
 /* Estado de Pago */
@@ -119,6 +125,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  color: #fff;
 }
 
 /* Pie del formulario */
@@ -127,6 +134,7 @@
   align-items: center;
   justify-content: space-between;
   margin-top: 1rem;
+  color: #fff;
 }
 
 .total span {
@@ -158,18 +166,31 @@
   .registro-reparto-container {
     padding: 0.5rem;
   }
-
+  
   .registro-card {
     padding: 0.75rem;
   }
-
+  
   .registro-footer {
     flex-direction: column;
     align-items: stretch;
     gap: 1rem;
   }
-
+  
   .register-button {
     width: 100%;
+  }
+  
+  /* Opcional: Reducir tamaños de fuente y márgenes si es necesario para móviles */
+  .registro-card h2 {
+    font-size: 1rem;
+  }
+  
+  .product-name {
+    font-size: 0.9rem;
+  }
+  
+  .product-price {
+    font-size: 0.8rem;
   }
 }
