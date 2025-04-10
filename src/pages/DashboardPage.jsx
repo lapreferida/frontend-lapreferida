@@ -35,10 +35,10 @@ const DashboardPage = () => {
       <div className="dashboard-content">
         <div className="metrics">
           {[
-            { icon: <FaChartBar />, title: "Ventas", value: "$12,345" },
-            { icon: <FaShoppingCart />, title: "Pedidos", value: "128" },
-            { icon: <FaUsers />, title: "Clientes", value: "54" },
-            { icon: <FaMoneyBillWave />, title: "Ganancias", value: "$8,765" },
+            { icon: <FaChartBar />, title: "Ventas", value: "Proximamente" },
+            { icon: <FaShoppingCart />, title: "Pedidos", value: "Proximamente" },
+            { icon: <FaUsers />, title: "Clientes", value: "Proximamente" },
+            { icon: <FaMoneyBillWave />, title: "Ganancias", value: "Proximamente" },
           ].map((metric, index) => (
             <div key={index} className="card">
               <div className="card-icon">{metric.icon}</div>

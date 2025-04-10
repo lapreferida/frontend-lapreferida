@@ -17,6 +17,7 @@ import {
   FaProductHunt,
   FaStore,
   FaHistory,
+  FaTruck, // Icono para reparto (puedes cambiarlo si lo deseas)
 } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuthContext } from "../context/AuthContext";
@@ -140,6 +141,7 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
               </div>
             </li>
           </Link>
+
           {/* Clientes: solo para admin */}
           {user && user.rol === "admin" && (
             <Link to="/clientes">
@@ -254,6 +256,29 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
               </div>
             </li>
           </Link>
+
+          {/* Reparto: opción solo para roles admin y repartidor */}
+          {user &&
+            (user.rol === "admin" || user.rol === "repartidor") && (
+              <Link to="/reparto">
+                <li className="menu-item">
+                  <div className="menu-link">
+                    <FaTruck className="menu-icon" />
+                    {isOpen && (
+                      <motion.span
+                        className="menu-text"
+                        initial="hidden"
+                        animate="visible"
+                        exit="hidden"
+                        variants={fadeVariants}
+                      >
+                        Reparto
+                      </motion.span>
+                    )}
+                  </div>
+                </li>
+              </Link>
+            )}
 
           {/* Configuraciones: solo para admin */}
           {user && user.rol === "admin" && (

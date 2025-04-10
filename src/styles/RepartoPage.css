@@ -1,0 +1,133 @@
+/* Reparto.css */
+/* Contenedor general */
+.reparto-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 1rem;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Encabezado */
+  .reparto-header {
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  
+  /* Tarjeta de cada cliente */
+  .cliente-card-reparto {
+    background: #fff;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  /* Encabezado del cliente */
+  .cliente-header-reparto {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+  
+  .cliente-header-reparto h2 {
+    font-size: 1.1rem;
+    flex-grow: 1;
+    margin-left: 0.5rem;
+  }
+  
+  /* Botón para el estado de pago */
+  .estado-btn-reparto {
+    background-color: #f0f0f0;
+    border: none;
+    padding: 0.4rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .estado-btn-reparto:hover {
+    background-color: #e0e0e0;
+  }
+  
+  /* Lista de productos entregados */
+  .productos-list-reparto {
+    margin-top: 0.5rem;
+  }
+  
+  .producto-item-reparto {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.3rem 0;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .producto-item-reparto input {
+    width: 60px;
+    padding: 0.2rem;
+    margin: 0 0.5rem;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .precio-reparto {
+    font-size: 0.8rem;
+    color: #555;
+  }
+  
+  /* Total por cliente */
+  .cliente-total-reparto {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 0.5rem;
+    font-weight: bold;
+  }
+  
+  .icon-total-reparto {
+    margin-right: 0.4rem;
+    color: #007bff;
+  }
+  
+  /* Total del día */
+  .total-dia-reparto {
+    text-align: right;
+    margin: 1rem 0;
+    font-size: 1.1rem;
+    font-weight: bold;
+  }
+  
+  /* Botón para enviar el formulario */
+  .submit-btn-reparto {
+    width: 100%;
+    padding: 0.8rem;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: background-color 0.3s;
+  }
+  
+  .submit-btn-reparto:hover {
+    background-color: #218838;
+  }
+  
+  /* Responsividad: Para móviles se asegura un buen espaciado */
+  @media (max-width: 480px) {
+    .cliente-header-reparto h2 {
+      font-size: 1rem;
+    }
+    .submit-btn-reparto {
+      font-size: 0.9rem;
+    }
+  }
+  
