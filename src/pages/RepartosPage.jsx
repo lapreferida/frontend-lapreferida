@@ -1,23 +1,22 @@
 import { useState, useEffect } from "react";
 import Select from "react-select";
-import { FaPlus, FaMinus } from "react-icons/fa";
 import { getProductos } from "../services/productosService.js";
 import { getClientesReparto } from "../services/clientesRepartoService.js";
 import "../styles/RepartoPage.css";
 
 const RegistroReparto = () => {
-  // Estado para cliente, lista de clientes, productos totales y productos seleccionados
+  // Estados para cliente, productos y demás
   const [selectedClient, setSelectedClient] = useState(null);
   const [clientList, setClientList] = useState([]);
   const [allProductos, setAllProductos] = useState([]);
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
   const [estadoPago, setEstadoPago] = useState("Pagado");
 
-  // Estados nuevos para el producto temporalmente seleccionado
+  // Estados para el producto temporalmente seleccionado
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [tempQuantity, setTempQuantity] = useState(1);
 
-  // Cargar productos desde el backend al montar el componente
+  // Cargar productos desde el backend
   useEffect(() => {
     const fetchProductos = async () => {
       try {
@@ -30,7 +29,7 @@ const RegistroReparto = () => {
     fetchProductos();
   }, []);
 
-  // Cargar clientes de reparto desde el backend
+  // Cargar clientes desde el backend
   useEffect(() => {
     const fetchClientes = async () => {
       try {
@@ -43,48 +42,35 @@ const RegistroReparto = () => {
     fetchClientes();
   }, []);
 
-  // Mapeo para react-select de productos
+  // Mapear productos y clientes para react-select
   const optionsProductos = allProductos.map((prod) => ({
     value: prod.id,
     label: prod.nombre,
     precio: Number(prod.precio),
   }));
 
-  // Mapeo para react-select de clientes
   const optionsClientes = clientList.map((client) => ({
     value: client.id,
     label: client.nombre,
   }));
 
-  // Cuando seleccionamos un producto en el Select, lo guardamos en el estado temporal
+  // Al seleccionar un producto en el Select
   const handleSelectProducto = (selectedOption) => {
     if (!selectedOption) {
       setSelectedProduct(null);
       return;
     }
-    // Se reinicia la cantidad a 1 (o la que prefieras como predeterminada)
     setSelectedProduct(selectedOption);
     setTempQuantity(1);
   };
 
-  // Funciones para incrementar/decrementar la cantidad del producto temporal
-  const handleDecrementTemp = () => {
-    setTempQuantity((prev) => (prev > 1 ? prev - 1 : 1));
-  };
-
-  const handleIncrementTemp = () => {
-    setTempQuantity((prev) => prev + 1);
-  };
-
-  // Función para “Agregar al pedido”
+  // Función para “Agregar al Pedido”
   const handleAgregarAlPedido = () => {
     if (!selectedProduct) return;
-    // Chequeamos si el producto ya existe en la lista
     const exists = productosSeleccionados.some(
       (p) => p.id === selectedProduct.value
     );
     if (!exists) {
-      // Si no existe, lo agregamos
       setProductosSeleccionados((prev) => [
         ...prev,
         {
@@ -95,10 +81,6 @@ const RegistroReparto = () => {
         },
       ]);
     } else {
-      // Si ya existe, podríamos:
-      // - sumar la cantidad, o
-      // - simplemente avisar que ya está en el pedido
-      // Aquí haremos que se sume la cantidad:
       setProductosSeleccionados((prev) =>
         prev.map((prod) =>
           prod.id === selectedProduct.value
@@ -107,46 +89,18 @@ const RegistroReparto = () => {
         )
       );
     }
-
-    // Limpiar la selección temporal
     setSelectedProduct(null);
     setTempQuantity(1);
   };
 
-  // Funciones existentes para cambiar cantidades en el detalle
-  const handleChangeQuantity = (productoId, increment = 1) => {
-    setProductosSeleccionados((prev) =>
-      prev.map((prod) => {
-        if (prod.id === productoId) {
-          const nuevaCantidad = Math.max(prod.cantidad + increment, 0);
-          return { ...prod, cantidad: nuevaCantidad };
-        }
-        return prod;
-      })
-    );
-  };
-
-  const handleDirectQuantityChange = (productoId, value) => {
-    const nuevaCantidad = parseInt(value, 10) || 0;
-    setProductosSeleccionados((prev) =>
-      prev.map((prod) => {
-        if (prod.id === productoId) {
-          return { ...prod, cantidad: nuevaCantidad };
-        }
-        return prod;
-      })
-    );
-  };
-
-  // Calcula el total según cantidad y precio
-  const getTotal = () => {
-    return productosSeleccionados.reduce(
+  // Cálculo del total
+  const getTotal = () =>
+    productosSeleccionados.reduce(
       (acc, prod) => acc + prod.cantidad * prod.precio,
       0
     );
-  };
 
-  // Manejo de selección y eliminación del cliente de reparto mediante react-select
+  // Selección de cliente mediante react-select
   const handleSelectClient = (selectedOption) => {
     if (selectedOption) {
       const client = clientList.find((c) => c.id === selectedOption.value);
@@ -160,7 +114,7 @@ const RegistroReparto = () => {
     setSelectedClient(null);
   };
 
-  // Envío del formulario de reparto
+  // Envío del formulario
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!selectedClient) {
@@ -228,42 +182,25 @@ const RegistroReparto = () => {
               value={selectedProduct}
             />
           </div>
-          
-          {/* 
-            Sección que solo se muestra si hay un producto seleccionado
-            para que el usuario ingrese la cantidad y agregue al pedido
-          */}
+
+          {/* Sección de ingreso para el producto seleccionado */}
           {selectedProduct && (
             <div className="product-selection">
-              <p className="product-name">{selectedProduct.label}</p>
-              <p className="product-price">
-                ${selectedProduct.precio.toFixed(2)}
-              </p>
-
-              <div className="temp-quantity">
-                <button
-                  type="button"
-                  className="quantity-button"
-                  onClick={handleDecrementTemp}
-                >
-                  <FaMinus />
-                </button>
+              <div className="product-top">
+                <p className="product-name">{selectedProduct.label}</p>
                 <input
                   type="number"
                   className="quantity-input"
                   min="1"
                   value={tempQuantity}
-                  onChange={(e) => setTempQuantity(Number(e.target.value))}
+                  onChange={(e) =>
+                    setTempQuantity(Number(e.target.value) || 1)
+                  }
                 />
-                <button
-                  type="button"
-                  className="quantity-button"
-                  onClick={handleIncrementTemp}
-                >
-                  <FaPlus />
-                </button>
               </div>
-
+              <p className="product-price">
+                Precio: ${selectedProduct.precio.toFixed(2)}
+              </p>
               <button
                 type="button"
                 className="add-product-button"
@@ -274,41 +211,20 @@ const RegistroReparto = () => {
             </div>
           )}
 
-          {/* Listado de productos ya agregados al pedido */}
+          {/* Detalle del Pedido */}
           <h3>Detalle del Pedido</h3>
           {productosSeleccionados.map((prod) => (
             <div key={prod.id} className="product-item">
               <div className="product-info">
                 <p className="product-name">{prod.nombre}</p>
+              </div>
+              <div className="product-detail">
                 <p className="product-price">
                   ${Number(prod.precio).toFixed(2)} x {prod.cantidad}
                 </p>
                 <p className="product-subtotal">
                   Subtotal: ${(prod.precio * prod.cantidad).toFixed(2)}
                 </p>
-              </div>
-              <div className="product-quantity">
-                <button
-                  type="button"
-                  className="quantity-button"
-                  onClick={() => handleChangeQuantity(prod.id, -1)}
-                >
-                  <FaMinus />
-                </button>
-                <input
-                  type="number"
-                  className="quantity-input"
-                  value={prod.cantidad}
-                  onChange={(e) => handleDirectQuantityChange(prod.id, e.target.value)}
-                  min="0"
-                />
-                <button
-                  type="button"
-                  className="quantity-button"
-                  onClick={() => handleChangeQuantity(prod.id, 1)}
-                >
-                  <FaPlus />
-                </button>
               </div>
             </div>
           ))}

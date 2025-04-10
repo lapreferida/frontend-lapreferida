@@ -1,18 +1,22 @@
+/* ================== */
+/* Estilos Globales   */
+/* ================== */
+
 /* Formulario */
 .registro-form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  color: #fff; /* Aseguramos que el texto del formulario sea blanco */
+  color: #fff; /* Todo el texto en blanco */
 }
 
 /* Tarjetas (secciones) */
 .registro-card {
   background: #333; /* Fondo oscuro para las tarjetas */
-  border: 1px solid #444; /* Puedes ajustar el color del borde para que haga buen contraste */
+  border: 1px solid #444;
   border-radius: 8px;
   padding: 1rem;
-  color: #fff; /* Texto en blanco */
+  color: #fff;
 }
 
 /* Título de cada sección */
@@ -22,6 +26,31 @@
   font-size: 1.1rem;
   color: #f77d0b; /* Color resaltado para los títulos */
 }
+
+/* ============================= */
+/* React‑Select (Custom Styles)   */
+/* ============================= */
+
+/* Aplica estilos al control, menú y opciones del select */
+.select-container .react-select__control {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #ccc;
+}
+
+.select-container .react-select__menu {
+  background-color: #333;
+  color: #fff;
+}
+
+.select-container .react-select__option {
+  background-color: #333;
+  color: #fff;
+}
+
+/* ================== */
+/* Sección Cliente    */
+/* ================== */
 
 /* Selección de cliente */
 .client-select select {
@@ -48,7 +77,7 @@
 .client-address {
   margin: 0;
   font-size: 0.9rem;
-  color: #ccc; /* Un gris claro para mantener contraste */
+  color: #ccc;
 }
 
 .remove-client-button {
@@ -65,13 +94,17 @@
   color: #ccc;
 }
 
-/* Productos */
+/* ================== */
+/* Sección Productos  */
+/* ================== */
+
+/* Listado del detalle del pedido */
 .product-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0.75rem;
-  border-bottom: 1px solid #555; /* Ajustamos el color para el fondo oscuro */
+  border-bottom: 1px solid #555;
   padding-bottom: 0.5rem;
 }
 
@@ -84,43 +117,29 @@
   margin: 0;
   font-size: 1rem;
   font-weight: bold;
-  color: #fff;
+}
+
+.product-detail {
+  text-align: right;
 }
 
 .product-price {
-  margin: 0;
   font-size: 0.9rem;
   color: #ccc;
+  margin: 0;
 }
 
-.product-quantity {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.quantity-button {
-  background: #444;
-  border: 1px solid #666;
-  color: #fff;
-  padding: 0.3rem;
-  font-size: 0.8rem;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.quantity-button:hover {
-  background: #555;
-}
-
-.quantity-value {
-  width: 20px;
-  text-align: center;
-  color: #fff;
+.product-subtotal {
+  font-size: 0.85rem;
+  color: #ddd;
+  margin: 0;
 }
 
 /* Bloque de selección temporal de producto */
+/* Nueva organización:
+   - Fila superior: nombre del producto y casillero de cantidad alineados a los extremos.
+   - Fila inferior: precio (puede incluir otros datos) y, debajo, el botón de agregar.
+*/
 .product-selection {
   margin-top: 1rem;
   padding: 1rem;
@@ -132,10 +151,20 @@
   gap: 0.5rem;
 }
 
-.temp-quantity {
+.product-top {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 0.5rem;
+}
+
+.quantity-input {
+  width: 60px;
+  padding: 0.3rem;
+  border: 1px solid #666;
+  border-radius: 4px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
 }
 
 /* Botón para "Agregar al Pedido" */
@@ -149,28 +178,17 @@
   font-weight: bold;
   transition: background-color 0.3s;
   font-size: 0.9rem;
+  margin-top: 0.5rem;
 }
 
 .add-product-button:hover {
   background-color: #ff9d3c;
 }
 
-/* Subtotal dentro del producto agregado */
-.product-subtotal {
-  margin: 0;
-  font-size: 0.85rem;
-  color: #ddd;
-}
+/* ================== */
+/* Estado de Pago     */
+/* ================== */
 
-/* Título para "Detalle del Pedido" */
-.registro-card h3 {
-  margin-top: 1rem;
-  margin-bottom: 0.5rem;
-  font-size: 1rem;
-  color: #f77d0b; 
-}
-
-/* Estado de Pago */
 .payment-options {
   display: flex;
   flex-direction: column;
@@ -178,7 +196,10 @@
   color: #fff;
 }
 
+/* ================== */
 /* Pie del formulario */
+/* ================== */
+
 .registro-footer {
   display: flex;
   align-items: center;
@@ -198,7 +219,7 @@
 
 .register-button {
   background-color: #333;
-  color: white;
+  color: #fff;
   border: none;
   border-radius: 6px;
   padding: 0.6rem 1rem;
@@ -211,7 +232,10 @@
   background-color: #f77d0b;
 }
 
-/* Responsive para pantallas pequeñas */
+/* ================== */
+/* Responsive         */
+/* ================== */
+
 @media (max-width: 480px) {
   .registro-reparto-container {
     padding: 0.5rem;
@@ -231,7 +255,7 @@
     width: 100%;
   }
   
-  /* Opcional: Reducir tamaños de fuente y márgenes si es necesario para móviles */
+  /* Reducir tamaños de fuente para móviles */
   .registro-card h2 {
     font-size: 1rem;
   }
