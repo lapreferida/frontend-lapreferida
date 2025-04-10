@@ -41,11 +41,17 @@ const RegistroReparto = () => {
     fetchClientes();
   }, []);
 
-  // Mapeo para react-select: se asegura de convertir el precio a número
+  // Mapeo para react-select: se asegura de convertir el precio a número para productos
   const optionsProductos = allProductos.map((prod) => ({
     value: prod.id,
     label: prod.nombre,
     precio: Number(prod.precio),
+  }));
+
+  // Mapeo para react-select para clientes
+  const optionsClientes = clientList.map((client) => ({
+    value: client.id,
+    label: client.nombre,
   }));
 
   // Al seleccionar un producto, se agrega a la lista de productos seleccionados si aún no existe
@@ -101,10 +107,16 @@ const RegistroReparto = () => {
     );
   };
 
-  // Manejo de selección y eliminación del cliente de reparto
-  const handleSelectClient = (clientId) => {
-    const client = clientList.find((c) => c.id === parseInt(clientId, 10));
-    setSelectedClient(client);
+  // Manejo de selección y eliminación del cliente de reparto mediante react-select
+  const handleSelectClient = (selectedOption) => {
+    if (selectedOption) {
+      const client = clientList.find(
+        (c) => c.id === selectedOption.value
+      );
+      setSelectedClient(client);
+    } else {
+      setSelectedClient(null);
+    }
   };
 
   const handleRemoveClient = () => {
@@ -134,31 +146,20 @@ const RegistroReparto = () => {
   };
 
   return (
-    <div className="registro-reparto-container">
-      <h1 className="registro-title">Registro de Reparto</h1>
+    <div className="container registro-reparto-container">
+      <h1>Registro de Reparto</h1>
       <form onSubmit={handleSubmit} className="registro-form">
         {/* Sección Cliente */}
         <div className="registro-card">
           <h2>Cliente</h2>
           {!selectedClient ? (
             <div className="client-select">
-              <label htmlFor="clientSelect" className="label-hidden">
-                Seleccionar cliente
-              </label>
-              <select
-                id="clientSelect"
-                onChange={(e) => handleSelectClient(e.target.value)}
-                defaultValue=""
-              >
-                <option value="" disabled>
-                  -- Seleccionar Cliente --
-                </option>
-                {clientList.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.nombre}
-                  </option>
-                ))}
-              </select>
+              <Select
+                options={optionsClientes}
+                onChange={handleSelectClient}
+                placeholder="Buscar y seleccionar cliente..."
+                isClearable
+              />
             </div>
           ) : (
             <div className="selected-client">
