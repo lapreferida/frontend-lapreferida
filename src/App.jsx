@@ -26,6 +26,7 @@ import HistorialMovimientosPage from "./pages/config/HistorialMovimientosPage";
 import ProductosPage from "./pages/ProductosPage";
 import InformesRemitosPage from "./pages/ventas/InformesRemitosPage";
 import RepartoPage from "./pages/RepartosPage";
+import ClientesRepartoPage from "./pages/clientes/ClientesRepartoPage";
 
 const App = () => {
   const { isAuthenticated } = useAuthContext();
@@ -191,6 +192,16 @@ const App = () => {
           element={isAuthenticated ? (
             <Layout>
               <RepartoPage />
+            </Layout>
+          ) : (
+            <Navigate to="/auth" />
+          )}
+        />
+        <Route
+          path="/clientes-reparto"
+          element={isAuthenticated ? (
+            <Layout>
+              <ClientesRepartoPage />
             </Layout>
           ) : (
             <Navigate to="/auth" />

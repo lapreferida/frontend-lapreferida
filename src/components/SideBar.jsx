@@ -17,7 +17,7 @@ import {
   FaProductHunt,
   FaStore,
   FaHistory,
-  FaTruck, // Icono para reparto (puedes cambiarlo si lo deseas)
+  FaTruck, // Icono para reparto
 } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuthContext } from "../context/AuthContext";
@@ -59,7 +59,8 @@ const submenuVariants = {
 const SideBar = ({ isOpen, toggleSidebar }) => {
   const [showVentas, setShowVentas] = useState(false);
   const [showConfiguraciones, setShowConfiguraciones] = useState(false);
-  // Extraemos el usuario del contexto para saber su rol (se usa user.role)
+  const [showReparto, setShowReparto] = useState(false); // Estado para submenu Reparto
+  // Extraemos el usuario del contexto para saber su rol (se usa user.rol)
   const { logout: logoutContext, user } = useAuthContext();
   const navigate = useNavigate();
 
@@ -257,28 +258,63 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
             </li>
           </Link>
 
-          {/* Reparto: opción solo para roles admin y repartidor */}
-          {user &&
-            (user.rol === "admin" || user.rol === "repartidor") && (
-              <Link to="/reparto">
-                <li className="menu-item">
-                  <div className="menu-link">
-                    <FaTruck className="menu-icon" />
-                    {isOpen && (
-                      <motion.span
-                        className="menu-text"
-                        initial="hidden"
-                        animate="visible"
-                        exit="hidden"
-                        variants={fadeVariants}
-                      >
-                        Reparto
-                      </motion.span>
-                    )}
+          {/* Reparto: opción para roles admin y repartidor */}
+          {user && (user.rol === "admin" || user.rol === "repartidor") && (
+            <>
+              <li
+                className="menu-item"
+                onClick={() => setShowReparto((prev) => !prev)}
+              >
+                <div className="menu-link">
+                  <FaTruck className="menu-icon" />
+                  {isOpen && (
+                    <motion.span
+                      className="menu-text"
+                      initial="hidden"
+                      animate="visible"
+                      exit="hidden"
+                      variants={fadeVariants}
+                    >
+                      Reparto
+                    </motion.span>
+                  )}
+                </div>
+                {isOpen && (
+                  <div className="submenu-toggle">
+                    {showReparto ? <FaAngleUp /> : <FaAngleDown />}
                   </div>
-                </li>
-              </Link>
-            )}
+                )}
+              </li>
+              <AnimatePresence initial={false}>
+                {isOpen && showReparto && (
+                  <motion.ul
+                    className="submenu"
+                    variants={submenuVariants}
+                    initial="collapsed"
+                    animate="open"
+                    exit="collapsed"
+                  >
+                    <Link to="/clientes-reparto">
+                      <li className="submenu-item">
+                        <div className="submenu-link">
+                          <FaUsers className="submenu-icon" />
+                          <span>Clientes Reparto</span>
+                        </div>
+                      </li>
+                    </Link>
+                    <Link to="/reparto">
+                      <li className="submenu-item">
+                        <div className="submenu-link">
+                          <FaTruck className="submenu-icon" />
+                          <span>Hacer Reparto</span>
+                        </div>
+                      </li>
+                    </Link>
+                  </motion.ul>
+                )}
+              </AnimatePresence>
+            </>
+          )}
 
           {/* Configuraciones: solo para admin */}
           {user && user.rol === "admin" && (
