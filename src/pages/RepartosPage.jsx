@@ -2,20 +2,16 @@ import { useState, useEffect } from "react";
 import Select from "react-select";
 import { FaPlus, FaMinus } from "react-icons/fa"; 
 import { getProductos } from "../services/productosService.js"; // Ajusta la ruta si es necesario
+import { getClientesReparto } from "../services/clientesRepartoService.js"; // Importa el servicio de clientes reparto
 import "../styles/RepartoPage.css";
 
 const RegistroReparto = () => {
-  // Estado para cliente, productos totales y productos seleccionados
+  // Estado para cliente, lista de clientes, productos totales y productos seleccionados
   const [selectedClient, setSelectedClient] = useState(null);
+  const [clientList, setClientList] = useState([]); // Lista de clientes de reparto obtenida de la API
   const [allProductos, setAllProductos] = useState([]);
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
   const [estadoPago, setEstadoPago] = useState("Pagado");
-
-  // Lista de clientes de ejemplo
-  const [clientList] = useState([
-    { id: 1, nombre: "Panadería Central", direccion: "Av. Principal 123" },
-    { id: 2, nombre: "El Buen Pan", direccion: "Calle Secundaria 456" },
-  ]);
 
   // Cargar productos desde el backend al montar el componente
   useEffect(() => {
@@ -31,7 +27,21 @@ const RegistroReparto = () => {
     fetchProductos();
   }, []);
 
-  // Mapeo para react-select: se asegura convertir el precio a número
+  // Cargar clientes de reparto desde el backend
+  useEffect(() => {
+    const fetchClientes = async () => {
+      try {
+        const data = await getClientesReparto();
+        setClientList(data);
+      } catch (error) {
+        console.error("Error fetching clientes reparto:", error);
+      }
+    };
+
+    fetchClientes();
+  }, []);
+
+  // Mapeo para react-select: se asegura de convertir el precio a número
   const optionsProductos = allProductos.map((prod) => ({
     value: prod.id,
     label: prod.nombre,
@@ -57,7 +67,7 @@ const RegistroReparto = () => {
     }
   };
 
-  // Función para incrementar o decrementar la cantidad
+  // Función para incrementar o decrementar la cantidad de un producto
   const handleChangeQuantity = (productoId, increment = 1) => {
     setProductosSeleccionados((prev) =>
       prev.map((prod) => {
@@ -91,7 +101,7 @@ const RegistroReparto = () => {
     );
   };
 
-  // Manejo de selección y eliminación del cliente
+  // Manejo de selección y eliminación del cliente de reparto
   const handleSelectClient = (clientId) => {
     const client = clientList.find((c) => c.id === parseInt(clientId, 10));
     setSelectedClient(client);
@@ -101,7 +111,7 @@ const RegistroReparto = () => {
     setSelectedClient(null);
   };
 
-  // Envío del formulario
+  // Envío del formulario de reparto
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!selectedClient) {
