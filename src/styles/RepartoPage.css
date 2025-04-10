@@ -20,7 +20,7 @@
   margin-top: 0;
   margin-bottom: 0.75rem;
   font-size: 1.1rem;
-  color: #f77d0b; /* Refuerzo del color blanco para los títulos */
+  color: #f77d0b; /* Color resaltado para los títulos */
 }
 
 /* Selección de cliente */
@@ -48,7 +48,7 @@
 .client-address {
   margin: 0;
   font-size: 0.9rem;
-  color: #ccc; /* Un gris claro para diferenciar pero mantener el contraste */
+  color: #ccc; /* Un gris claro para mantener contraste */
 }
 
 .remove-client-button {
@@ -120,6 +120,56 @@
   color: #fff;
 }
 
+/* Bloque de selección temporal de producto */
+.product-selection {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid #555;
+  border-radius: 8px;
+  background-color: #444;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.temp-quantity {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Botón para "Agregar al Pedido" */
+.add-product-button {
+  background-color: #f77d0b;
+  color: #fff;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+  font-size: 0.9rem;
+}
+
+.add-product-button:hover {
+  background-color: #ff9d3c;
+}
+
+/* Subtotal dentro del producto agregado */
+.product-subtotal {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #ddd;
+}
+
+/* Título para "Detalle del Pedido" */
+.registro-card h3 {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  color: #f77d0b; 
+}
+
 /* Estado de Pago */
 .payment-options {
   display: flex;
@@ -147,7 +197,7 @@
 }
 
 .register-button {
-  background-color: #007bff;
+  background-color: #333;
   color: white;
   border: none;
   border-radius: 6px;
@@ -158,7 +208,7 @@
 }
 
 .register-button:hover {
-  background-color: #0056b3;
+  background-color: #f77d0b;
 }
 
 /* Responsive para pantallas pequeñas */
