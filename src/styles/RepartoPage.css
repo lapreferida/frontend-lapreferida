@@ -1,133 +1,184 @@
-/* Reparto.css */
-/* Contenedor general */
-.reparto-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 1rem;
-    font-family: Arial, sans-serif;
+/* Contenedor principal */
+.registro-reparto-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 1rem;
+  font-family: Arial, sans-serif;
+}
+
+/* Título de la página */
+.registro-title {
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+/* Formulario */
+.registro-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Tarjetas (secciones) */
+.registro-card {
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+/* Título de cada sección */
+.registro-card h2 {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+/* Selección de cliente */
+.client-select select {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+/* Cliente seleccionado */
+.selected-client {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.client-name {
+  font-weight: bold;
+  margin: 0;
+}
+
+.client-address {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.remove-client-button {
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #888;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+.remove-client-button:hover {
+  color: #333;
+}
+
+/* Productos */
+.product-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 0.5rem;
+}
+
+.product-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.product-name {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.product-price {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.product-quantity {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.quantity-button {
+  background: #f4f4f4;
+  border: 1px solid #ccc;
+  color: #333;
+  padding: 0.3rem;
+  font-size: 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.quantity-button:hover {
+  background: #e4e4e4;
+}
+
+.quantity-value {
+  width: 20px;
+  text-align: center;
+}
+
+/* Estado de Pago */
+.payment-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Pie del formulario */
+.registro-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.total span {
+  margin-right: 0.5rem;
+  font-weight: 500;
+}
+
+.total strong {
+  font-size: 1.1rem;
+}
+
+.register-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 0.95rem;
+}
+.register-button:hover {
+  background-color: #0056b3;
+}
+
+/* Responsive para pantallas pequeñas */
+@media (max-width: 480px) {
+  .registro-reparto-container {
+    padding: 0.5rem;
   }
-  
-  /* Encabezado */
-  .reparto-header {
-    text-align: center;
-    margin-bottom: 1rem;
+  .registro-card {
+    padding: 0.75rem;
   }
-  
-  /* Tarjeta de cada cliente */
-  .cliente-card-reparto {
-    background: #fff;
-    border-radius: 8px;
-    margin-bottom: 1rem;
-    padding: 1rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  .registro-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
   }
-  
-  /* Encabezado del cliente */
-  .cliente-header-reparto {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 0.5rem;
-  }
-  
-  .cliente-header-reparto h2 {
-    font-size: 1.1rem;
-    flex-grow: 1;
-    margin-left: 0.5rem;
-  }
-  
-  /* Botón para el estado de pago */
-  .estado-btn-reparto {
-    background-color: #f0f0f0;
-    border: none;
-    padding: 0.4rem 0.6rem;
-    border-radius: 4px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .estado-btn-reparto:hover {
-    background-color: #e0e0e0;
-  }
-  
-  /* Lista de productos entregados */
-  .productos-list-reparto {
-    margin-top: 0.5rem;
-  }
-  
-  .producto-item-reparto {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.3rem 0;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .producto-item-reparto input {
-    width: 60px;
-    padding: 0.2rem;
-    margin: 0 0.5rem;
-    text-align: center;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .precio-reparto {
-    font-size: 0.8rem;
-    color: #555;
-  }
-  
-  /* Total por cliente */
-  .cliente-total-reparto {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    margin-top: 0.5rem;
-    font-weight: bold;
-  }
-  
-  .icon-total-reparto {
-    margin-right: 0.4rem;
-    color: #007bff;
-  }
-  
-  /* Total del día */
-  .total-dia-reparto {
-    text-align: right;
-    margin: 1rem 0;
-    font-size: 1.1rem;
-    font-weight: bold;
-  }
-  
-  /* Botón para enviar el formulario */
-  .submit-btn-reparto {
+  .register-button {
     width: 100%;
-    padding: 0.8rem;
-    background-color: #28a745;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    font-size: 1rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    transition: background-color 0.3s;
   }
-  
-  .submit-btn-reparto:hover {
-    background-color: #218838;
-  }
-  
-  /* Responsividad: Para móviles se asegura un buen espaciado */
-  @media (max-width: 480px) {
-    .cliente-header-reparto h2 {
-      font-size: 1rem;
-    }
-    .submit-btn-reparto {
-      font-size: 0.9rem;
-    }
-  }
-  
+}
