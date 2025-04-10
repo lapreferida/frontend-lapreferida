@@ -10,7 +10,7 @@ import {
 } from "../../services/clientesRepartoService.js";
 
 // Componentes
-import ClienteRepartoModal from "../../modales/ClienteRepartoModal.jsx";
+import ClienteRepartoModal from "../../modales/ClientesRepartoModal.jsx";
 import Pagination from "../../components/Pagination.jsx";
 import Loader from "../../components/Loader.jsx";
 
