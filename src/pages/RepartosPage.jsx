@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import Select from "react-select"; // Importa react-select
+import Select from "react-select";
 import { FaPlus, FaMinus } from "react-icons/fa"; 
-import { getProductos } from "../services/productosService.js"; // Ajusta la ruta según corresponda
+import { getProductos } from "../services/productService"; // Ajusta la ruta si es necesario
 import "../styles/RepartoPage.css";
 
 const RegistroReparto = () => {
-  // Estado para cliente, lista de productos totales y productos seleccionados
+  // Estado para cliente, productos totales y productos seleccionados
   const [selectedClient, setSelectedClient] = useState(null);
   const [allProductos, setAllProductos] = useState([]);
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
@@ -17,33 +17,30 @@ const RegistroReparto = () => {
     { id: 2, nombre: "El Buen Pan", direccion: "Calle Secundaria 456" },
   ]);
 
-  // Se cargan los productos desde el backend cuando el componente se monta
+  // Cargar productos desde el backend al montar el componente
   useEffect(() => {
     const fetchProductos = async () => {
       try {
         const data = await getProductos();
         setAllProductos(data);
       } catch (error) {
-        console.error("Error fetching products: ", error);
+        console.error("Error fetching products:", error);
       }
     };
 
     fetchProductos();
   }, []);
 
-  // Opciones para react-select (se muestra el nombre y se asigna el id)
+  // Mapeo para react-select: se asegura convertir el precio a número
   const optionsProductos = allProductos.map((prod) => ({
     value: prod.id,
     label: prod.nombre,
-    precio: prod.precio,
-    // Puedes pasar otros datos si es necesario (por ejemplo, código o unidad_medida)
+    precio: Number(prod.precio),
   }));
 
-  // Cuando se selecciona un producto desde el select, se agrega a la lista si aún no existe
+  // Al seleccionar un producto, se agrega a la lista de productos seleccionados si aún no existe
   const handleSelectProducto = (selectedOption) => {
     if (!selectedOption) return;
-
-    // Verificar si ya fue agregado
     const exists = productosSeleccionados.some(
       (p) => p.id === selectedOption.value
     );
@@ -53,14 +50,14 @@ const RegistroReparto = () => {
         {
           id: selectedOption.value,
           nombre: selectedOption.label,
-          precio: selectedOption.precio,
+          precio: Number(selectedOption.precio),
           cantidad: 1, // cantidad inicial
         },
       ]);
     }
   };
 
-  // Manejo de cantidad (puede incrementarse o decrementarse)
+  // Función para incrementar o decrementar la cantidad
   const handleChangeQuantity = (productoId, increment = 1) => {
     setProductosSeleccionados((prev) =>
       prev.map((prod) => {
@@ -73,7 +70,7 @@ const RegistroReparto = () => {
     );
   };
 
-  // Permite ingresar directamente la cantidad
+  // Permite ingresar directamente la cantidad mediante un input
   const handleDirectQuantityChange = (productoId, value) => {
     const nuevaCantidad = parseInt(value, 10) || 0;
     setProductosSeleccionados((prev) =>
@@ -86,7 +83,7 @@ const RegistroReparto = () => {
     );
   };
 
-  // Calcula el total a partir de las cantidades y precios
+  // Calcula el total según cantidad y precio
   const getTotal = () => {
     return productosSeleccionados.reduce(
       (acc, prod) => acc + prod.cantidad * prod.precio,
@@ -94,13 +91,12 @@ const RegistroReparto = () => {
     );
   };
 
-  // Maneja la selección del cliente
+  // Manejo de selección y eliminación del cliente
   const handleSelectClient = (clientId) => {
     const client = clientList.find((c) => c.id === parseInt(clientId, 10));
     setSelectedClient(client);
   };
 
-  // Elimina el cliente seleccionado
   const handleRemoveClient = () => {
     setSelectedClient(null);
   };
@@ -116,8 +112,6 @@ const RegistroReparto = () => {
       alert("Por favor, selecciona al menos un producto.");
       return;
     }
-
-    // Datos para enviar (se filtran aquellos productos con cantidad mayor a 0)
     const repartoData = {
       cliente: selectedClient,
       products: productosSeleccionados.filter((p) => p.cantidad > 0),
@@ -126,14 +120,13 @@ const RegistroReparto = () => {
     };
     console.log("Datos de reparto:", repartoData);
     alert("¡Reparto registrado con éxito!");
-    // Aquí llamarías a tu backend con fetch/axios
+    // Aquí podrías enviar los datos al backend mediante fetch o axios
   };
 
   return (
     <div className="registro-reparto-container">
       <h1 className="registro-title">Registro de Reparto</h1>
       <form onSubmit={handleSubmit} className="registro-form">
-
         {/* Sección Cliente */}
         <div className="registro-card">
           <h2>Cliente</h2>
@@ -191,7 +184,9 @@ const RegistroReparto = () => {
             <div key={prod.id} className="product-item">
               <div className="product-info">
                 <p className="product-name">{prod.nombre}</p>
-                <p className="product-price">${prod.precio.toFixed(2)}</p>
+                <p className="product-price">
+                  ${Number(prod.precio).toFixed(2)}
+                </p>
               </div>
               <div className="product-quantity">
                 <button
