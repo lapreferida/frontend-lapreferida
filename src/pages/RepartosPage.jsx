@@ -144,7 +144,7 @@ const RegistroReparto = () => {
         <div className="registro-card">
           <h2>Cliente</h2>
           {!selectedClient ? (
-            <div className="client-select">
+            <div className="form-group">
               <Select
                 options={optionsClientes}
                 onChange={handleSelectClient}
@@ -174,7 +174,7 @@ const RegistroReparto = () => {
         <div className="registro-card">
           <h2>Productos</h2>
           {/* Select para buscar productos */}
-          <div className="select-container">
+          <div className="form-group">
             <Select
               options={optionsProductos}
               onChange={handleSelectProducto}
