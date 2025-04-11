@@ -16,6 +16,35 @@ const RegistroReparto = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [tempQuantity, setTempQuantity] = useState(1);
 
+  // Estilos personalizados para react-select
+  const customStyles = {
+    control: (provided) => ({
+      ...provided,
+      backgroundColor: "#333",
+      color: "#fff",
+      borderColor: "#ccc",
+    }),
+    menu: (provided) => ({
+      ...provided,
+      backgroundColor: "#333",
+      color: "#fff",
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isFocused ? "#444" : "#333",
+      color: "#fff",
+      cursor: "pointer",
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+      color: "#fff",
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      color: "#fff",
+    }),
+  };
+
   // Cargar productos desde el backend
   useEffect(() => {
     const fetchProductos = async () => {
@@ -150,6 +179,7 @@ const RegistroReparto = () => {
                 onChange={handleSelectClient}
                 placeholder="Buscar cliente"
                 isClearable
+                styles={customStyles}  {/* Aplicando estilos personalizados */}
               />
             </div>
           ) : (
@@ -180,6 +210,7 @@ const RegistroReparto = () => {
               placeholder="Buscar producto"
               isClearable
               value={selectedProduct}
+              styles={customStyles}  {/* Aplicando estilos personalizados */}
             />
           </div>
 
