@@ -27,34 +27,6 @@
   color: #f77d0b; /* Color resaltado para los títulos */
 }
 
-/* ============================= */
-/* React‑Select (Custom Styles)   */
-/* ============================= */
-
-/* Se utiliza el classNamePrefix "react-select" para aplicar estos estilos */
-
-/* El control se mostrará con sus estilos por defecto (o los que hayas definido en otro lado) */
-.react-select__control {
-  /* No se modifica el fondo aquí para mantener el estilo original del select */
-}
-
-/* Menú desplegable: Se establece fondo #333 y texto blanco */
-.react-select__menu {
-  background-color: #333;
-  color: #fff;
-}
-
-/* Opciones: fondo #333 por defecto, cambia a #444 al estar enfocada */
-.react-select__option {
-  background-color: #333;
-  color: #fff;
-  cursor: pointer;
-}
-
-.react-select__option--is-focused {
-  background-color: #444;
-}
-
 /* ================== */
 /* Sección Cliente    */
 /* ================== */

@@ -150,7 +150,7 @@ const RegistroReparto = () => {
                 onChange={handleSelectClient}
                 placeholder="Buscar cliente"
                 isClearable
-                classNamePrefix="react-select"
+                className="custom-select"
               />
             </div>
           ) : (
@@ -181,7 +181,7 @@ const RegistroReparto = () => {
               placeholder="Buscar producto"
               isClearable
               value={selectedProduct}
-              classNamePrefix="react-select"
+              className="custom-select"
             />
           </div>
 
