@@ -7,7 +7,6 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  color: #fff; /* Todo el texto en blanco */
 }
 
 /* Tarjetas (secciones) */
