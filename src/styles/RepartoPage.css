@@ -31,21 +31,28 @@
 /* React‑Select (Custom Styles)   */
 /* ============================= */
 
-/* Aplica estilos al control, menú y opciones del select */
-.select-container .react-select__control {
-  background-color: #333;
-  color: #fff;
-  border: 1px solid #ccc;
+/* Se utiliza el classNamePrefix "react-select" para aplicar estos estilos */
+
+/* El control se mostrará con sus estilos por defecto (o los que hayas definido en otro lado) */
+.react-select__control {
+  /* No se modifica el fondo aquí para mantener el estilo original del select */
 }
 
-.select-container .react-select__menu {
+/* Menú desplegable: Se establece fondo #333 y texto blanco */
+.react-select__menu {
   background-color: #333;
   color: #fff;
 }
 
-.select-container .react-select__option {
+/* Opciones: fondo #333 por defecto, cambia a #444 al estar enfocada */
+.react-select__option {
   background-color: #333;
   color: #fff;
+  cursor: pointer;
+}
+
+.react-select__option--is-focused {
+  background-color: #444;
 }
 
 /* ================== */
@@ -136,10 +143,6 @@
 }
 
 /* Bloque de selección temporal de producto */
-/* Nueva organización:
-   - Fila superior: nombre del producto y casillero de cantidad alineados a los extremos.
-   - Fila inferior: precio (puede incluir otros datos) y, debajo, el botón de agregar.
-*/
 .product-selection {
   margin-top: 1rem;
   padding: 1rem;
