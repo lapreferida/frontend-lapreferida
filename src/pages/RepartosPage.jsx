@@ -179,7 +179,7 @@ const RegistroReparto = () => {
                 onChange={handleSelectClient}
                 placeholder="Buscar cliente"
                 isClearable
-                styles={customStyles}  {/* Aplicando estilos personalizados */}
+                styles={customStyles}  
               />
             </div>
           ) : (
@@ -210,7 +210,7 @@ const RegistroReparto = () => {
               placeholder="Buscar producto"
               isClearable
               value={selectedProduct}
-              styles={customStyles}  {/* Aplicando estilos personalizados */}
+              styles={customStyles}  
             />
           </div>
 
