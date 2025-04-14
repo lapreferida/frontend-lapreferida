@@ -60,6 +60,7 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
   const [showVentas, setShowVentas] = useState(false);
   const [showConfiguraciones, setShowConfiguraciones] = useState(false);
   const [showReparto, setShowReparto] = useState(false); // Estado para submenu Reparto
+
   // Extraemos el usuario del contexto para saber su rol (se usa user.rol)
   const { logout: logoutContext, user } = useAuthContext();
   const navigate = useNavigate();
@@ -69,6 +70,8 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
       setShowVentas((prev) => !prev);
     } else if (menu === "configuraciones") {
       setShowConfiguraciones((prev) => !prev);
+    } else if (menu === "reparto") {
+      setShowReparto((prev) => !prev);
     }
   };
 
@@ -261,10 +264,7 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
           {/* Reparto: opción para roles admin y repartidor */}
           {user && (user.rol === "admin" || user.rol === "repartidor") && (
             <>
-              <li
-                className="menu-item"
-                onClick={() => setShowReparto((prev) => !prev)}
-              >
+              <li className="menu-item" onClick={() => toggleSubMenu("reparto")}>
                 <div className="menu-link">
                   <FaTruck className="menu-icon" />
                   {isOpen && (
@@ -319,10 +319,7 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
           {/* Configuraciones: solo para admin */}
           {user && user.rol === "admin" && (
             <>
-              <li
-                className="menu-item"
-                onClick={() => toggleSubMenu("configuraciones")}
-              >
+              <li className="menu-item" onClick={() => toggleSubMenu("configuraciones")}>
                 <div className="menu-link">
                   <FaCog className="menu-icon" />
                   {isOpen && (
