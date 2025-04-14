@@ -235,8 +235,8 @@ const RegistroReparto = () => {
         {/* Sección Estado de Pago */}
         <div className="registro-card">
           <h2>Estado de Pago</h2>
-          <div className="payment-options">
-            <label>
+          <div className="radio-inputs">
+            <label className="radio">
               <input
                 type="radio"
                 name="estadoPago"
@@ -244,17 +244,37 @@ const RegistroReparto = () => {
                 checked={estadoPago === "Pagado"}
                 onChange={(e) => setEstadoPago(e.target.value)}
               />
-              Pagado
+              <span className="name">Pagado</span>
             </label>
-            <label>
+            <label className="radio">
               <input
                 type="radio"
                 name="estadoPago"
-                value="Pagar en 2 dias"
-                checked={estadoPago === "Pagar en 2 dias"}
+                value="Pago 2 días"
+                checked={estadoPago === "Pago 2 días"}
                 onChange={(e) => setEstadoPago(e.target.value)}
               />
-              Pagar en 2 días
+              <span className="name">Pago 2 días</span>
+            </label>
+            <label className="radio">
+              <input
+                type="radio"
+                name="estadoPago"
+                value="Cuenta"
+                checked={estadoPago === "Cuenta"}
+                onChange={(e) => setEstadoPago(e.target.value)}
+              />
+              <span className="name">Cuenta</span>
+            </label>
+            <label className="radio">
+              <input
+                type="radio"
+                name="estadoPago"
+                value="Debe"
+                checked={estadoPago === "Debe"}
+                onChange={(e) => setEstadoPago(e.target.value)}
+              />
+              <span className="name">Debe</span>
             </label>
           </div>
         </div>
