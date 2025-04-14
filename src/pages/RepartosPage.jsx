@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Select from "react-select";
 import { getProductos } from "../services/productosService.js";
 import { getClientesReparto } from "../services/clientesRepartoService.js";
+import { createReparto } from "../services/repartosService.js";
 import "../styles/RepartoPage.css";
 
 const RegistroReparto = () => {
@@ -115,7 +116,7 @@ const RegistroReparto = () => {
   };
 
   // Envío del formulario
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!selectedClient) {
       alert("Por favor, selecciona un cliente.");
@@ -125,15 +126,30 @@ const RegistroReparto = () => {
       alert("Por favor, selecciona al menos un producto.");
       return;
     }
+
+    // Se arma el objeto con los datos a enviar.
+    // Nota: "usuario_id" se debe obtener del usuario logueado,
+    // aquí se usa un valor fijo para propósitos de ejemplo.
     const repartoData = {
+      usuario_id: 1,
       cliente: selectedClient,
       products: productosSeleccionados.filter((p) => p.cantidad > 0),
-      estadoPago,
-      total: getTotal(),
+      estado_pago: estadoPago,
+      observaciones: "", // Puedes agregar un input para observaciones si lo requieres
     };
-    console.log("Datos de reparto:", repartoData);
-    alert("¡Reparto registrado con éxito!");
-    // Aquí podrías enviar los datos al backend
+
+    try {
+      const result = await createReparto(repartoData);
+      console.log("Reparto registrado:", result);
+      alert("¡Reparto registrado con éxito!");
+      // Resetear estados para una nueva entrada
+      setSelectedClient(null);
+      setProductosSeleccionados([]);
+      setEstadoPago("Pagado");
+    } catch (error) {
+      console.error("Error al registrar el reparto:", error);
+      alert("Error al registrar el reparto. Intenta nuevamente.");
+    }
   };
 
   return (
