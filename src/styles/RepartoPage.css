@@ -74,10 +74,10 @@
 
 /* Listado del detalle del pedido */
 .titleDetalle {
-  font-size: 1rem;
+  font-size: 0.9rem;
   margin-top: 10px;
-  font-weight: bold;
-  color: #f77d0b;
+  color: #ccc;
+  border-bottom: 1px solid #555;
 }
 
 .product-item {
@@ -87,7 +87,7 @@
   margin-top: 10px;
   margin-bottom: 0.75rem;
   border-bottom: 1px solid #555;
-  color: #fff;
+  color: #ccc;
   padding-bottom: 0.5rem;
 }
 
@@ -98,8 +98,7 @@
 
 .product-name {
   margin: 0;
-  font-size: 0.9rem;
-  font-weight: bold;
+  font-size: 0.8rem;
 }
 
 .product-detail {
@@ -107,13 +106,13 @@
 }
 
 .product-price {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: #ccc;
   margin: 0;
 }
 
 .product-subtotal {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: #ddd;
   margin: 0;
 }
@@ -127,6 +126,7 @@
   background-color: #444;
   display: flex;
   flex-direction: column;
+  color: #fff;
   gap: 0.5rem;
 }
 
@@ -146,17 +146,21 @@
   text-align: center;
 }
 
+.product-price {
+  margin-top: -10px;
+}
+
 /* Botón para "Agregar al Pedido" */
 .add-product-button {
   background-color: #f77d0b;
   color: #fff;
   border: none;
-  padding: 0.4rem 0.8rem;
+  padding: 0.4rem 0.5rem;
   border-radius: 4px;
   cursor: pointer;
   font-weight: bold;
   transition: background-color 0.3s;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   margin-top: 0.5rem;
 }
 
