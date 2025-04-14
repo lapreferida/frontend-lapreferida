@@ -105,28 +105,17 @@ const RepartoHistorialPage = () => {
     <main className="container">
       <h1>Historial de Repartos</h1>
       {/* Header con buscador a la izquierda y filtro por fecha a la derecha */}
-      <div
-        className="header-container"
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "1rem",
-        }}
-      >
-        <div className="search-wrapper" style={{ flex: 1, marginRight: "1rem" }}>
+      <div className="header-container">
+        <div className="search-wrapper" >
           <input
             type="text"
-            placeholder="Buscar por cliente..."
+            placeholder="Buscar"
             value={searchTerm}
             onChange={handleSearchChange}
             className="search-input"
           />
         </div>
-        <div className="date-filter" style={{ flexShrink: 0 }}>
-          <label htmlFor="fecha" style={{ marginRight: "0.5rem" }}>
-            Filtrar por día:
-          </label>
+        <div className="date-filter" >
           <input
             type="date"
             id="fecha"
