@@ -176,7 +176,7 @@
   flex-wrap: wrap;
   justify-content: center;
   /* Opcional: centra elementos internos */
-  border-radius: 0.2rem;
+  border-radius: 0.3rem;
   background: #fff;
   color: #000;
   box-sizing: border-box;
@@ -224,12 +224,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 0.5rem;
+  margin-top: 0.1rem;
+  margin-right: 0.5rem;
   color: #fff;
 }
 
 .total span {
-  margin-right: 1.5rem;
+  margin-right: 0.5rem;
   font-weight: 500;
 }
 
