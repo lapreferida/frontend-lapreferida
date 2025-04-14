@@ -214,7 +214,7 @@ const RegistroReparto = () => {
           )}
 
           {/* Detalle del Pedido */}
-          <h3>Detalle del Pedido</h3>
+          <h3 className="titleDetalle">Detalle del Pedido</h3>
           {productosSeleccionados.map((prod) => (
             <div key={prod.id} className="product-item">
               <div className="product-info">

@@ -7,7 +7,8 @@
 
 /* Tarjetas (secciones) */
 .registro-card {
-  background: #333; /* Fondo oscuro para las tarjetas */
+  background: #333;
+  /* Fondo oscuro para las tarjetas */
   border: 1px solid #444;
   border-radius: 8px;
   padding: 1rem;
@@ -18,7 +19,8 @@
   margin-top: 0;
   margin-bottom: 0.75rem;
   font-size: 1.1rem;
-  color: #f77d0b; /* Color resaltado para los títulos */
+  color: #f77d0b;
+  /* Color resaltado para los títulos */
 }
 
 /* ================== */
@@ -71,12 +73,21 @@
 /* ================== */
 
 /* Listado del detalle del pedido */
+.titleDetalle {
+  font-size: 1rem;
+  margin-top: 10px;
+  font-weight: bold;
+  color: #f77d0b;
+}
+
 .product-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 10px;
   margin-bottom: 0.75rem;
   border-bottom: 1px solid #555;
+  color: #fff;
   padding-bottom: 0.5rem;
 }
 
@@ -87,7 +98,7 @@
 
 .product-name {
   margin: 0;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: bold;
 }
 
@@ -96,13 +107,13 @@
 }
 
 .product-price {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   color: #ccc;
   margin: 0;
 }
 
 .product-subtotal {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   color: #ddd;
   margin: 0;
 }
@@ -208,31 +219,19 @@
   .registro-reparto-container {
     padding: 0.5rem;
   }
-  
+
   .registro-card {
     padding: 0.75rem;
   }
-  
+
   .registro-footer {
     flex-direction: column;
     align-items: stretch;
     gap: 1rem;
   }
-  
+
   .register-button {
     width: 100%;
   }
-  
-  /* Reducir tamaños de fuente para móviles */
-  .registro-card h2 {
-    font-size: 1rem;
-  }
-  
-  .product-name {
-    font-size: 0.9rem;
-  }
-  
-  .product-price {
-    font-size: 0.8rem;
-  }
+
 }
