@@ -39,7 +39,7 @@
 /* Cliente seleccionado */
 .selected-client {
   background-color: #444;
-  padding: 1rem;
+  padding: 0.6rem;
   border: 1px solid #555;
   border-radius: 8px;
   color: #fff;
@@ -126,7 +126,7 @@
 /* Bloque de selección temporal de producto */
 .product-selection {
   margin-top: 1rem;
-  padding: 1rem;
+  padding: 0.7rem;
   border: 1px solid #555;
   border-radius: 8px;
   background-color: #444;
