@@ -310,6 +310,15 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
                         </div>
                       </li>
                     </Link>
+                    {/* Nueva opción para Historial de Repartos */}
+                    <Link to="/reparto-historial">
+                      <li className="submenu-item">
+                        <div className="submenu-link">
+                          <FaHistory className="submenu-icon" />
+                          <span>Historial de Repartos</span>
+                        </div>
+                      </li>
+                    </Link>
                   </motion.ul>
                 )}
               </AnimatePresence>
