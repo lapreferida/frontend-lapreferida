@@ -1,4 +1,4 @@
-// frontend/repartosService.js
+// frontend/repartoService.js
 import axios from 'axios';
 
 const api = axios.create({

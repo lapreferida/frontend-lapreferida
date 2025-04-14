@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Select from "react-select";
 import { getProductos } from "../services/productosService.js";
 import { getClientesReparto } from "../services/clientesRepartoService.js";
-import { createReparto } from "../services/repartosService.js";
+import { createReparto } from "../services/repartoSerice.js";
 import "../styles/RepartoPage.css";
 
 const RegistroReparto = () => {
