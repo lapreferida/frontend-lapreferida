@@ -233,7 +233,7 @@ const RegistroReparto = () => {
         </div>
 
         {/* Sección Estado de Pago */}
-        <div className="registro-card">
+        <div className="registro-card estado-pago-card">
           <h2>Estado de Pago</h2>
           <div className="radio-inputs">
             <label className="radio">
@@ -245,16 +245,6 @@ const RegistroReparto = () => {
                 onChange={(e) => setEstadoPago(e.target.value)}
               />
               <span className="name">Pagado</span>
-            </label>
-            <label className="radio">
-              <input
-                type="radio"
-                name="estadoPago"
-                value="Pago 2 días"
-                checked={estadoPago === "Pago 2 días"}
-                onChange={(e) => setEstadoPago(e.target.value)}
-              />
-              <span className="name">Pago 2 días</span>
             </label>
             <label className="radio">
               <input
@@ -278,6 +268,7 @@ const RegistroReparto = () => {
             </label>
           </div>
         </div>
+
 
         {/* Pie: Mostrar total y botón de registrar */}
         <div className="registro-footer">
