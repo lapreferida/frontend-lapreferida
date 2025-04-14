@@ -1,12 +1,20 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Select from "react-select";
+import Swal from "sweetalert2";
+
+// Importa la función que verifique la sesión del usuario
+import { checkSession } from "../services/authService.js";
 import { getProductos } from "../services/productosService.js";
 import { getClientesReparto } from "../services/clientesRepartoService.js";
 import { createReparto } from "../services/repartoSerice.js";
 import "../styles/RepartoPage.css";
 
 const RegistroReparto = () => {
-  // Estados para cliente, productos y demás
+  const navigate = useNavigate();
+
+  // Estados del usuario, cliente, productos y demás
+  const [user, setUser] = useState(null);
   const [selectedClient, setSelectedClient] = useState(null);
   const [clientList, setClientList] = useState([]);
   const [allProductos, setAllProductos] = useState([]);
@@ -17,7 +25,21 @@ const RegistroReparto = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [tempQuantity, setTempQuantity] = useState(1);
 
-  // Cargar productos desde el backend
+  // Verificar sesión de usuario al montar el componente
+  useEffect(() => {
+    const fetchSession = async () => {
+      try {
+        const sessionData = await checkSession();
+        setUser(sessionData.user);
+      } catch {
+        Swal.fire("Sesión expirada", "Por favor inicie sesión nuevamente", "warning");
+        navigate("/auth");
+      }
+    };
+    fetchSession();
+  }, [navigate]);
+
+  // Cargar productos
   useEffect(() => {
     const fetchProductos = async () => {
       try {
@@ -25,12 +47,13 @@ const RegistroReparto = () => {
         setAllProductos(data);
       } catch (error) {
         console.error("Error fetching products:", error);
+        Swal.fire("Error", "No se pudieron cargar los productos", "error");
       }
     };
     fetchProductos();
   }, []);
 
-  // Cargar clientes desde el backend
+  // Cargar clientes
   useEffect(() => {
     const fetchClientes = async () => {
       try {
@@ -38,12 +61,13 @@ const RegistroReparto = () => {
         setClientList(data);
       } catch (error) {
         console.error("Error fetching clientes reparto:", error);
+        Swal.fire("Error", "No se pudieron cargar los clientes", "error");
       }
     };
     fetchClientes();
   }, []);
 
-  // Mapear productos y clientes para react-select
+  // Opciones para react-select
   const optionsProductos = allProductos.map((prod) => ({
     value: prod.id,
     label: prod.nombre,
@@ -55,7 +79,7 @@ const RegistroReparto = () => {
     label: client.nombre,
   }));
 
-  // Al seleccionar un producto en el Select
+  // Manejo de selección de producto
   const handleSelectProducto = (selectedOption) => {
     if (!selectedOption) {
       setSelectedProduct(null);
@@ -65,9 +89,10 @@ const RegistroReparto = () => {
     setTempQuantity(1);
   };
 
-  // Función para “Agregar al Pedido”
+  // Agregar producto al pedido
   const handleAgregarAlPedido = () => {
     if (!selectedProduct) return;
+    // Verificar si ya existe el producto en el pedido
     const exists = productosSeleccionados.some(
       (p) => p.id === selectedProduct.value
     );
@@ -94,14 +119,14 @@ const RegistroReparto = () => {
     setTempQuantity(1);
   };
 
-  // Cálculo del total
+  // Cálculo del total del pedido
   const getTotal = () =>
     productosSeleccionados.reduce(
       (acc, prod) => acc + prod.cantidad * prod.precio,
       0
     );
 
-  // Selección de cliente mediante react-select
+  // Seleccionar cliente
   const handleSelectClient = (selectedOption) => {
     if (selectedOption) {
       const client = clientList.find((c) => c.id === selectedOption.value);
@@ -115,23 +140,26 @@ const RegistroReparto = () => {
     setSelectedClient(null);
   };
 
-  // Envío del formulario
+  // Manejo del envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!selectedClient) {
-      alert("Por favor, selecciona un cliente.");
+      Swal.fire("Error", "Por favor, selecciona un cliente.", "error");
       return;
     }
     if (productosSeleccionados.length === 0) {
-      alert("Por favor, selecciona al menos un producto.");
+      Swal.fire("Error", "Por favor, selecciona al menos un producto.", "error");
+      return;
+    }
+    if (!user) {
+      Swal.fire("Error", "Usuario no encontrado.", "error");
       return;
     }
 
-    // Se arma el objeto con los datos a enviar.
-    // Nota: "usuario_id" se debe obtener del usuario logueado,
-    // aquí se usa un valor fijo para propósitos de ejemplo.
     const repartoData = {
-      usuario_id: 1,
+      // Se envía el usuario logueado
+      usuario_id: user.id,
       cliente: selectedClient,
       products: productosSeleccionados.filter((p) => p.cantidad > 0),
       estado_pago: estadoPago,
@@ -141,14 +169,26 @@ const RegistroReparto = () => {
     try {
       const result = await createReparto(repartoData);
       console.log("Reparto registrado:", result);
-      alert("¡Reparto registrado con éxito!");
+      Swal.fire("Éxito", "¡Reparto registrado con éxito!", "success");
+
       // Resetear estados para una nueva entrada
       setSelectedClient(null);
       setProductosSeleccionados([]);
       setEstadoPago("Pagado");
     } catch (error) {
       console.error("Error al registrar el reparto:", error);
-      alert("Error al registrar el reparto. Intenta nuevamente.");
+      // Procesar error para mostrar un mensaje más descriptivo
+      let errorMsg = "Error al registrar el reparto. Intenta nuevamente.";
+      if (typeof error === "object" && error !== null) {
+        if (error.message) {
+          errorMsg = error.message;
+        } else if (error.errors && Array.isArray(error.errors)) {
+          errorMsg = error.errors.map((err) => err.msg).join(", ");
+        }
+      } else {
+        errorMsg = error.toString();
+      }
+      Swal.fire("Error", errorMsg, "error");
     }
   };
 
@@ -189,7 +229,6 @@ const RegistroReparto = () => {
         {/* Sección Productos */}
         <div className="registro-card">
           <h2>Productos</h2>
-          {/* Select para buscar productos */}
           <div className="form-group">
             <Select
               options={optionsProductos}
@@ -201,7 +240,6 @@ const RegistroReparto = () => {
             />
           </div>
 
-          {/* Sección de ingreso para el producto seleccionado */}
           {selectedProduct && (
             <div className="product-selection">
               <div className="product-top">
@@ -230,7 +268,7 @@ const RegistroReparto = () => {
           )}
         </div>
 
-        {/* Card Detalle del Pedido: Se muestra solo cuando hay productos agregados */}
+        {/* Detalle del Pedido */}
         {productosSeleccionados.length > 0 && (
           <div className="registro-card">
             <h2>Detalle del Pedido</h2>
@@ -289,7 +327,7 @@ const RegistroReparto = () => {
           </div>
         </div>
 
-        {/* Pie: Mostrar total y botón de registrar */}
+        {/* Pie: Total y Botón de Registro */}
         <div className="registro-footer">
           <div className="total">
             <span>Total:</span>
