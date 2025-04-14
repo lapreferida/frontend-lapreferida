@@ -212,25 +212,29 @@ const RegistroReparto = () => {
               </button>
             </div>
           )}
-
-          {/* Detalle del Pedido */}
-          <h3 className="titleDetalle">Detalle del Pedido</h3>
-          {productosSeleccionados.map((prod) => (
-            <div key={prod.id} className="product-item">
-              <div className="product-info">
-                <p className="product-name">{prod.nombre}</p>
-              </div>
-              <div className="product-detail">
-                <p className="product-price">
-                  ${Number(prod.precio).toFixed(2)} x {prod.cantidad}
-                </p>
-                <p className="product-subtotal">
-                  Subtotal: ${(prod.precio * prod.cantidad).toFixed(2)}
-                </p>
-              </div>
-            </div>
-          ))}
         </div>
+
+        {/* Card Detalle del Pedido: Se muestra solo cuando hay productos agregados */}
+        {productosSeleccionados.length > 0 && (
+          <div className="registro-card">
+            <h2>Detalle del Pedido</h2>
+            {productosSeleccionados.map((prod) => (
+              <div key={prod.id} className="product-item">
+                <div className="product-info">
+                  <p className="product-name">{prod.nombre}</p>
+                </div>
+                <div className="product-detail">
+                  <p className="product-price">
+                    ${Number(prod.precio).toFixed(2)} x {prod.cantidad}
+                  </p>
+                  <p className="product-subtotal">
+                    Subtotal: ${(prod.precio * prod.cantidad).toFixed(2)}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* Sección Estado de Pago */}
         <div className="registro-card">
@@ -268,7 +272,6 @@ const RegistroReparto = () => {
             </label>
           </div>
         </div>
-
 
         {/* Pie: Mostrar total y botón de registrar */}
         <div className="registro-footer">

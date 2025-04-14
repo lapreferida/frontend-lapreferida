@@ -18,7 +18,7 @@
 .registro-card h2 {
   margin-top: 0;
   margin-bottom: 0.75rem;
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: #f77d0b;
   /* Color resaltado para los títulos */
 }
@@ -78,14 +78,6 @@
 /* ================== */
 
 /* Listado del detalle del pedido */
-.titleDetalle {
-  font-size: 0.9rem;
-  margin-top: 10px;
-  color: #fff;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #555;
-}
-
 .product-item {
   display: flex;
   justify-content: space-between;
@@ -220,7 +212,7 @@
 /* Al estar seleccionado, se aplica fondo blanco y mayor peso a la fuente */
 .radio-inputs .radio input:checked+.name {
   background-color: #cacaca;
-  font-weight: 600;
+  color: #f77d0b;
 }
 
 
