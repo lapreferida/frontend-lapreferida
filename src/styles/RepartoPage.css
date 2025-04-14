@@ -279,10 +279,10 @@
 }
 
 .fecha-historial-reparto input[type="date"] {
-  padding: 0.6rem 1rem;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 1rem;
+  padding: 0.5rem 0.6rem;
+  border-radius: 4px;
+  border: 1px solid #f77d0b;
+  font-size: 0.8rem;
   transition: all 0.3s ease;
   background-color: #fff;
   color: #333;
