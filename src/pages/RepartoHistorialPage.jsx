@@ -115,7 +115,7 @@ const RepartoHistorialPage = () => {
             className="search-input"
           />
         </div>
-        <div className="form-group fecha" >
+        <div className="fecha-historial-reparto" >
           <input
             type="date"
             id="fecha"

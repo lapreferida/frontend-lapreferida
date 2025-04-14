@@ -277,3 +277,19 @@
   }
 
 }
+
+.fecha-historial-reparto input[type="date"] {
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: #fff;
+  color: #333;
+}
+
+.fecha-historial-reparto input[type="date"]:focus {
+  border-color: #4c9aff;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(76, 154, 255, 0.3);
+}
