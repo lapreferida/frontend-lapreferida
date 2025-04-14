@@ -233,41 +233,39 @@ const RegistroReparto = () => {
         </div>
 
         {/* Sección Estado de Pago */}
-        <div className="registro-card estado-pago-card">
+        <div className="registro-card">
           <h2>Estado de Pago</h2>
-          <div className="form-group">
-            <div className="radio-inputs">
-              <label className="radio">
-                <input
-                  type="radio"
-                  name="estadoPago"
-                  value="Pagado"
-                  checked={estadoPago === "Pagado"}
-                  onChange={(e) => setEstadoPago(e.target.value)}
-                />
-                <span className="name">Pagado</span>
-              </label>
-              <label className="radio">
-                <input
-                  type="radio"
-                  name="estadoPago"
-                  value="Cuenta"
-                  checked={estadoPago === "Cuenta"}
-                  onChange={(e) => setEstadoPago(e.target.value)}
-                />
-                <span className="name">Cuenta</span>
-              </label>
-              <label className="radio">
-                <input
-                  type="radio"
-                  name="estadoPago"
-                  value="Debe"
-                  checked={estadoPago === "Debe"}
-                  onChange={(e) => setEstadoPago(e.target.value)}
-                />
-                <span className="name">Debe</span>
-              </label>
-            </div>
+          <div className="radio-inputs">
+            <label className="radio">
+              <input
+                type="radio"
+                name="estadoPago"
+                value="Pagado"
+                checked={estadoPago === "Pagado"}
+                onChange={(e) => setEstadoPago(e.target.value)}
+              />
+              <span className="name">Pagado</span>
+            </label>
+            <label className="radio">
+              <input
+                type="radio"
+                name="estadoPago"
+                value="Cuenta"
+                checked={estadoPago === "Cuenta"}
+                onChange={(e) => setEstadoPago(e.target.value)}
+              />
+              <span className="name">Cuenta</span>
+            </label>
+            <label className="radio">
+              <input
+                type="radio"
+                name="estadoPago"
+                value="Debe"
+                checked={estadoPago === "Debe"}
+                onChange={(e) => setEstadoPago(e.target.value)}
+              />
+              <span className="name">Debe</span>
+            </label>
           </div>
         </div>
 
