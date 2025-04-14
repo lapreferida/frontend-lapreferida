@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import { checkSession } from "../services/authService.js";
 import { getProductos } from "../services/productosService.js";
 import { getClientesReparto } from "../services/clientesRepartoService.js";
-import { createReparto } from "../services/repartoSerice.js";
+import { createReparto } from "../services/repartoService.js";
 import "../styles/RepartoPage.css";
 
 const RegistroReparto = () => {

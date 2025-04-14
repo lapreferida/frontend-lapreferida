@@ -15,3 +15,15 @@ export const createReparto = async (repartoData) => {
     throw error.response.data;
   }
 };
+
+// Obtener historial de repartos por día
+export const getHistorialRepartosPorDia = async (fecha) => {
+  try {
+    // Se envía la fecha como parámetro de query.
+    // Si no se envía fecha, el backend usará la fecha actual por defecto.
+    const response = await api.get('/historial', { params: { fecha } });
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
