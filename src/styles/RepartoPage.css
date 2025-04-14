@@ -176,13 +176,13 @@
   flex-wrap: wrap;
   justify-content: center;
   /* Opcional: centra elementos internos */
-  border-radius: 0.5rem;
+  border-radius: 0.2rem;
   background: #fff;
   color: #000;
   box-sizing: border-box;
   box-shadow: 0 0 0px 1px rgba(0, 0, 0, 0.06);
   padding: 0.2rem;
-  max-width: 280px;
+  max-width: 290px;
   width: 100%;
   margin: 0 auto;
   font-size: 13px;
@@ -211,7 +211,7 @@
 
 /* Al estar seleccionado, se aplica fondo blanco y mayor peso a la fuente */
 .radio-inputs .radio input:checked+.name {
-  background-color: #cacaca;
+  background-color: #ebebeb;
   color: #f77d0b;
 }
 
@@ -224,12 +224,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
   color: #fff;
 }
 
 .total span {
-  margin-right: 0.5rem;
+  margin-right: 1.5rem;
   font-weight: 500;
 }
 
