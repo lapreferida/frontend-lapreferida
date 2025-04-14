@@ -178,37 +178,22 @@
 /* Estado de Pago     */
 /* ================== */
 
-/* Contenedor principal de la sección Estado de Pago */
-.estado-pago-card {
-  background: #fff;
-  color: #000;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 1rem;
-  max-width: 320px;
-  margin: 0 auto;
-  box-sizing: border-box;
-}
-
-/* Contenedor de los radio inputs */
 .radio-inputs {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
+  /* Opcional: centra elementos internos */
   border-radius: 0.5rem;
   background: #fff;
-  /* Fondo blanco */
   color: #000;
-  /* Texto negro */
   box-sizing: border-box;
   box-shadow: 0 0 0px 1px rgba(0, 0, 0, 0.06);
   padding: 0.25rem;
-  width: 100%;
-  /* Ocupa el 100% del contenedor padre */
-  max-width: 300px;
-  /* Limita el ancho interno */
+  width: 300px;
+  /* Ancho fijo para el contenedor */
   margin: 0 auto;
-  /* Centrado horizontal interno */
+  /* Centro horizontal con espacio a los lados */
   font-size: 13px;
 }
 
@@ -227,15 +212,15 @@
   align-items: center;
   justify-content: center;
   border-radius: 0.5rem;
+  border: none;
   padding: 0.5rem 0;
   color: #000;
-  /* Texto negro */
   transition: all 0.15s ease-in-out;
 }
 
 /* Al estar seleccionado, se aplica fondo blanco y mayor peso a la fuente */
 .radio-inputs .radio input:checked+.name {
-  background-color: #cd9b5f;
+  background-color: #cacaca;
   font-weight: 600;
 }
 
