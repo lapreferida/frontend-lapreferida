@@ -1,47 +1,27 @@
-"use client"
-
-import { useState, useEffect } from "react"
-import { AnimatePresence, motion } from "framer-motion"
-import SideBar from "./SideBar"
-import { useLocation } from "react-router-dom"
-import "../styles/layout-modern.css"
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import SideBar from "./SideBar";
+import { useLocation } from 'react-router-dom';
+import "../styles/layout.css";
 
 const pageVariants = {
   initial: { opacity: 0, y: 10 },
   animate: { opacity: 1, y: 0, transition: { duration: 0.3 } },
-  exit: { opacity: 0, y: -10, transition: { duration: 0.2 } },
-}
+  exit: { opacity: 0, y: -10, transition: { duration: 0.2 } }
+};
 
 const Layout = ({ children }) => {
-  const location = useLocation()
-  const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth > 768)
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
-
-  // Manejar cambios de tamaño de ventana
-  useEffect(() => {
-    const handleResize = () => {
-      const mobile = window.innerWidth <= 768
-      setIsMobile(mobile)
-
-      // En dispositivos móviles, cerrar automáticamente el sidebar
-      if (mobile && isSidebarOpen) {
-        setIsSidebarOpen(false)
-      }
-    }
-
-    window.addEventListener("resize", handleResize)
-    return () => window.removeEventListener("resize", handleResize)
-  }, [isSidebarOpen])
+  const location = useLocation();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen)
-  }
+    setIsSidebarOpen(!isSidebarOpen);
+  };
 
   return (
-    <div className="layout-modern">
+    <div className="layout">
       <SideBar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-
-      <main className={`content-modern ${isSidebarOpen ? "with-sidebar" : "minimized-sidebar"}`}>
+      <main className={`content ${isSidebarOpen ? "with-sidebar" : "minimized-sidebar"}`}>
         <AnimatePresence mode="wait">
           <motion.div
             key={location.pathname}
@@ -49,14 +29,14 @@ const Layout = ({ children }) => {
             initial="initial"
             animate="animate"
             exit="exit"
-            className="page-content-modern"
+            className="page-content"
           >
             {children}
           </motion.div>
         </AnimatePresence>
       </main>
     </div>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;
