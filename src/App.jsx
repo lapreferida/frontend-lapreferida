@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
 import { useAuthContext } from "./context/AuthContext"
 import { Suspense, lazy } from "react"
-import LoadingScreen from "./components/LoadingScreen"
+import LoadingScreen from "./components/LoandingScreen"
 import Layout from "./components/Layout"
 
 // Importaciones perezosas para mejorar el rendimiento
