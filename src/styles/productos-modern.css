@@ -29,6 +29,11 @@
 
 
 
+.productos-page {
+  min-height: 100vh;
+  padding: 25px;
+}
+
 /* Header */
 .page-header {
   margin-bottom: 30px;
