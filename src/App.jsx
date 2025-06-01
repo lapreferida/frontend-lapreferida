@@ -1,231 +1,195 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { useAuthContext } from "./context/AuthContext";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
+import { useAuthContext } from "./context/AuthContext"
+import { Suspense, lazy } from "react"
+import LoadingScreen from "./components/LoadingScreen"
+import Layout from "./components/Layout"
 
-// Páginas públicas y privadas
-import AuthPage from "./pages/AuthPage";
-import DashboardPage from "./pages/DashboardPage";
-import ClientesPage from "./pages/clientes/ClientesPage";
-
-// Ventas y documentos
-import FacturarVentaPage from "./pages/ventas/FacturarVentasPage";
-import InformeZPage from "./pages/ventas/InformeZPage";
-import NotasCreditosPage from "./pages/ventas/NotasCreditoPage";
-import RemitosPage from "./pages/ventas/RemitosPage";
-
-// Historial y reportes
-import HistorialVentasPage from "./pages/ventas/HistorialVentasPage";
-import HistorialPagosPage from "./pages/ventas/HistorialPagosPage";
-
-// Otras áreas
-import IngresosPage from "./pages/ingresos/IngresosPage";
-import EgresosPage from "./pages/EgresosPage";
-
-import Layout from "./components/Layout";
-import PuntosVentasPage from "./pages/config/PuntosVentasPage";
-import HistorialMovimientosPage from "./pages/config/HistorialMovimientosPage";
-import ProductosPage from "./pages/ProductosPage";
-import InformesRemitosPage from "./pages/ventas/InformesRemitosPage";
-import RepartoPage from "./pages/RepartosPage";
-import ClientesRepartoPage from "./pages/clientes/ClientesRepartoPage";
-import RepartoHistorialPage from "./pages/RepartoHistorialPage";
+// Importaciones perezosas para mejorar el rendimiento
+const AuthPage = lazy(() => import("./pages/AuthPage"))
+const DashboardPage = lazy(() => import("./pages/DashboardPage"))
+const ClientesPage = lazy(() => import("./pages/clientes/ClientesPage"))
+const FacturarVentaPage = lazy(() => import("./pages/ventas/FacturarVentasPage"))
+const InformeZPage = lazy(() => import("./pages/ventas/InformeZPage"))
+const NotasCreditosPage = lazy(() => import("./pages/ventas/NotasCreditoPage"))
+const RemitosPage = lazy(() => import("./pages/ventas/RemitosPage"))
+const HistorialVentasPage = lazy(() => import("./pages/ventas/HistorialVentasPage"))
+const HistorialPagosPage = lazy(() => import("./pages/ventas/HistorialPagosPage"))
+const IngresosPage = lazy(() => import("./pages/ingresos/IngresosPage"))
+const EgresosPage = lazy(() => import("./pages/EgresosPage"))
+const PuntosVentasPage = lazy(() => import("./pages/config/PuntosVentasPage"))
+const HistorialMovimientosPage = lazy(() => import("./pages/config/HistorialMovimientosPage"))
+const ProductosPage = lazy(() => import("./pages/ProductosPage"))
+const InformesRemitosPage = lazy(() => import("./pages/ventas/InformesRemitosPage"))
+const RepartoPage = lazy(() => import("./pages/RepartosPage"))
+const ClientesRepartoPage = lazy(() => import("./pages/clientes/ClientesRepartoPage"))
+const RepartoHistorialPage = lazy(() => import("./pages/RepartoHistorialPage"))
 
 const App = () => {
-  const { isAuthenticated } = useAuthContext();
+  const { isAuthenticated } = useAuthContext()
+
+  // Componente para rutas protegidas
+  const ProtectedRoute = ({ children }) => {
+    if (!isAuthenticated) {
+      return <Navigate to="/auth" replace />
+    }
+    return (
+      <Layout>
+        <Suspense fallback={<LoadingScreen />}>{children}</Suspense>
+      </Layout>
+    )
+  }
 
   return (
     <Router>
-      <Routes>
-        {/* Rutas públicas */}
-        <Route
-          path="/auth"
-          element={!isAuthenticated ? <AuthPage /> : <Navigate to="/dashboard" />}
-        />
+      <Suspense fallback={<LoadingScreen />}>
+        <Routes>
+          {/* Rutas públicas */}
+          <Route path="/auth" element={!isAuthenticated ? <AuthPage /> : <Navigate to="/dashboard" replace />} />
 
-        {/* Rutas privadas */}
-        <Route
-          path="/dashboard"
-          element={isAuthenticated ? (
-            <Layout>
-              <DashboardPage />
-            </Layout>
-          ) : (
-            <Navigate to="/auth" />
-          )}
-        />
+          {/* Rutas privadas */}
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <DashboardPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/clientes"
+            element={
+              <ProtectedRoute>
+                <ClientesPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/facturar-venta"
+            element={
+              <ProtectedRoute>
+                <FacturarVentaPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/informe-z"
+            element={
+              <ProtectedRoute>
+                <InformeZPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/notas-creditos"
+            element={
+              <ProtectedRoute>
+                <NotasCreditosPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/remitos"
+            element={
+              <ProtectedRoute>
+                <RemitosPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/remitos-informes"
+            element={
+              <ProtectedRoute>
+                <InformesRemitosPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/ventas-historial"
+            element={
+              <ProtectedRoute>
+                <HistorialVentasPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/pagos-historial"
+            element={
+              <ProtectedRoute>
+                <HistorialPagosPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/ingresos"
+            element={
+              <ProtectedRoute>
+                <IngresosPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/egresos"
+            element={
+              <ProtectedRoute>
+                <EgresosPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/puntos-ventas"
+            element={
+              <ProtectedRoute>
+                <PuntosVentasPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/productos"
+            element={
+              <ProtectedRoute>
+                <ProductosPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/historial-movimientos"
+            element={
+              <ProtectedRoute>
+                <HistorialMovimientosPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/reparto"
+            element={
+              <ProtectedRoute>
+                <RepartoPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/clientes-reparto"
+            element={
+              <ProtectedRoute>
+                <ClientesRepartoPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/reparto-historial"
+            element={
+              <ProtectedRoute>
+                <RepartoHistorialPage />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route
-          path="/clientes"
-          element={isAuthenticated ? (
-            <Layout>
-              <ClientesPage />
-            </Layout>
-          ) : (
-            <Navigate to="/auth" />
-          )}
-        />
-
-        {/* Sección de ventas y documentos */}
-        <Route
-          path="/facturar-venta"
-          element={isAuthenticated ? (
-            <Layout>
-              <FacturarVentaPage />
-            </Layout>
-          ) : (
-            <Navigate to="/auth" />
-          )}
-        />
-        <Route
-          path="/informe-z"
-          element={isAuthenticated ? (
-            <Layout>
-              <InformeZPage />
-            </Layout>
-          ) : (
-            <Navigate to="/auth" />
-          )}
-        />
-        <Route
-          path="/notas-creditos"
-          element={isAuthenticated ? (
-            <Layout>
-              <NotasCreditosPage />
-            </Layout>
-          ) : (
-            <Navigate to="/auth" />
-          )}
-        />
-        <Route
-          path="/remitos"
-          element={isAuthenticated ? (
-            <Layout>
-              <RemitosPage />
-            </Layout>
-          ) : (
-            <Navigate to="/auth" />
-          )}
-        />
-        <Route
-          path="/remitos-informes"
-          element={isAuthenticated ? (
-            <Layout>
-              <InformesRemitosPage />
-            </Layout>
-          ) : (
-            <Navigate to="/auth" />
-          )}
-        />
-        {/* Historial */}
-        <Route
-          path="/ventas-historial"
-          element={isAuthenticated ? (
-            <Layout>
-              <HistorialVentasPage />
-            </Layout>
-          ) : (
-            <Navigate to="/auth" />
-          )}
-        />
-        <Route
-          path="/pagos-historial"
-          element={isAuthenticated ? (
-            <Layout>
-              <HistorialPagosPage />
-            </Layout>
-          ) : (
-            <Navigate to="/auth" />
-          )}
-        />
-
-        {/* Ingresos y egresos */}
-        <Route
-          path="/ingresos"
-          element={isAuthenticated ? (
-            <Layout>
-              <IngresosPage />
-            </Layout>
-          ) : (
-            <Navigate to="/auth" />
-          )}
-        />
-        <Route
-          path="/egresos"
-          element={isAuthenticated ? (
-            <Layout>
-              <EgresosPage />
-            </Layout>
-          ) : (
-            <Navigate to="/auth" />
-          )}
-        />
-        <Route
-          path="/puntos-ventas"
-          element={isAuthenticated ? (
-            <Layout>
-              <PuntosVentasPage />
-            </Layout>
-          ) : (
-            <Navigate to="/auth" />
-          )}
-        />
-        <Route
-          path="/productos"
-          element={isAuthenticated ? (
-            <Layout>
-              <ProductosPage />
-            </Layout>
-          ) : (
-            <Navigate to="/auth" />
-          )}
-        />
-        <Route
-          path="/historial-movimientos"
-          element={isAuthenticated ? (
-            <Layout>
-              <HistorialMovimientosPage />
-            </Layout>
-          ) : (
-            <Navigate to="/auth" />
-          )}
-        />
-        <Route
-          path="/reparto"
-          element={isAuthenticated ? (
-            <Layout>
-              <RepartoPage />
-            </Layout>
-          ) : (
-            <Navigate to="/auth" />
-          )}
-        />
-        <Route
-          path="/clientes-reparto"
-          element={isAuthenticated ? (
-            <Layout>
-              <ClientesRepartoPage />
-            </Layout>
-          ) : (
-            <Navigate to="/auth" />
-          )}
-        />
-        <Route
-          path="/reparto-historial"
-          element={isAuthenticated ? (
-            <Layout>
-              <RepartoHistorialPage />
-            </Layout>
-          ) : (
-            <Navigate to="/auth" />
-          )}
-        />
-        {/* Manejo de rutas desconocidas */}
-        <Route
-          path="*"
-          element={<Navigate to={isAuthenticated ? "/dashboard" : "/auth"} />}
-        />
-      </Routes>
+          {/* Manejo de rutas desconocidas */}
+          <Route path="*" element={<Navigate to={isAuthenticated ? "/dashboard" : "/auth"} replace />} />
+        </Routes>
+      </Suspense>
     </Router>
-  );
-};
+  )
+}
 
-export default App;
+export default App

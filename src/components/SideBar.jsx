@@ -1,5 +1,7 @@
-import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+"use client"
+
+import { useState } from "react"
+import { useNavigate, Link } from "react-router-dom"
 import {
   FaHome,
   FaSignOutAlt,
@@ -17,12 +19,12 @@ import {
   FaProductHunt,
   FaStore,
   FaHistory,
-  FaTruck, // Icono para reparto
-} from "react-icons/fa";
-import { motion, AnimatePresence } from "framer-motion";
-import { useAuthContext } from "../context/AuthContext";
-import { logout } from "../services/authService";
-import "../styles/sidebar.css";
+  FaTruck,
+} from "react-icons/fa"
+import { motion, AnimatePresence } from "framer-motion"
+import { useAuthContext } from "../context/AuthContext"
+import { logout } from "../services/authService"
+import "../styles/sidebar-modern.css"
 
 // Variantes para animar el ancho del sidebar
 const sidebarVariants = {
@@ -31,16 +33,16 @@ const sidebarVariants = {
     transition: { type: "spring", stiffness: 200, damping: 20 },
   },
   closed: {
-    width: 60,
+    width: 70,
     transition: { type: "spring", stiffness: 200, damping: 20 },
   },
-};
+}
 
 // Variantes para animar la aparición/desaparición de textos
 const fadeVariants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { duration: 0.2 } },
-};
+}
 
 // Variantes para animar el submenú (expansión/contracción)
 const submenuVariants = {
@@ -54,222 +56,216 @@ const submenuVariants = {
     opacity: 1,
     transition: { duration: 0.3, when: "beforeChildren" },
   },
-};
+}
 
 const SideBar = ({ isOpen, toggleSidebar }) => {
-  const [showVentas, setShowVentas] = useState(false);
-  const [showConfiguraciones, setShowConfiguraciones] = useState(false);
-  const [showReparto, setShowReparto] = useState(false); // Estado para submenu Reparto
+  const [showVentas, setShowVentas] = useState(false)
+  const [showConfiguraciones, setShowConfiguraciones] = useState(false)
+  const [showReparto, setShowReparto] = useState(false)
 
   // Extraemos el usuario del contexto para saber su rol (se usa user.rol)
-  const { logout: logoutContext, user } = useAuthContext();
-  const navigate = useNavigate();
+  const { logout: logoutContext, user } = useAuthContext()
+  const navigate = useNavigate()
 
   const toggleSubMenu = (menu) => {
     if (menu === "ventas") {
-      setShowVentas((prev) => !prev);
+      setShowVentas((prev) => !prev)
     } else if (menu === "configuraciones") {
-      setShowConfiguraciones((prev) => !prev);
+      setShowConfiguraciones((prev) => !prev)
     } else if (menu === "reparto") {
-      setShowReparto((prev) => !prev);
+      setShowReparto((prev) => !prev)
     }
-  };
+  }
 
   const handleLogout = async () => {
     try {
-      await logout();
-      logoutContext();
-      navigate("/login");
+      await logout()
+      logoutContext()
+      navigate("/login")
     } catch (error) {
-      console.error("Error al cerrar sesión:", error);
+      console.error("Error al cerrar sesión:", error)
     }
-  };
+  }
 
   return (
     <motion.div
-      className={`sidebar ${isOpen ? "open" : "closed"}`}
+      className={`sidebar-modern ${isOpen ? "open" : "closed"}`}
       variants={sidebarVariants}
       animate={isOpen ? "open" : "closed"}
+      initial={false}
     >
       {/* Encabezado */}
-      <div className="sidebar-header">
-        <div className="top-bar">
-          <button
-            className="toggle-button"
-            onClick={(e) => {
-              toggleSidebar();
-              e.currentTarget.blur();
-            }}
-          >
-            {isOpen ? <FaChevronLeft /> : <FaChevronRight />}
-          </button>
-        </div>
-        <AnimatePresence>
-          {isOpen && (
+      <div className="sidebar-header-modern">
+        <div className="sidebar-logo-container">
+          {isOpen ? (
             <motion.div
-              className="title-container"
+              className="sidebar-logo"
               initial="hidden"
               animate="visible"
               exit="hidden"
               variants={fadeVariants}
             >
-              <div className="title">
-                <span>Panadería</span>
-                <br />
-                <span className="highlight">La Preferida</span>
-              </div>
+              <span className="logo-text">Panadería</span>
+              <span className="logo-highlight">La Preferida</span>
+            </motion.div>
+          ) : (
+            <motion.div className="sidebar-logo-small" initial={{ scale: 0.8 }} animate={{ scale: 1 }}>
+              <span>LP</span>
             </motion.div>
           )}
-        </AnimatePresence>
+        </div>
+        <button
+          className="toggle-button-modern"
+          onClick={(e) => {
+            toggleSidebar()
+            e.currentTarget.blur()
+          }}
+        >
+          {isOpen ? <FaChevronLeft /> : <FaChevronRight />}
+        </button>
       </div>
 
       {/* Opciones del menú */}
-      <div className="options-container">
-        <ul className="menu">
+      <div className="sidebar-menu-container">
+        <ul className="sidebar-menu">
           {/* Dashboard: siempre visible */}
-          <Link to="/dashboard">
-            <li className="menu-item">
-              <div className="menu-link">
-                <FaHome className="menu-icon" />
+          <li className="sidebar-menu-item">
+            <Link to="/dashboard" className="sidebar-menu-link">
+              <div className="sidebar-menu-icon">
+                <FaHome />
+              </div>
+              {isOpen && (
+                <motion.span
+                  className="sidebar-menu-text"
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                  variants={fadeVariants}
+                >
+                  Dashboard
+                </motion.span>
+              )}
+            </Link>
+          </li>
+
+          {/* Clientes: solo para admin */}
+          {user && user.rol === "admin" && (
+            <li className="sidebar-menu-item">
+              <Link to="/clientes" className="sidebar-menu-link">
+                <div className="sidebar-menu-icon">
+                  <FaUsers />
+                </div>
                 {isOpen && (
                   <motion.span
-                    className="menu-text"
+                    className="sidebar-menu-text"
                     initial="hidden"
                     animate="visible"
                     exit="hidden"
                     variants={fadeVariants}
                   >
-                    Dashboard
+                    Clientes
                   </motion.span>
                 )}
-              </div>
+              </Link>
             </li>
-          </Link>
+          )}
 
-          {/* Clientes: solo para admin */}
-          {user && user.rol === "admin" && (
-            <Link to="/clientes">
-              <li className="menu-item">
-                <div className="menu-link">
-                  <FaUsers className="menu-icon" />
-                  {isOpen && (
+          {/* Ventas: para admin se muestran todas; para user solo Informe Z y Remitos */}
+          {user && (
+            <li className="sidebar-menu-item">
+              <div className="sidebar-menu-link" onClick={() => toggleSubMenu("ventas")}>
+                <div className="sidebar-menu-icon">
+                  <FaChartBar />
+                </div>
+                {isOpen && (
+                  <>
                     <motion.span
-                      className="menu-text"
+                      className="sidebar-menu-text"
                       initial="hidden"
                       animate="visible"
                       exit="hidden"
                       variants={fadeVariants}
                     >
-                      Clientes
+                      Ventas
                     </motion.span>
-                  )}
-                </div>
-              </li>
-            </Link>
-          )}
-
-          {/* Ventas: para admin se muestran todas; para user solo Informe Z y Remitos */}
-          {user && (
-            <li className="menu-item" onClick={() => toggleSubMenu("ventas")}>
-              <div className="menu-link">
-                <FaChartBar className="menu-icon" />
-                {isOpen && (
-                  <motion.span
-                    className="menu-text"
-                    initial="hidden"
-                    animate="visible"
-                    exit="hidden"
-                    variants={fadeVariants}
-                  >
-                    Ventas
-                  </motion.span>
+                    <div className="sidebar-submenu-toggle">{showVentas ? <FaAngleUp /> : <FaAngleDown />}</div>
+                  </>
                 )}
               </div>
-              {isOpen && (
-                <div className="submenu-toggle">
-                  {showVentas ? <FaAngleUp /> : <FaAngleDown />}
-                </div>
-              )}
+              <AnimatePresence initial={false}>
+                {isOpen && showVentas && (
+                  <motion.ul
+                    className="sidebar-submenu"
+                    variants={submenuVariants}
+                    initial="collapsed"
+                    animate="open"
+                    exit="collapsed"
+                  >
+                    {user.rol === "admin" && (
+                      <li className="sidebar-submenu-item">
+                        <Link to="/facturar-venta" className="sidebar-submenu-link">
+                          <FaFileInvoiceDollar className="sidebar-submenu-icon" />
+                          <span>Facturar Venta</span>
+                        </Link>
+                      </li>
+                    )}
+                    <li className="sidebar-submenu-item">
+                      <Link to="/informe-z" className="sidebar-submenu-link">
+                        <FaChartBar className="sidebar-submenu-icon" />
+                        <span>Informe Z</span>
+                      </Link>
+                    </li>
+                    <li className="sidebar-submenu-item">
+                      <Link to="/remitos" className="sidebar-submenu-link">
+                        <FaShoppingCart className="sidebar-submenu-icon" />
+                        <span>Remitos</span>
+                      </Link>
+                    </li>
+                    {user.rol === "admin" && (
+                      <li className="sidebar-submenu-item">
+                        <Link to="/ventas-historial" className="sidebar-submenu-link">
+                          <FaListAlt className="sidebar-submenu-icon" />
+                          <span>Historial</span>
+                        </Link>
+                      </li>
+                    )}
+                  </motion.ul>
+                )}
+              </AnimatePresence>
             </li>
           )}
-          <AnimatePresence initial={false}>
-            {isOpen && user && (
-              <motion.ul
-                className="submenu"
-                variants={submenuVariants}
-                initial="collapsed"
-                animate={showVentas ? "open" : "collapsed"}
-                exit="collapsed"
-              >
-                {user.rol === "admin" && (
-                  <Link to="/facturar-venta">
-                    <li className="submenu-item">
-                      <div className="submenu-link">
-                        <FaFileInvoiceDollar className="submenu-icon" />
-                        <span>Facturar Venta</span>
-                      </div>
-                    </li>
-                  </Link>
-                )}
-                <Link to="/informe-z">
-                  <li className="submenu-item">
-                    <div className="submenu-link">
-                      <FaChartBar className="submenu-icon" />
-                      <span>Informe Z</span>
-                    </div>
-                  </li>
-                </Link>
-                <Link to="/remitos">
-                  <li className="submenu-item">
-                    <div className="submenu-link">
-                      <FaShoppingCart className="submenu-icon" />
-                      <span>Remitos</span>
-                    </div>
-                  </li>
-                </Link>
-                {user.rol === "admin" && (
-                  <Link to="/ventas-historial">
-                    <li className="submenu-item">
-                      <div className="submenu-link">
-                        <FaListAlt className="submenu-icon" />
-                        <span>Historial</span>
-                      </div>
-                    </li>
-                  </Link>
-                )}
-              </motion.ul>
-            )}
-          </AnimatePresence>
 
           {/* Ingresos: para ambos */}
-          <Link to="/ingresos">
-            <li className="menu-item">
-              <div className="menu-link">
-                <FaDollarSign className="menu-icon" />
-                {isOpen && (
-                  <motion.span
-                    className="menu-text"
-                    initial="hidden"
-                    animate="visible"
-                    exit="hidden"
-                    variants={fadeVariants}
-                  >
-                    Ingresos
-                  </motion.span>
-                )}
+          <li className="sidebar-menu-item">
+            <Link to="/ingresos" className="sidebar-menu-link">
+              <div className="sidebar-menu-icon">
+                <FaDollarSign />
               </div>
-            </li>
-          </Link>
+              {isOpen && (
+                <motion.span
+                  className="sidebar-menu-text"
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                  variants={fadeVariants}
+                >
+                  Ingresos
+                </motion.span>
+              )}
+            </Link>
+          </li>
 
           {/* Reparto: opción para roles admin y repartidor */}
           {user && (user.rol === "admin" || user.rol === "repartidor") && (
-            <>
-              <li className="menu-item" onClick={() => toggleSubMenu("reparto")}>
-                <div className="menu-link">
-                  <FaTruck className="menu-icon" />
-                  {isOpen && (
+            <li className="sidebar-menu-item">
+              <div className="sidebar-menu-link" onClick={() => toggleSubMenu("reparto")}>
+                <div className="sidebar-menu-icon">
+                  <FaTruck />
+                </div>
+                {isOpen && (
+                  <>
                     <motion.span
-                      className="menu-text"
+                      className="sidebar-menu-text"
                       initial="hidden"
                       animate="visible"
                       exit="hidden"
@@ -277,63 +273,54 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
                     >
                       Reparto
                     </motion.span>
-                  )}
-                </div>
-                {isOpen && (
-                  <div className="submenu-toggle">
-                    {showReparto ? <FaAngleUp /> : <FaAngleDown />}
-                  </div>
+                    <div className="sidebar-submenu-toggle">{showReparto ? <FaAngleUp /> : <FaAngleDown />}</div>
+                  </>
                 )}
-              </li>
+              </div>
               <AnimatePresence initial={false}>
                 {isOpen && showReparto && (
                   <motion.ul
-                    className="submenu"
+                    className="sidebar-submenu"
                     variants={submenuVariants}
                     initial="collapsed"
                     animate="open"
                     exit="collapsed"
                   >
-                    <Link to="/clientes-reparto">
-                      <li className="submenu-item">
-                        <div className="submenu-link">
-                          <FaUsers className="submenu-icon" />
-                          <span>Clientes Reparto</span>
-                        </div>
-                      </li>
-                    </Link>
-                    <Link to="/reparto">
-                      <li className="submenu-item">
-                        <div className="submenu-link">
-                          <FaTruck className="submenu-icon" />
-                          <span>Hacer Reparto</span>
-                        </div>
-                      </li>
-                    </Link>
-                    {/* Nueva opción para Historial de Repartos */}
-                    <Link to="/reparto-historial">
-                      <li className="submenu-item">
-                        <div className="submenu-link">
-                          <FaHistory className="submenu-icon" />
-                          <span>Historial de Repartos</span>
-                        </div>
-                      </li>
-                    </Link>
+                    <li className="sidebar-submenu-item">
+                      <Link to="/clientes-reparto" className="sidebar-submenu-link">
+                        <FaUsers className="sidebar-submenu-icon" />
+                        <span>Clientes Reparto</span>
+                      </Link>
+                    </li>
+                    <li className="sidebar-submenu-item">
+                      <Link to="/reparto" className="sidebar-submenu-link">
+                        <FaTruck className="sidebar-submenu-icon" />
+                        <span>Hacer Reparto</span>
+                      </Link>
+                    </li>
+                    <li className="sidebar-submenu-item">
+                      <Link to="/reparto-historial" className="sidebar-submenu-link">
+                        <FaHistory className="sidebar-submenu-icon" />
+                        <span>Historial de Repartos</span>
+                      </Link>
+                    </li>
                   </motion.ul>
                 )}
               </AnimatePresence>
-            </>
+            </li>
           )}
 
           {/* Configuraciones: solo para admin */}
           {user && user.rol === "admin" && (
-            <>
-              <li className="menu-item" onClick={() => toggleSubMenu("configuraciones")}>
-                <div className="menu-link">
-                  <FaCog className="menu-icon" />
-                  {isOpen && (
+            <li className="sidebar-menu-item">
+              <div className="sidebar-menu-link" onClick={() => toggleSubMenu("configuraciones")}>
+                <div className="sidebar-menu-icon">
+                  <FaCog />
+                </div>
+                {isOpen && (
+                  <>
                     <motion.span
-                      className="menu-text"
+                      className="sidebar-menu-text"
                       initial="hidden"
                       animate="visible"
                       exit="hidden"
@@ -341,62 +328,54 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
                     >
                       Configuraciones
                     </motion.span>
-                  )}
-                </div>
-                {isOpen && (
-                  <div className="submenu-toggle">
-                    {showConfiguraciones ? <FaAngleUp /> : <FaAngleDown />}
-                  </div>
+                    <div className="sidebar-submenu-toggle">
+                      {showConfiguraciones ? <FaAngleUp /> : <FaAngleDown />}
+                    </div>
+                  </>
                 )}
-              </li>
+              </div>
               <AnimatePresence initial={false}>
-                {isOpen && (
+                {isOpen && showConfiguraciones && (
                   <motion.ul
-                    className="submenu"
+                    className="sidebar-submenu"
                     variants={submenuVariants}
                     initial="collapsed"
-                    animate={showConfiguraciones ? "open" : "collapsed"}
+                    animate="open"
                     exit="collapsed"
                   >
-                    <Link to="/puntos-ventas">
-                      <li className="submenu-item">
-                        <div className="submenu-link">
-                          <FaStore className="submenu-icon" />
-                          <span>Puntos de Ventas</span>
-                        </div>
-                      </li>
-                    </Link>
-                    <Link to="/productos">
-                      <li className="submenu-item">
-                        <div className="submenu-link">
-                          <FaProductHunt className="submenu-icon" />
-                          <span>Productos</span>
-                        </div>
-                      </li>
-                    </Link>
-                    <Link to="/historial-movimientos">
-                      <li className="submenu-item">
-                        <div className="submenu-link">
-                          <FaHistory className="submenu-icon" />
-                          <span>Historial de Movimientos</span>
-                        </div>
-                      </li>
-                    </Link>
+                    <li className="sidebar-submenu-item">
+                      <Link to="/puntos-ventas" className="sidebar-submenu-link">
+                        <FaStore className="sidebar-submenu-icon" />
+                        <span>Puntos de Ventas</span>
+                      </Link>
+                    </li>
+                    <li className="sidebar-submenu-item">
+                      <Link to="/productos" className="sidebar-submenu-link">
+                        <FaProductHunt className="sidebar-submenu-icon" />
+                        <span>Productos</span>
+                      </Link>
+                    </li>
+                    <li className="sidebar-submenu-item">
+                      <Link to="/historial-movimientos" className="sidebar-submenu-link">
+                        <FaHistory className="sidebar-submenu-icon" />
+                        <span>Historial de Movimientos</span>
+                      </Link>
+                    </li>
                   </motion.ul>
                 )}
               </AnimatePresence>
-            </>
+            </li>
           )}
         </ul>
       </div>
 
       {/* Footer: Botón de Salir */}
-      <div className="logout-container">
-        <button className="logout-button" onClick={handleLogout}>
-          <FaSignOutAlt className="logout-icon" />
+      <div className="sidebar-footer">
+        <button className="sidebar-logout-button" onClick={handleLogout}>
+          <FaSignOutAlt className="sidebar-logout-icon" />
           {isOpen && (
             <motion.span
-              className="logout-text"
+              className="sidebar-logout-text"
               initial="hidden"
               animate="visible"
               exit="hidden"
@@ -408,7 +387,7 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
         </button>
       </div>
     </motion.div>
-  );
-};
+  )
+}
 
-export default SideBar;
+export default SideBar
