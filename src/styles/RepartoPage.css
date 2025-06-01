@@ -291,5 +291,4 @@
 .fecha-historial-reparto input[type="date"]:focus {
   border-color: #f77d0b;
   outline: none;
-  box-shadow: 0 0 0 2px rgba(76, 154, 255, 0.3);
 }

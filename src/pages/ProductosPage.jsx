@@ -1,8 +1,9 @@
 // src/pages/ProductosPage.jsx
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import { FaTrash, FaEdit, FaUserPlus } from "react-icons/fa";
+import { FaTrash, FaEdit, FaPlus, FaSearch, FaTimes } from "react-icons/fa";
 import { NumericFormat } from "react-number-format";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   getProductos,
   createProducto,
@@ -10,7 +11,7 @@ import {
   deleteProducto,
 } from "../services/productosService";
 import Pagination from "../components/Pagination";
-import "../styles/dosColumnas.css";
+import "../styles/productos-modern.css";
 
 const ProductosPage = () => {
   // --- Formulario ---
@@ -24,6 +25,7 @@ const ProductosPage = () => {
   const [productos, setProductos] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [editingId, setEditingId] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   // --- Búsqueda y paginación ---
   const [searchTerm, setSearchTerm] = useState("");
@@ -75,18 +77,23 @@ const ProductosPage = () => {
         Swal.fire("Éxito", "Producto creado correctamente", "success");
       }
       // limpiar
-      setCodigo("");
-      setNombre("");
-      setDescripcion("");
-      setUnidadMedida("");
-      setPrecio("");
-      setIsEditing(false);
-      setEditingId(null);
+      resetForm();
       fetchProductos();
     } catch (error) {
       console.error(error);
       Swal.fire("Error", error.message || "Error al procesar la solicitud", "error");
     }
+  };
+
+  const resetForm = () => {
+    setCodigo("");
+    setNombre("");
+    setDescripcion("");
+    setUnidadMedida("");
+    setPrecio("");
+    setIsEditing(false);
+    setEditingId(null);
+    setShowModal(false);
   };
 
   const handleEdit = (p) => {
@@ -97,6 +104,12 @@ const ProductosPage = () => {
     setPrecio(p.precio);
     setIsEditing(true);
     setEditingId(p.id);
+    setShowModal(true);
+  };
+
+  const handleNewProduct = () => {
+    resetForm();
+    setShowModal(true);
   };
 
   const handleDelete = (id) => {
@@ -107,6 +120,8 @@ const ProductosPage = () => {
       showCancelButton: true,
       confirmButtonText: "Sí, eliminar",
       cancelButtonText: "Cancelar",
+      confirmButtonColor: "#dc3545",
+      cancelButtonColor: "#6c757d",
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
@@ -147,168 +162,225 @@ const ProductosPage = () => {
   };
 
   return (
-    <main className="container productos-container">
-      <h1>Gestión de Productos</h1>
-      <div className="content-wrapper-dc">
-        {/* === Formulario === */}
-        <div className="form-container-dc">
-          <h2>{isEditing ? "Editar Producto" : "Nuevo Producto"}</h2>
-          <form onSubmit={handleSubmit} className="producto-form">
-            <div className="form-grid-dc">
-              <div className="form-group-dc">
-                <label>Código</label>
-                <input
-                  type="text"
-                  value={codigo}
-                  onChange={(e) => setCodigo(e.target.value)}
-                  placeholder="Código del producto"
-                  required
-                />
-              </div>
-              <div className="form-group-dc">
-                <label>Nombre</label>
-                <input
-                  type="text"
-                  value={nombre}
-                  onChange={(e) => setNombre(e.target.value)}
-                  placeholder="Nombre del producto"
-                  required
-                />
-              </div>
-              <div className="form-group-dc">
-                <label>Descripción</label>
-                <input
-                  type="text"
-                  value={descripcion}
-                  onChange={(e) => setDescripcion(e.target.value)}
-                  placeholder="Descripción del producto"
-                />
-              </div>
-              <div className="form-group-dc">
-                <label>Unidad de Medida</label>
-                <select
-                  value={unidadMedida}
-                  onChange={(e) => setUnidadMedida(e.target.value)}
-                  required
-                >
-                  <option value="">Seleccione una opción</option>
-                  <option value="unidad">Unidad</option>
-                  <option value="kg">Kg</option>
-                </select>
-              </div>
-              <div className="form-group-dc">
-                <label>Precio</label>
-                <NumericFormat
-                  value={precio}
-                  thousandSeparator="."
-                  decimalSeparator=","
-                  decimalScale={2}
-                  fixedDecimalScale
-                  prefix="$ "
-                  placeholder="$ 0"
-                  onValueChange={(values) => setPrecio(values.value)}
-                  className="input-currency"
-                  required
-                />
-              </div>
-            </div>
-            <div className="btn-container-dc">
-              <button type="submit" className="btn-submit-dc">
-                {isEditing ? "Actualizar" : "Crear Producto"}
-              </button>
-              {isEditing && (
-                <button
-                  type="button"
-                  className="btn-cancel-dc"
-                  onClick={() => {
-                    setIsEditing(false);
-                    setEditingId(null);
-                    setCodigo("");
-                    setNombre("");
-                    setDescripcion("");
-                    setUnidadMedida("");
-                    setPrecio("");
-                  }}
-                >
-                  Cancelar
-                </button>
-              )}
-            </div>
-          </form>
+    <div className="productos-page">
+      {/* Header */}
+      <div className="page-header">
+        <div className="header-content">
+          <h1 className="page-title">Gestión de Productos</h1>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="btn-new-product"
+            onClick={handleNewProduct}
+          >
+            <FaPlus /> Nuevo Producto
+          </motion.button>
         </div>
+      </div>
 
-        {/* === Tabla y controles === */}
-        <div className="table-container-prod">
-          {/* Buscador único */}
-          <div className="header-container">
-            <div className="search-wrapper">
-              <input
-                type="text"
-                placeholder="Buscar"
-                value={searchTerm}
-                onChange={handleSearchChange}
-                className="search-input"
-              />
-            </div>
-          </div>
-          {/* Tabla */}
-          <table className="table">
+      {/* Search Bar */}
+      <div className="search-section">
+        <div className="search-container">
+          <FaSearch className="search-icon" />
+          <input
+            type="text"
+            placeholder="Buscar productos por código, nombre o descripción..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+            className="search-input-modern"
+          />
+        </div>
+        <div className="results-info">
+          {filteredProductos.length} producto{filteredProductos.length !== 1 ? 's' : ''} encontrado{filteredProductos.length !== 1 ? 's' : ''}
+        </div>
+      </div>
+
+      {/* Table */}
+      <div className="table-section">
+        <div className="table-container-modern">
+          <table className="modern-table">
             <thead>
               <tr>
                 <th>Código</th>
                 <th>Nombre</th>
                 <th>Descripción</th>
-                <th>Unidad Medida</th>
+                <th>Unidad</th>
                 <th>Precio</th>
                 <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
-              {currentItems.length > 0 ? (
-                currentItems.map((producto) => (
-                  <tr key={producto.id}>
-                    <td>{producto.codigo}</td>
-                    <td>{producto.nombre}</td>
-                    <td>{producto.descripcion}</td>
-                    <td>{producto.unidad_medida}</td>
-                    <td>{formatCurrency(producto.precio)}</td>
-                    <td>
-                      <button
-                        className="action-button editar"
-                        onClick={() => handleEdit(producto)}
-                        title="Editar Producto"
-                      >
-                        <FaEdit />
-                      </button>
-                      <button
-                        className="action-button eliminar"
-                        onClick={() => handleDelete(producto.id)}
-                        title="Eliminar Producto"
-                      >
-                        <FaTrash />
-                      </button>
+              <AnimatePresence>
+                {currentItems.length > 0 ? (
+                  currentItems.map((producto, index) => (
+                    <motion.tr
+                      key={producto.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ delay: index * 0.05 }}
+                      className="table-row"
+                    >
+                      <td className="code-cell">{producto.codigo}</td>
+                      <td className="name-cell">{producto.nombre}</td>
+                      <td className="description-cell">{producto.descripcion || '-'}</td>
+                      <td className="unit-cell">
+                        <span className="unit-badge">{producto.unidad_medida}</span>
+                      </td>
+                      <td className="price-cell">{formatCurrency(producto.precio)}</td>
+                      <td className="actions-cell">
+                        <div className="action-buttons">
+                          <motion.button
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                            className="action-btn edit-btn"
+                            onClick={() => handleEdit(producto)}
+                            title="Editar Producto"
+                          >
+                            <FaEdit />
+                          </motion.button>
+                          <motion.button
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                            className="action-btn delete-btn"
+                            onClick={() => handleDelete(producto.id)}
+                            title="Eliminar Producto"
+                          >
+                            <FaTrash />
+                          </motion.button>
+                        </div>
+                      </td>
+                    </motion.tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="6" className="no-results-modern">
+                      <div className="no-results-content">
+                        <FaSearch className="no-results-icon" />
+                        <p>No se encontraron productos</p>
+                        <small>Intenta con otros términos de búsqueda</small>
+                      </div>
                     </td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="6" className="no-results">
-                    No se encontraron productos.
-                  </td>
-                </tr>
-              )}
+                )}
+              </AnimatePresence>
             </tbody>
           </table>
-
-          {/* Paginación */}
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-          />
         </div>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="pagination-section">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          </div>
+        )}
       </div>
-    </main>
+
+      {/* Modal */}
+      <AnimatePresence>
+        {showModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="modal-overlay"
+            onClick={(e) => e.target === e.currentTarget && resetForm()}
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              className="modal-content"
+            >
+              <div className="modal-header">
+                <h2>{isEditing ? "Editar Producto" : "Nuevo Producto"}</h2>
+                <button className="modal-close" onClick={resetForm}>
+                  <FaTimes />
+                </button>
+              </div>
+
+              <form onSubmit={handleSubmit} className="modal-form">
+                <div className="form-grid-modern">
+                  <div className="form-group-modern">
+                    <label>Código *</label>
+                    <input
+                      type="text"
+                      value={codigo}
+                      onChange={(e) => setCodigo(e.target.value)}
+                      placeholder="Código del producto"
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group-modern">
+                    <label>Nombre *</label>
+                    <input
+                      type="text"
+                      value={nombre}
+                      onChange={(e) => setNombre(e.target.value)}
+                      placeholder="Nombre del producto"
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group-modern full-width">
+                    <label>Descripción</label>
+                    <input
+                      type="text"
+                      value={descripcion}
+                      onChange={(e) => setDescripcion(e.target.value)}
+                      placeholder="Descripción del producto"
+                    />
+                  </div>
+
+                  <div className="form-group-modern">
+                    <label>Unidad de Medida *</label>
+                    <select
+                      value={unidadMedida}
+                      onChange={(e) => setUnidadMedida(e.target.value)}
+                      required
+                    >
+                      <option value="">Seleccione una opción</option>
+                      <option value="unidad">Unidad</option>
+                      <option value="kg">Kg</option>
+                    </select>
+                  </div>
+
+                  <div className="form-group-modern">
+                    <label>Precio *</label>
+                    <NumericFormat
+                      value={precio}
+                      thousandSeparator="."
+                      decimalSeparator=","
+                      decimalScale={2}
+                      fixedDecimalScale
+                      prefix="$ "
+                      placeholder="$ 0,00"
+                      onValueChange={(values) => setPrecio(values.value)}
+                      className="input-currency-modern"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="modal-actions">
+                  <button type="button" className="btn-cancel-modern" onClick={resetForm}>
+                    Cancelar
+                  </button>
+                  <button type="submit" className="btn-submit-modern">
+                    {isEditing ? "Actualizar" : "Crear"} Producto
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 };
 
