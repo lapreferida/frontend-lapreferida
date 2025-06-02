@@ -69,7 +69,7 @@ const RemitosPage = () => {
     }));
 
   // Incluye la descripción en el label
-  const optionsProductos = productos.map(prod => ({
+  const optionsProductos = productos.slice(68).map(prod => ({
     value: prod.id,
     label: `${prod.nombre} - $${prod.precio} - ${prod.descripcion}`
   }));
