@@ -27,8 +27,6 @@
   --transition: all 0.3s ease;
 }
 
-
-
 .productos-page {
   min-height: 100vh;
   padding: 25px;
@@ -256,6 +254,13 @@
 .delete-btn:hover {
   background: #c82333;
   transform: scale(1.1);
+}
+
+.hidden-products-info {
+  color: var(--gray-500);
+  font-size: 12px;
+  font-style: italic;
+  margin-left: 5px;
 }
 
 .no-results-modern {

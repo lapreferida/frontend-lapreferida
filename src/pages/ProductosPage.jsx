@@ -1,65 +1,62 @@
+"use client"
+
 // src/pages/ProductosPage.jsx
-import { useState, useEffect } from "react";
-import Swal from "sweetalert2";
-import { FaTrash, FaEdit, FaPlus, FaSearch, FaTimes } from "react-icons/fa";
-import { NumericFormat } from "react-number-format";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  getProductos,
-  createProducto,
-  updateProducto,
-  deleteProducto,
-} from "../services/productosService";
-import Pagination from "../components/Pagination";
-import "../styles/productos-modern.css";
+import { useState, useEffect } from "react"
+import Swal from "sweetalert2"
+import { FaTrash, FaEdit, FaPlus, FaSearch, FaTimes } from "react-icons/fa"
+import { NumericFormat } from "react-number-format"
+import { motion, AnimatePresence } from "framer-motion"
+import { getProductos, createProducto, updateProducto, deleteProducto } from "../services/productosService"
+import Pagination from "../components/Pagination"
+import "../styles/productos-modern.css"
 
 const ProductosPage = () => {
   // --- Formulario ---
-  const [codigo, setCodigo] = useState("");
-  const [nombre, setNombre] = useState("");
-  const [descripcion, setDescripcion] = useState("");
-  const [unidadMedida, setUnidadMedida] = useState("");
-  const [precio, setPrecio] = useState("");
+  const [codigo, setCodigo] = useState("")
+  const [nombre, setNombre] = useState("")
+  const [descripcion, setDescripcion] = useState("")
+  const [unidadMedida, setUnidadMedida] = useState("")
+  const [precio, setPrecio] = useState("")
 
   // --- Listado y edición ---
-  const [productos, setProductos] = useState([]);
-  const [isEditing, setIsEditing] = useState(false);
-  const [editingId, setEditingId] = useState(null);
-  const [showModal, setShowModal] = useState(false);
+  const [productos, setProductos] = useState([])
+  const [isEditing, setIsEditing] = useState(false)
+  const [editingId, setEditingId] = useState(null)
+  const [showModal, setShowModal] = useState(false)
 
   // --- Búsqueda y paginación ---
-  const [searchTerm, setSearchTerm] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const [searchTerm, setSearchTerm] = useState("")
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 10
 
   // Formatea número a moneda ARS
   const formatCurrency = (value) =>
     new Intl.NumberFormat("es-AR", {
       style: "currency",
       currency: "ARS",
-    }).format(value);
+    }).format(value)
 
   // Carga inicial
   const fetchProductos = async () => {
     try {
-      const data = await getProductos();
-      setProductos(data);
+      const data = await getProductos()
+      setProductos(data)
     } catch (error) {
-      console.error("Error al obtener los productos:", error);
-      Swal.fire("Error", "No se pudieron cargar los productos", "error");
+      console.error("Error al obtener los productos:", error)
+      Swal.fire("Error", "No se pudieron cargar los productos", "error")
     }
-  };
+  }
 
   useEffect(() => {
-    fetchProductos();
-  }, []);
+    fetchProductos()
+  }, [])
 
   // --- Handlers del formulario ---
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     if (!codigo || !nombre || !unidadMedida || !precio) {
-      Swal.fire("Error", "Complete los campos obligatorios", "error");
-      return;
+      Swal.fire("Error", "Complete los campos obligatorios", "error")
+      return
     }
     const productoData = {
       codigo,
@@ -67,50 +64,50 @@ const ProductosPage = () => {
       descripcion,
       unidad_medida: unidadMedida,
       precio,
-    };
+    }
     try {
       if (isEditing) {
-        await updateProducto(editingId, productoData);
-        Swal.fire("Éxito", "Producto actualizado correctamente", "success");
+        await updateProducto(editingId, productoData)
+        Swal.fire("Éxito", "Producto actualizado correctamente", "success")
       } else {
-        await createProducto(productoData);
-        Swal.fire("Éxito", "Producto creado correctamente", "success");
+        await createProducto(productoData)
+        Swal.fire("Éxito", "Producto creado correctamente", "success")
       }
       // limpiar
-      resetForm();
-      fetchProductos();
+      resetForm()
+      fetchProductos()
     } catch (error) {
-      console.error(error);
-      Swal.fire("Error", error.message || "Error al procesar la solicitud", "error");
+      console.error(error)
+      Swal.fire("Error", error.message || "Error al procesar la solicitud", "error")
     }
-  };
+  }
 
   const resetForm = () => {
-    setCodigo("");
-    setNombre("");
-    setDescripcion("");
-    setUnidadMedida("");
-    setPrecio("");
-    setIsEditing(false);
-    setEditingId(null);
-    setShowModal(false);
-  };
+    setCodigo("")
+    setNombre("")
+    setDescripcion("")
+    setUnidadMedida("")
+    setPrecio("")
+    setIsEditing(false)
+    setEditingId(null)
+    setShowModal(false)
+  }
 
   const handleEdit = (p) => {
-    setCodigo(p.codigo);
-    setNombre(p.nombre);
-    setDescripcion(p.descripcion);
-    setUnidadMedida(p.unidad_medida);
-    setPrecio(p.precio);
-    setIsEditing(true);
-    setEditingId(p.id);
-    setShowModal(true);
-  };
+    setCodigo(p.codigo)
+    setNombre(p.nombre)
+    setDescripcion(p.descripcion)
+    setUnidadMedida(p.unidad_medida)
+    setPrecio(p.precio)
+    setIsEditing(true)
+    setEditingId(p.id)
+    setShowModal(true)
+  }
 
   const handleNewProduct = () => {
-    resetForm();
-    setShowModal(true);
-  };
+    resetForm()
+    setShowModal(true)
+  }
 
   const handleDelete = (id) => {
     Swal.fire({
@@ -125,41 +122,40 @@ const ProductosPage = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await deleteProducto(id);
-          Swal.fire("Eliminado", "El producto ha sido eliminado", "success");
-          fetchProductos();
+          await deleteProducto(id)
+          Swal.fire("Eliminado", "El producto ha sido eliminado", "success")
+          fetchProductos()
         } catch (error) {
-          console.error(error);
-          Swal.fire("Error", error.message || "Error al eliminar el producto", "error");
+          console.error(error)
+          Swal.fire("Error", error.message || "Error al eliminar el producto", "error")
         }
       }
-    });
-  };
+    })
+  }
 
   // --- Filtrado ---
-  const filteredProductos = productos.filter((p) => {
-    const term = searchTerm.trim().toLowerCase();
-    return (
-      !term ||
-      p.codigo.toLowerCase().includes(term) ||
-      p.nombre.toLowerCase().includes(term) ||
-      (p.descripcion && p.descripcion.toLowerCase().includes(term))
-    );
-  });
+  const filteredProductos = productos
+    .filter((p) => {
+      const term = searchTerm.trim().toLowerCase()
+      return (
+        !term ||
+        p.codigo.toLowerCase().includes(term) ||
+        p.nombre.toLowerCase().includes(term) ||
+        (p.descripcion && p.descripcion.toLowerCase().includes(term))
+      )
+    })
+    .slice(68) // Ocultar los primeros 68 productos
 
   // --- Paginación ---
-  const totalItems = filteredProductos.length;
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
-  const currentItems = filteredProductos.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  const totalItems = filteredProductos.length
+  const totalPages = Math.ceil(totalItems / itemsPerPage)
+  const currentItems = filteredProductos.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
 
   // Si el usuario cambia la búsqueda, volvemos a la página 1
   const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
-    setCurrentPage(1);
-  };
+    setSearchTerm(e.target.value)
+    setCurrentPage(1)
+  }
 
   return (
     <div className="productos-page">
@@ -191,7 +187,9 @@ const ProductosPage = () => {
           />
         </div>
         <div className="results-info">
-          {filteredProductos.length} producto{filteredProductos.length !== 1 ? 's' : ''} encontrado{filteredProductos.length !== 1 ? 's' : ''}
+          {filteredProductos.length} producto{filteredProductos.length !== 1 ? "s" : ""} encontrado
+          {filteredProductos.length !== 1 ? "s" : ""}
+          {productos.length > 68 && <span className="hidden-products-info"> (68 productos ocultos)</span>}
         </div>
       </div>
 
@@ -223,7 +221,7 @@ const ProductosPage = () => {
                     >
                       <td className="code-cell">{producto.codigo}</td>
                       <td className="name-cell">{producto.nombre}</td>
-                      <td className="description-cell">{producto.descripcion || '-'}</td>
+                      <td className="description-cell">{producto.descripcion || "-"}</td>
                       <td className="unit-cell">
                         <span className="unit-badge">{producto.unidad_medida}</span>
                       </td>
@@ -271,11 +269,7 @@ const ProductosPage = () => {
         {/* Pagination */}
         {totalPages > 1 && (
           <div className="pagination-section">
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={setCurrentPage}
-            />
+            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
           </div>
         )}
       </div>
@@ -339,11 +333,7 @@ const ProductosPage = () => {
 
                   <div className="form-group-modern">
                     <label>Unidad de Medida *</label>
-                    <select
-                      value={unidadMedida}
-                      onChange={(e) => setUnidadMedida(e.target.value)}
-                      required
-                    >
+                    <select value={unidadMedida} onChange={(e) => setUnidadMedida(e.target.value)} required>
                       <option value="">Seleccione una opción</option>
                       <option value="unidad">Unidad</option>
                       <option value="kg">Kg</option>
@@ -381,7 +371,7 @@ const ProductosPage = () => {
         )}
       </AnimatePresence>
     </div>
-  );
-};
+  )
+}
 
-export default ProductosPage;
+export default ProductosPage
